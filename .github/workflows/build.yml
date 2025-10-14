@@ -1,5 +1,4 @@
 name: WorldData
-
 on:
   push:
     branches:
@@ -34,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-jar
-          path: target/*.jar
+          path: target/WorldStatistics-0.0.1.jar
 
   docker:
     name: Build Docker Image
@@ -55,13 +54,12 @@ jobs:
           path: .
 
       - name: Rename JAR
-        run: |
-          mkdir -p target
-          mv *.jar target/app.jar
+        run: mv WorldStatistics-0.0.1.jar app.jar
 
       - name: Build Docker image
         run: docker build -t population-report-app .
 
       - name: Test Docker image
         run: docker run --rm population-report-app
+
 
