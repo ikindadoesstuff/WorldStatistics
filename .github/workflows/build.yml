@@ -58,6 +58,9 @@ jobs:
           mkdir -p target
           mv WorldStatistics-0.0.1-jar-with-dependencies.jar target/app.jar
 
+      - name: List files (debug step)
+        run: ls -R
+
       - name: Build Docker image
         run: docker build -t population-report-app .
 
