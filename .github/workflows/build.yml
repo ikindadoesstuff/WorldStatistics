@@ -1,15 +1,5 @@
 name: WorldData
-on:
-  push:
-    branches:
-      - master
-      - develop
-      - release/*
-  pull_request:
-    branches:
-      - master
-      - develop
-      - release/*
+on: push
 
 jobs:
   build:
