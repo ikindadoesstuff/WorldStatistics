@@ -54,13 +54,16 @@ jobs:
           path: .
 
       - name: Rename JAR
-        run: mv WorldStatistics-0.0.1-jar-with-dependencies.jar app.jar
+        run: |
+          mkdir -p target
+          mv WorldStatistics-0.0.1-jar-with-dependencies.jar target/app.jar
 
       - name: Build Docker image
         run: docker build -t population-report-app .
 
       - name: Test Docker image
         run: docker run --rm population-report-app
+
 
 
 
