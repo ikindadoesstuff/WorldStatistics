@@ -1,15 +1,5 @@
 name: WorldData
-on:
-  push:
-    branches:
-      - master
-      - develop
-      - release/*
-  pull_request:
-    branches:
-      - master
-      - develop
-      - release/*
+on: push
 
 jobs:
   build:
@@ -52,11 +42,6 @@ jobs:
         with:
           name: app-jar
           path: .
-
-      - name: Rename JAR
-        run: |
-          mkdir -p target
-          mv WorldStatistics-0.0.1-jar-with-dependencies.jar target/app.jar
 
       - name: List files (debug step)
         run: ls -R
