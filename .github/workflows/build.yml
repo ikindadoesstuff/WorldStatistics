@@ -64,3 +64,4 @@ jobs:
 
       - name: Test Docker image
         run: docker run --rm population-report-app
+
