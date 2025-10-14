@@ -1,90 +1,165 @@
-Use Case 1 : Generate Country Population Report
-Use Case ID: UC1
-Use Case Name: Generate Country Population Report
-Description:
-This use case allows a user to generate a list of all countries in the world, organized by population from largest to smallest. The report helps compare population sizes across different countries.
-Primary Actor:
-User (Analyst or Researcher)
-Stakeholders and Interests:
-•	Organization: Wants accurate and up-to-date global population data.
-•	User: Needs easy access to population reports for analysis or presentations.
-Preconditions:
-•	The database must contain current population data for all countries.
-•	The reporting application must be connected to the database.
-Postconditions:
-•	The system displays or exports a country population report sorted from largest to smallest.
-Main Flow:
-1.	The user opens the reporting system.
-2.	The user selects “Generate Country Population Report.”
-3.	The system retrieves all country population data from the database.
-4.	The system sorts countries by population (largest to smallest).
-5.	The report is displayed on the screen or exported to a file format (PDF/CSV/Excel).
-Alternative Flows:
-•	If the database connection fails, the system displays an error message.
-•	If no data is found, the system notifies the user that the report cannot be generated.
-Frequency of Use:
-Weekly or monthly, depending on reporting needs.
-Assumptions:
-The data source is reliable and up to date.
+USE CASE 1: Generate Country Population Report
+CHARACTERISTIC INFORMATION
+Goal in Context
+Show a list of all countries sorted by population (largest to smallest) and let the user download it.
+
+Scope
+Population Reporting System (the app that makes these reports).
+
+Level
+Primary task
+
+Preconditions
+The database is up and reachable.
+Country population data exists.
+The user can access the app.
+
+Success End Condition
+The user sees a country list sorted by population and can download it.
+
+Failed End Condition
+No report is shown; the user sees a clear error message.
+
+Primary Actor
+User / Analyst
+
+Trigger
+The user clicks “Country Population Report”.
+
+MAIN SUCCESS SCENARIO
+Open the app.
+Choose “Country Population Report”.
+The app checks the request.
+The app reads country data from the database.
+The app sorts countries by population (largest first).
+The app shows the results in a table.
+The user downloads the file (CSV/Excel/PDF).
+The app saves the run to history.
+action description
+Columns: Code, Name, Continent, Region, Population, Capital.
+Sorting is strictly by population, largest first.
+
+EXTENSIONS
+Input issue → The app shows what to fix.
+Database issue → The app shows “service temporarily unavailable”.
+No data → The app shows “No countries found”.
+Export issue → The app asks the user to try another format or retry.
+
+SUB-VARIATIONS
+Optional filters: by continent or region.
+Export formats: CSV, Excel, PDF.
+Page size: 25, 50, or 100 rows.
+
+SCHEDULE
+DUE DATE: Oct 31, 2025
 
 
-Use Case 2 : Generate Top N Populated Cities Report
-Use Case ID: UC2
-Use Case Name: Generate Top N Populated Cities Report
-Description:
-This use case allows the user to view the top N most populated cities in the world, continent, region, or specific country. The user specifies the number (N) to customize the report.
-Primary Actor:
-User (Analyst or Researcher)
-Stakeholders and Interests:
-•	Organization: Needs quick insights on urban population distribution.
-•	User: Wants customizable reports for specific analysis.
-Preconditions:
-•	The database includes population data for all cities.
-•	The user specifies a valid number (N) and optional region or country.
-Postconditions:
-•	The report showing the top N populated cities is displayed or exported.
-Main Flow:
-1.	The user opens the reporting system.
-2.	The user selects “Top N Populated Cities.”
-3.	The user enters a value for N and optionally a region or country.
-4.	The system retrieves the matching city data.
-5.	The system sorts the cities by population and selects the top N.
-6.	The system displays or exports the report.
-Alternative Flows:
-•	If N is not provided or invalid, the system prompts the user to correct it.
-•	If no cities match the selection, the system displays a message.
-Frequency of Use:
-As required by the organization — typically during quarterly reviews or studies.
-Assumptions:
-The system’s query engine can handle dynamic filtering efficiently.
+USE CASE 2: Generate Top N Populated Cities Report
+CHARACTERISTIC INFORMATION
+Goal in Context
+Let the user see the Top N cities by population for a chosen scope (world, continent, region, country, or district), and download it.
 
+Scope
+Population Reporting System.
 
-Use Case 3 : Generate Language Population Report
-Use Case ID: UC3
-Use Case Name: Generate Language Population Report
-Description:
-This use case generates a report showing how many people speak selected major languages (Chinese, English, Hindi, Spanish, Arabic), along with their percentage of the total world population.
-Primary Actor:
-User (Analyst or Researcher)
-Stakeholders and Interests:
-•	Organization: Wants to track global language distribution for cultural and educational purposes.
-•	User: Needs data for research or communication planning.
-Preconditions:
-•	The database includes language data linked to country populations.
-•	The world population total is stored in the database.
-Postconditions:
-•	The report shows the total number and percentage of speakers per language.
-Main Flow:
-1.	The user opens the reporting system.
-2.	The user selects “Language Population Report.”
-3.	The system retrieves population data for Chinese, English, Hindi, Spanish, and Arabic speakers.
-4.	The system calculates the total number of speakers for each language.
-5.	The system computes each language’s percentage of the world population.
-6.	The system displays or exports the report.
-Alternative Flows:
-•	If data for a specific language is missing, the report will indicate “data not available.”
-Frequency of Use:
-Occasional , generated when analyzing language trends or preparing global reports.
-Assumptions:
-Population data by language is accurate and up to date.
+Level
+Primary task
 
+Preconditions
+City population data exists and links to country/region/continent/district.
+The user can access the app.
+A valid N is provided (e.g., 1–500).
+
+Success End Condition
+The user sees the Top N cities for the chosen scope and can download the file.
+
+Failed End Condition
+No report is shown; the user sees why (bad N or scope, or no results).
+
+Primary Actor
+User / Analyst
+
+Trigger
+The user clicks “Top N Cities” and enters N (and optional scope).
+
+MAIN SUCCESS SCENARIO
+Open the app.
+Choose “Top N Cities”.
+Enter N and (optionally) pick a scope.
+The app validates N and scope.
+The app reads city data for the scope.
+The app sorts by population and keeps the first N.
+The app shows the results (Name, Country, District, Population).
+The user downloads the file (CSV/Excel/PDF).
+The app saves the run to history.
+action description
+Default N = 10; maximum N = 500 (configurable).
+Stable sort: Population (desc), then Name (A–Z).
+
+EXTENSIONS
+Invalid N → The app asks for a valid number.
+Unknown scope → The app suggests valid values.
+No matches → The app suggests changing filters.
+Export issue → The app offers another format or retry.
+
+SUB-VARIATIONS
+Scope: world, continent, region, country, district.
+Optional columns: add latitude/longitude if available.
+Secondary sort: Name (A–Z).
+
+SCHEDULE
+DUE DATE: Nov 1, 2025
+
+USE CASE 3: Generate Language Population Report
+CHARACTERISTIC INFORMATION
+Goal in Context
+Show how many people speak Chinese, English, Hindi, Spanish, and Arabic, plus each one’s percentage of the world population.
+
+Scope
+Population Reporting System.
+
+Level
+Primary task
+
+Preconditions
+Language speaker data can be calculated from country data.
+World total population is available.
+The user can access the app.
+
+Success End Condition
+The user sees a table with total speakers and % of world for each language and can download it.
+
+Failed End Condition
+No report is shown; the user sees a helpful error.
+
+Primary Actor
+User / Analyst
+
+Trigger
+The user clicks “Language Population Report”.
+
+MAIN SUCCESS SCENARIO
+Open the app.
+Choose “Language Population Report”.
+The app checks that the world total is available.
+The app adds up speakers for each language across countries.
+The app computes % of world = speakers / world_total × 100.
+The app shows the results (Language, Total Speakers, % of World).
+The user downloads the file (CSV/Excel/PDF).
+The app saves the run to history.
+action description
+Percentages are rounded to 2 decimals (can be changed).
+If data is missing for a language, show “Data not available”.
+
+EXTENSIONS
+World total missing → The app stops and explains the issue.
+Language data missing → The app shows “Data not available” for that language but completes the rest.
+Export issue → The app offers another format or retry.
+
+SUB-VARIATIONS
+Admins can add or remove languages.
+Order by speakers (default) or alphabetically.
+Percentage precision: 1–3 decimals.
+
+SCHEDULE
+DUE DATE: Nov 3, 2025
