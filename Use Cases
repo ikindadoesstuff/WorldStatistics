@@ -1,0 +1,90 @@
+Use Case 1 : Generate Country Population Report
+Use Case ID: UC1
+Use Case Name: Generate Country Population Report
+Description:
+This use case allows a user to generate a list of all countries in the world, organized by population from largest to smallest. The report helps compare population sizes across different countries.
+Primary Actor:
+User (Analyst or Researcher)
+Stakeholders and Interests:
+•	Organization: Wants accurate and up-to-date global population data.
+•	User: Needs easy access to population reports for analysis or presentations.
+Preconditions:
+•	The database must contain current population data for all countries.
+•	The reporting application must be connected to the database.
+Postconditions:
+•	The system displays or exports a country population report sorted from largest to smallest.
+Main Flow:
+1.	The user opens the reporting system.
+2.	The user selects “Generate Country Population Report.”
+3.	The system retrieves all country population data from the database.
+4.	The system sorts countries by population (largest to smallest).
+5.	The report is displayed on the screen or exported to a file format (PDF/CSV/Excel).
+Alternative Flows:
+•	If the database connection fails, the system displays an error message.
+•	If no data is found, the system notifies the user that the report cannot be generated.
+Frequency of Use:
+Weekly or monthly, depending on reporting needs.
+Assumptions:
+The data source is reliable and up to date.
+
+
+Use Case 2 : Generate Top N Populated Cities Report
+Use Case ID: UC2
+Use Case Name: Generate Top N Populated Cities Report
+Description:
+This use case allows the user to view the top N most populated cities in the world, continent, region, or specific country. The user specifies the number (N) to customize the report.
+Primary Actor:
+User (Analyst or Researcher)
+Stakeholders and Interests:
+•	Organization: Needs quick insights on urban population distribution.
+•	User: Wants customizable reports for specific analysis.
+Preconditions:
+•	The database includes population data for all cities.
+•	The user specifies a valid number (N) and optional region or country.
+Postconditions:
+•	The report showing the top N populated cities is displayed or exported.
+Main Flow:
+1.	The user opens the reporting system.
+2.	The user selects “Top N Populated Cities.”
+3.	The user enters a value for N and optionally a region or country.
+4.	The system retrieves the matching city data.
+5.	The system sorts the cities by population and selects the top N.
+6.	The system displays or exports the report.
+Alternative Flows:
+•	If N is not provided or invalid, the system prompts the user to correct it.
+•	If no cities match the selection, the system displays a message.
+Frequency of Use:
+As required by the organization — typically during quarterly reviews or studies.
+Assumptions:
+The system’s query engine can handle dynamic filtering efficiently.
+
+
+Use Case 3 : Generate Language Population Report
+Use Case ID: UC3
+Use Case Name: Generate Language Population Report
+Description:
+This use case generates a report showing how many people speak selected major languages (Chinese, English, Hindi, Spanish, Arabic), along with their percentage of the total world population.
+Primary Actor:
+User (Analyst or Researcher)
+Stakeholders and Interests:
+•	Organization: Wants to track global language distribution for cultural and educational purposes.
+•	User: Needs data for research or communication planning.
+Preconditions:
+•	The database includes language data linked to country populations.
+•	The world population total is stored in the database.
+Postconditions:
+•	The report shows the total number and percentage of speakers per language.
+Main Flow:
+1.	The user opens the reporting system.
+2.	The user selects “Language Population Report.”
+3.	The system retrieves population data for Chinese, English, Hindi, Spanish, and Arabic speakers.
+4.	The system calculates the total number of speakers for each language.
+5.	The system computes each language’s percentage of the world population.
+6.	The system displays or exports the report.
+Alternative Flows:
+•	If data for a specific language is missing, the report will indicate “data not available.”
+Frequency of Use:
+Occasional , generated when analyzing language trends or preparing global reports.
+Assumptions:
+Population data by language is accurate and up to date.
+
