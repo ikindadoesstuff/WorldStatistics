@@ -2,7 +2,6 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     public static ArrayList<String> continents = new ArrayList<>();
