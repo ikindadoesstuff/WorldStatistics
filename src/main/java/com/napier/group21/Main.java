@@ -122,13 +122,6 @@ public class Main {
                 }
         }
 
-        try {
-            Thread.sleep(3000);
-            System.out.println("=====================================================================================");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         String query = String.format(
                 "SELECT country.Code, country.Name, country.Continent, country.Region, country.Population, capital.Name " +
                 "FROM country " +
@@ -141,6 +134,9 @@ public class Main {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
+            Thread.sleep(3000);
+            System.out.println("=====================================================================================");
+
             while (resultSet.next()) {
                 String code = resultSet.getString("country.Code");
                 String cname = resultSet.getString("country.Name");
@@ -152,7 +148,7 @@ public class Main {
 
                 String result = String.format(
 //                        "%s (%s), %s, %s \nPopulation: %,d \nCapital: %s \n",
-                        "> %-45s %s | %-35s | Population: %,13d | Capital: %s ",
+                        "> %-45s %s | %-34s | Population: %,13d | Capital: %s ",
                         cname, code, (continent + ", " + region), population, capital
                 );
                 System.out.println(result);
@@ -160,6 +156,8 @@ public class Main {
             System.out.println("\n");
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
+        } catch (InterruptedException ie) {
+            System.out.println(ie.getMessage());
         }
     }
 
