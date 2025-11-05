@@ -5,8 +5,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static ArrayList<String> continents = new ArrayList<String>();
-    public static ArrayList<String> regions = new ArrayList<String>();
+    public static ArrayList<String> continents = new ArrayList<>();
+    public static ArrayList<String> regions = new ArrayList<>();
+
+    public enum Scope {
+        WORLD,
+        CONTINENT,
+        REGION
+    }
 
     public static Connection conn = null;
 
@@ -16,6 +22,21 @@ public class Main {
     static final String password = "group21";
 
     static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        connect();
+
+        getContinents();
+        getRegions();
+
+        if (conn != null) {
+            generateSortedCountryReport();
+            generateSortedCountryReport(Scope.CONTINENT, "Africa");
+            generateSortedCountryReport(Scope.REGION, "Caribbean");
+        }
+
+        disconnect();
+    }
 
     public static void connect() {
         try {
@@ -57,81 +78,55 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-        connect();
-
-        getContinents();
-        getRegions();
-
-        if (conn != null) {
-            generateSortedCountryReport();
-        }
-
-        disconnect();
-
-//        if (conn != null) {
-//            try {
-//                // Simple, unprepared query. Simply selects all cities from the database and prints them
-//                Statement statement = conn.createStatement();
-//                ResultSet resultSet = statement.executeQuery("SELECT * FROM city");
-//
-//                // Iterate through the results returned frorm the database
-//                while (resultSet.next()) {
-//                    String name = resultSet.getString("Name");
-//                    String countryCode = resultSet.getString("CountryCode");
-//                    String district = resultSet.getString("District");
-//                    int population = resultSet.getInt("Population");
-//                    // Print simple report of every city
-//                    System.out.println(name + " " + countryCode + " " + district + " " + population);
-//                }
-//            } catch (SQLException sqle) {
-//                System.out.println("Failed to execute statement " + sqle.getMessage());
-//            }
-//        }
+    public static void generateSortedCountryReport() {
+        generateSortedCountryReport(Scope.WORLD, "");
     }
 
-    public static void generateSortedCountryReport() {
-        System.out.println("Choose your scope: \n1). World \n2). Continent \n3). Region");
-        int scope;
-        while (true) {
-            scope =  scanner.nextInt();
-            if (scope > 3 || scope < 1) {
-                System.out.println("Invalid input. Please choose a scope between 1 and 3");
-                continue;
-            }
-            break;
-        }
-
+    public static void generateSortedCountryReport(Scope scope, String name) {
         int continentScope;
         int regionScope;
+        name = name.toUpperCase();
         String condition = "";
         switch(scope) {
-            case 1:
-                System.out.println("World");
-            case 2:
-                System.out.println("Choose your continent: ");
-                while(true) {
-                    continentScope = scanner.nextInt();
-                    if (continentScope > continents.size() || continentScope < 1) {
-                        System.out.println("Invalid input. Please choose one of the provided options.");
-                    } else {
-                        condition = "WHERE Continent = " + continents.get(continentScope-1);
-                        break;
-                    }
-                }
+            case WORLD:
+                System.out.println(
+                        "Displaying all countries in the world. " +
+                        "Population sorted, largest to smallest: "
+                );
                 break;
-            case 3:
-                System.out.println("Choose your region: ");
-                while(true) {
-                    regionScope = scanner.nextInt();
-                    if (regionScope > regions.size() || regionScope < 1) {
-                        System.out.println("Invalid input. Please choose one of the provided options.");
-                    } else {
-                        condition = "WHERE Region = " + regions.get(regionScope-1);
-                        break;
-                    }
+            case CONTINENT:
+                System.out.printf(
+                        "Displaying all countries in continent - %s. " +
+                        "Population sorted, largest to smallest: \n"
+                        , name
+                );
+                if (!continents.contains(name)) {
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
+                    return;
+                } else {
+                    condition = String.format("WHERE Continent = '%s'", name);
+                    break;
                 }
-                break;
+            case REGION:
+                System.out.printf(
+                        "Displaying all countries in region - %s. " +
+                        "Population sorted, largest to smallest: \n"
+                        , name
+                );
+                if (!regions.contains(name)) {
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
+                    return;
+                } else {
+                    condition = String.format("WHERE Region = '%s'", name);
+                    break;
+                }
+        }
+
+        try {
+            Thread.sleep(3000);
+            System.out.println("=====================================================================================");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         String query = String.format(
@@ -148,18 +143,21 @@ public class Main {
 
             while (resultSet.next()) {
                 String code = resultSet.getString("country.Code");
-                String name = resultSet.getString("country.Name");
+                String cname = resultSet.getString("country.Name");
                 String continent = resultSet.getString("country.Continent");
                 String region = resultSet.getString("country.Region");
                 long population = resultSet.getLong("country.Population");
                 String capital = resultSet.getString("capital.name");
+                capital = capital != null ? capital : "None";
 
                 String result = String.format(
-                        "%s (%s), %s, %s \nPopulation: %,d \nCapital: %s \n",
-                        name, code, continent, region, population, capital
+//                        "%s (%s), %s, %s \nPopulation: %,d \nCapital: %s \n",
+                        "> %-45s %s | %-35s | Population: %,13d | Capital: %s ",
+                        cname, code, (continent + ", " + region), population, capital
                 );
                 System.out.println(result);
             }
+            System.out.println("\n");
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
         }
@@ -173,7 +171,7 @@ public class Main {
 
             while (resultSet.next()) {
                 String continent = resultSet.getString("Continent");
-                continents.add(continent);
+                continents.add(continent.toUpperCase());
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
@@ -188,7 +186,7 @@ public class Main {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("Region");
-                regions.add(region);
+                regions.add(region.toUpperCase());
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
