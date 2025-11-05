@@ -21,8 +21,6 @@ public class Main {
     static final String user = "root";
     static final String password = "group21";
 
-    static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
         connect();
 
@@ -83,8 +81,6 @@ public class Main {
     }
 
     public static void generateSortedCountryReport(Scope scope, String name) {
-        int continentScope;
-        int regionScope;
         name = name.toUpperCase();
         String condition = "";
         switch(scope) {
