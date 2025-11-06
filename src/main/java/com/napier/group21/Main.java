@@ -39,7 +39,7 @@ public class Main {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Failed to load SQL driver: "+e.getMessage());
+            System.out.println("Failed to load SQL driver: " + e.getMessage());
             System.exit(1);
         }
 
@@ -47,7 +47,7 @@ public class Main {
         int retries = 30;
         int retryWaitTime = 10000;
         for (int i = 0; i < retries; i++) {
-            System.out.println("Connecting to database... (Attempt #" + (i+1) + "/" + retries + ")");
+            System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
             try {
                 conn = DriverManager.getConnection(url, user, password);
                 System.out.println("Connected to database successfully");
@@ -82,7 +82,7 @@ public class Main {
     public static void generateSortedCountryReport(Scope scope, String name) {
         name = name.toUpperCase();
         String condition = "";
-        switch(scope) {
+        switch (scope) {
             case WORLD:
                 System.out.println(
                         "Displaying all countries in the world. " +
@@ -124,7 +124,7 @@ public class Main {
                 "%s " +
                 "ORDER BY country.Population DESC",
                 condition
-                );
+        );
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
