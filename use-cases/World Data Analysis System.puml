@@ -1,0 +1,58 @@
+@startuml
+actor "Data Analyst" as DA
+
+component Database
+
+rectangle "World Data Analysis System" {
+
+    rectangle "Country Reports" {
+        usecase UC1 as "View all countries by population"
+        usecase UC2 as "View Top N Countries"
+
+        DA -- UC1
+        DA -- UC2
+
+'       These ---- represent longer lines. They simply look much better on the diagram
+'       by pushing the icons away, thereby spacing out the liens.
+        UC1 ---- Database
+        UC2 ---- Database
+    }
+
+    rectangle "City Reports" {
+        usecase UC3 as "View All Cities"
+        usecase UC4 as "View Top N Populated Cities"
+
+        DA -- UC3
+        DA -- UC4
+
+        UC3 ---- Database
+        UC4 ---- Database
+    }
+
+    rectangle "Capital City Reports" {
+        usecase UC5 as "View all capital cities by population"
+        usecase UC6 as "View Top N Capital Cities"
+
+        DA --- UC5
+        DA --- UC6
+
+        UC5 ---- Database
+        UC6 ---- Database
+    }
+
+    rectangle "Population Analysis" {
+        usecase UC7 as "View Population Urbanization"
+        usecase UC8 as "View Population of Continent/Region/..."
+        usecase UC9 as "View Population of Major Language Speakers"
+
+        DA - UC7
+        DA - UC8
+        DA - UC9
+
+        UC7 ---- Database
+        UC8 ---- Database
+        UC9 ---- Database
+    }
+
+}
+@enduml
