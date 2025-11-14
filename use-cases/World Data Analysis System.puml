@@ -1,10 +1,11 @@
 @startuml
 actor "Data Analyst" as DA
 
-component Database
+rectangle Database
 
 rectangle "World Data Analysis System" {
 
+'   Put each set of reports in different rectangles. Just for organization.
     rectangle "Country Reports" {
         usecase UC1 as "View all countries by population"
         usecase UC2 as "View Top N Countries"
