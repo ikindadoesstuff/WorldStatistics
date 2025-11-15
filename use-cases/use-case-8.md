@@ -60,4 +60,4 @@ Data analyst requests report of specific geographical population.
 
 ## SCHEDULE
 
-**DUE DATE**: v0.0.3
+**DUE DATE**: v0.3

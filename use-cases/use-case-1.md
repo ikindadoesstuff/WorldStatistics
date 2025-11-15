@@ -56,4 +56,4 @@ Data analyst requests report of all countries in specified geographical limit or
 
 ## SCHEDULE
 
-**DUE DATE**: v0.0.1
+**DUE DATE**: v0.1
