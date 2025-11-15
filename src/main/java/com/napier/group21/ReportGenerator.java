@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Initializes database connection and provides methods to generate different types of reports.
+ * Provides methods to generate different types of reports.
  */
 public class ReportGenerator {
     /**
@@ -15,36 +15,21 @@ public class ReportGenerator {
 
     /**
      * List of regions to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned
+     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
      */
     private final ArrayList<String> regions = new ArrayList<>();
 
     /**
-     * Connection object.
+     * Connection object which is retrieved from the DatabaseConnection object.
      */
-    private Connection conn = null;
-
-    /**
-     * Connection string for 'world' database on MySQL container @ port 3306
-     */
-    final String url = "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false";
-
-    /**
-     * MySQL username.
-     */
-    final String user = "root";
-
-    /**
-     * MySQL password.
-     */
-    final String password = "group21";
+    private final Connection conn;
 
     /**
      * Initializes database connection and fetches scope names with which to validate against the user's specific scope
      * name.
      */
-    public ReportGenerator() {
-        connect();
+    public ReportGenerator(Connection connection) {
+        this.conn = connection;
         fetchContinents();
         fetchRegions();
     }
@@ -82,63 +67,6 @@ public class ReportGenerator {
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
-        }
-    }
-
-    /**
-     * Returns the current database connection
-     *
-     * @return Connection object
-     */
-    public Connection getConnection() {
-        return conn;
-    }
-
-    /**
-     * Establish connection to the MySQL database.
-     * Allows up to 30 attempts with a 10s wait time between each.
-     * Gets MySQL JDBC driver and exits program if not found.
-     */
-    public void connect() {
-        try {
-            // Get MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Failed to load SQL driver: " + e.getMessage());
-            System.exit(1);
-        }
-
-        int retries = 30;
-        int retryWaitTime = 10000;
-        for (int i = 0; i < retries; i++) {
-            System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
-            try {
-                conn = DriverManager.getConnection(url, user, password);
-                System.out.println("Connected to database successfully");
-                break;
-
-            } catch (SQLException sqle) {
-                // Wait before reattempting database connection.
-                try {
-                    Thread.sleep(retryWaitTime);
-                } catch (InterruptedException ie) {
-                    System.out.println(ie.getMessage());
-                }
-                System.out.println("Failed to connect to database: " + sqle.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Closes connection to the database if connection exists.
-     */
-    public void disconnect() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println("Failed to properly close database connection: " + e.getMessage());
-            }
         }
     }
 
