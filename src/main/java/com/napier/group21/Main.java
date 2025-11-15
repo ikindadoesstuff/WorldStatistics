@@ -1,8 +1,6 @@
 package com.napier.group21;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * Initialize ReportGenerator and call each report requested by the organization.
