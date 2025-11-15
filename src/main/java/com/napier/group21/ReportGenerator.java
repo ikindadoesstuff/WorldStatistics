@@ -127,16 +127,13 @@ public class ReportGenerator {
                 }
         }
 
-        String query = String.format(
-                """
+        String query = """
                 SELECT country.Code, country.Name, country.Continent, country.Region, country.Population, capital.Name
                 FROM country
                 LEFT JOIN city as capital on country.Capital = capital.ID
                 %s
                 ORDER BY country.Population DESC
-                """,
-                condition
-        );
+                """.formatted(condition);
         /*
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
@@ -155,11 +152,9 @@ public class ReportGenerator {
                 String capital = resultSet.getString("capital.name");
                 capital = capital != null ? capital : "None";
 
-                String result = String.format(
-                        //"%s (%s), %s, %s \nPopulation: %,d \nCapital: %s \n",
-                        "> %-45s %s | %-34s | Population: %,13d | Capital: %s ",
-                        cname, code, (continent + ", " + region), population, capital
-                );
+                String result = "> %-45s %s | %-34s | Population: %,13d | Capital: %s "
+                        .formatted(cname, code, (continent + ", " + region), population, capital);
+
                 System.out.println(result);
             }
             // Spacer for next report.
@@ -225,17 +220,14 @@ public class ReportGenerator {
                 }
         }
 
-        String query = String.format(
-                """
+        String query = """
                 SELECT country.Code, country.Name, country.Continent, country.Region, country.Population, capital.Name
                 FROM country
                 LEFT JOIN city as capital on country.Capital = capital.ID
                 %s
                 ORDER BY country.Population DESC LIMIT %d
-                """,
-                condition,
-                n
-        );
+                """.formatted(condition, n);
+
         /*
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
@@ -254,11 +246,9 @@ public class ReportGenerator {
                 String capital = resultSet.getString("capital.name");
                 capital = capital != null ? capital : "None";
 
-                String result = String.format(
-                        //"%s (%s), %s, %s \nPopulation: %,d \nCapital: %s \n",
-                        "> %-45s %s | %-34s | Population: %,13d | Capital: %s ",
-                        cname, code, (continent + ", " + region), population, capital
-                );
+                String result = "> %-45s %s | %-34s | Population: %,13d | Capital: %s "
+                        .formatted(cname, code, (continent + ", " + region), population, capital);
+
                 System.out.println(result);
             }
             // Spacer for next report.
