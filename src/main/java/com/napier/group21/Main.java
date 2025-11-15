@@ -35,6 +35,9 @@ public class Main {
         reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean");
 
         // 2 Top N Countries in the World/Continent/Region
+        reportGenerator.generateTopNCountryReport(10);
+        reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5);
+        reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3);
 
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
