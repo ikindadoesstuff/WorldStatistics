@@ -1,7 +1,12 @@
 package com.napier.group21;
 
+/**
+ * Share by all different report object types that can retrieved from the database.
+ * Allows ArrayList of DatabaseObject to use any record which implements DatabaseObject.
+ */
 public interface DatabaseObject {
-
+    @Override
+    public String toString();
 }
 
 /* Using a record rather than a class simplifies the process of actually using Country objects.
