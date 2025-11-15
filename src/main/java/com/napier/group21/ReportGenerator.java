@@ -43,7 +43,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);){
+             ResultSet resultSet = statement.executeQuery(query)){
 
             while (resultSet.next()) {
                 String continent = resultSet.getString("Continent");
@@ -138,7 +138,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);){
+             ResultSet resultSet = statement.executeQuery(query)){
 
             Thread.sleep(3000);
             System.out.println("=====================================================================================");
@@ -232,7 +232,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);){
+             ResultSet resultSet = statement.executeQuery(query)){
 
             Thread.sleep(3000);
             System.out.println("=====================================================================================");
