@@ -35,6 +35,15 @@ public class ReportGenerator {
     }
 
     /**
+     * Print all the rows in the report
+     */
+    void printReport(ArrayList<DatabaseObject> rows) {
+        for (DatabaseObject row : rows) {
+            System.out.println(row.toString());
+        }
+    }
+
+    /**
      * Fetch all continents for verification.
      */
     public void fetchContinents() {
