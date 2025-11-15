@@ -39,9 +39,11 @@ public class ReportGenerator {
      */
     public void fetchContinents() {
         String query = "SELECT DISTINCT Continent FROM country";
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);){
 
             while (resultSet.next()) {
                 String continent = resultSet.getString("Continent");
@@ -57,9 +59,11 @@ public class ReportGenerator {
      */
     public void fetchRegions() {
         String query = "SELECT DISTINCT Region FROM country";
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
 
             while (resultSet.next()) {
                 String region = resultSet.getString("Region");
@@ -133,9 +137,11 @@ public class ReportGenerator {
                 """,
                 condition
         );
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);){
 
             Thread.sleep(3000);
             System.out.println("=====================================================================================");
@@ -230,9 +236,11 @@ public class ReportGenerator {
                 condition,
                 n
         );
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query);){
 
             Thread.sleep(3000);
             System.out.println("=====================================================================================");
