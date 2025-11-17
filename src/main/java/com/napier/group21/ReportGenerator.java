@@ -2,6 +2,7 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Provides methods to generate different types of reports.
@@ -36,11 +37,29 @@ public class ReportGenerator {
 
     /**
      * Print all the rows in the report
+     *
+     * @param rows {@literal <? extends DatabaseObjects>} allows any object which implements DatabaseObject to be passed
+     *             to this method. All our DTOs are Java records, meaning they can't share a common parent. This makes
+     *             implementing the same interface the best way to allow for this.
      */
-    void printReport(ArrayList<DatabaseObject> rows) {
-        for (DatabaseObject row : rows) {
-            System.out.println(row.toString());
+    public static void printReport(ArrayList<? extends DatabaseObject> rows) {
+        // Delay between report title and table
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ie) {
+            System.out.println(ie.getMessage());
         }
+
+        if (rows.isEmpty()) {
+            System.out.println("No records found");
+        } else {
+            System.out.println(rows.get(0).getColumnString());
+            for (DatabaseObject row : rows) {
+                System.out.println(row.toString());
+            }
+        }
+        // Spacer for next report.
+        System.out.println("\n");
     }
 
     /**
@@ -88,8 +107,8 @@ public class ReportGenerator {
      * Get all countries in the world ordered in descending population order.
      * No scope specified defaults to world.
      */
-    public void generateSortedCountryReport() {
-        generateSortedCountryReport(Scope.WORLD, "");
+    public ArrayList<Country> generateSortedCountryReport() {
+        return generateSortedCountryReport(Scope.WORLD, "");
     }
 
     /**
@@ -98,25 +117,27 @@ public class ReportGenerator {
      * @param scope The scope level being specified (WORLD, CONTINENT, REGION).
      * @param name The specific name of the continent or region. Use empty string if using WORLD scope.
      */
-    public void generateSortedCountryReport(Scope scope, String name) {
+    public ArrayList<Country> generateSortedCountryReport(Scope scope, String name) {
+        ArrayList<Country> countries = new ArrayList<>();
+
         name = name.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
                 System.out.println(
                         "Displaying all countries in the world. " +
-                        "Population sorted, largest to smallest: "
+                                "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
                         "Displaying all countries in continent - %s. " +
-                        "Population sorted, largest to smallest: \n"
+                                "Population sorted, largest to smallest: \n"
                         , name
                 );
                 if (!continents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return;
+                    return countries;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -124,12 +145,12 @@ public class ReportGenerator {
             case REGION:
                 System.out.printf(
                         "Displaying all countries in region - %s. " +
-                        "Population sorted, largest to smallest: \n"
+                                "Population sorted, largest to smallest: \n"
                         , name
                 );
                 if (!regions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return;
+                    return countries;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -147,32 +168,24 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
-
-            Thread.sleep(3000);
-            System.out.println("=====================================================================================");
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                String code = resultSet.getString("country.Code");
-                String cname = resultSet.getString("country.Name");
-                String continent = resultSet.getString("country.Continent");
-                String region = resultSet.getString("country.Region");
-                long population = resultSet.getLong("country.Population");
-                String capital = resultSet.getString("capital.name");
-                capital = capital != null ? capital : "None";
-
-                String result = "> %-45s %s | %-34s | Population: %,13d | Capital: %s "
-                        .formatted(cname, code, (continent + ", " + region), population, capital);
-
-                System.out.println(result);
+                Country country = new Country(
+                        resultSet.getString("country.Code"),
+                        resultSet.getString("country.Name"),
+                        resultSet.getString("country.Continent"),
+                        resultSet.getString("country.Region"),
+                        resultSet.getLong("country.Population"),
+                        resultSet.getString("capital.name") != null ? // Some countries don't have capitals.
+                                resultSet.getString("capital.name") : "None"
+                );
+                countries.add(country);
             }
-            // Spacer for next report.
-            System.out.println("\n");
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
-        } catch (InterruptedException ie) {
-            System.out.println(ie.getMessage());
         }
+        return countries;
     }
 
     // ISSUE 2
@@ -180,8 +193,8 @@ public class ReportGenerator {
      * Get top N countries in the world.
      * No scope specified defaults to world.
      */
-    public void generateTopNCountryReport(int n) {
-        generateTopNCountryReport(Scope.WORLD, "", n);
+    public ArrayList<Country> generateTopNCountryReport(int n) {
+        return generateTopNCountryReport(Scope.WORLD, "", n);
     }
 
     /**
@@ -191,7 +204,9 @@ public class ReportGenerator {
      * @param name The specific name of the continent or region. Use empty string if using WORLD scope.
      * @param n The number of countries to display
      */
-    public void generateTopNCountryReport(Scope scope, String name, int n) {
+    public ArrayList<Country> generateTopNCountryReport(Scope scope, String name, int n) {
+        ArrayList<Country> countries = new ArrayList<>();
+
         name = name.toUpperCase();
         String condition = "";
         switch (scope) {
@@ -209,7 +224,7 @@ public class ReportGenerator {
                 );
                 if (!continents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return;
+                    return countries;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -222,7 +237,7 @@ public class ReportGenerator {
                 );
                 if (!regions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return;
+                    return countries;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -236,36 +251,27 @@ public class ReportGenerator {
                 %s
                 ORDER BY country.Population DESC LIMIT %d
                 """.formatted(condition, n);
-
         /*
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
-
-            Thread.sleep(3000);
-            System.out.println("=====================================================================================");
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                String code = resultSet.getString("country.Code");
-                String cname = resultSet.getString("country.Name");
-                String continent = resultSet.getString("country.Continent");
-                String region = resultSet.getString("country.Region");
-                long population = resultSet.getLong("country.Population");
-                String capital = resultSet.getString("capital.name");
-                capital = capital != null ? capital : "None";
-
-                String result = "> %-45s %s | %-34s | Population: %,13d | Capital: %s "
-                        .formatted(cname, code, (continent + ", " + region), population, capital);
-
-                System.out.println(result);
+                Country country = new Country(
+                        resultSet.getString("country.Code"),
+                        resultSet.getString("country.Name"),
+                        resultSet.getString("country.Continent"),
+                        resultSet.getString("country.Region"),
+                        resultSet.getLong("country.Population"),
+                        resultSet.getString("capital.name") != null ? // Some countries don't have capitals.
+                                resultSet.getString("capital.name") : "None"
+                );
+                countries.add(country);
             }
-            // Spacer for next report.
-            System.out.println("\n");
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
-        } catch (InterruptedException ie) {
-            System.out.println(ie.getMessage());
         }
+        return countries;
     }
 }
