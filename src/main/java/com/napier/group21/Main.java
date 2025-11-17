@@ -2,6 +2,8 @@ package com.napier.group21;
 
 import java.sql.Connection;
 
+import static com.napier.group21.ReportGenerator.printReport;
+
 /**
  * Initialize ReportGenerator and call each report requested by the organization.
  *
@@ -28,14 +30,14 @@ public class Main {
 
         // REPORT FUNCTIONS HERE
         // 1 All the countries in the world/continent/region in descending population order
-        reportGenerator.generateSortedCountryReport(); // No Scope == World
-        reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "Africa");
-        reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean");
+        printReport(reportGenerator.generateSortedCountryReport()); // No Scope == World
+        printReport(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "Africa"));
+        printReport(reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean"));
 
         // 2 Top N Countries in the World/Continent/Region
-        reportGenerator.generateTopNCountryReport(10);
-        reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5);
-        reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3);
+        printReport(reportGenerator.generateTopNCountryReport(10));
+        printReport(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5));
+        printReport(reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3));
 
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
