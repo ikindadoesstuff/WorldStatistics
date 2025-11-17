@@ -2,7 +2,6 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * Provides methods to generate different types of reports.

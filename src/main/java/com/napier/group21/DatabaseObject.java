@@ -6,11 +6,11 @@ package com.napier.group21;
  */
 public interface DatabaseObject {
     @Override
-    public String toString();
+    String toString();
 
     /**
      * @return Formatted columns belonging to this report type
      */
-    public String getColumnString();
+    String getColumnString();
 }
 
