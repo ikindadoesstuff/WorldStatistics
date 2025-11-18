@@ -11,13 +11,31 @@ public class ReportGenerator {
      * List of continents to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable, but cannot be reassigned
      */
-    private final ArrayList<String> continents = new ArrayList<>();
+    private final ArrayList<String> dbContinents = new ArrayList<>();
 
     /**
      * List of regions to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
      */
-    private final ArrayList<String> regions = new ArrayList<>();
+    private final ArrayList<String> dbRegions = new ArrayList<>();
+
+    /**
+     * List of countries to verify that the user's choice exists.
+     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     */
+    private final ArrayList<String> dbCountries = new ArrayList<>();
+
+    /**
+     * List of districts to verify that the user's choice exists.
+     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     */
+    private final ArrayList<String> dbDistricts = new ArrayList<>();
+
+    /**
+     * List of cities to verify that the user's choice exists.
+     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     */
+    private final ArrayList<String> dbCities = new ArrayList<>();
 
     /**
      * Connection object which is retrieved from the DatabaseConnection object.
@@ -32,6 +50,9 @@ public class ReportGenerator {
         this.conn = connection;
         fetchContinents();
         fetchRegions();
+        fetchCountries();
+        fetchDistricts();
+        fetchCities();
     }
 
     /**
@@ -74,10 +95,10 @@ public class ReportGenerator {
 
             while (resultSet.next()) {
                 String continent = resultSet.getString("Continent");
-                continents.add(continent.toUpperCase());
+                dbContinents.add(continent.toUpperCase());
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
         }
     }
 
@@ -94,7 +115,67 @@ public class ReportGenerator {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("Region");
-                regions.add(region.toUpperCase());
+                dbRegions.add(region.toUpperCase());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+        }
+    }
+
+    /**
+     * Fetch all regions for verification.
+     */
+    public void fetchCountries() {
+        String query = "SELECT DISTINCT Name as Country FROM country";
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
+
+            while (resultSet.next()) {
+                String region = resultSet.getString("Country");
+                dbCountries.add(region.toUpperCase());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+        }
+    }
+
+    /**
+     * Fetch all regions for verification.
+     */
+    public void fetchDistricts() {
+        String query = "SELECT DISTINCT District FROM city";
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
+
+            while (resultSet.next()) {
+                String region = resultSet.getString("District");
+                dbDistricts.add(region.toUpperCase());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+        }
+    }
+
+    /**
+     * Fetch all regions for verification.
+     */
+    public void fetchCities() {
+        String query = "SELECT DISTINCT name as City FROM city";
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)){
+
+            while (resultSet.next()) {
+                String region = resultSet.getString("City");
+                dbCities.add(region.toUpperCase());
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
@@ -134,7 +215,7 @@ public class ReportGenerator {
                                 "Population sorted, largest to smallest: \n"
                         , name
                 );
-                if (!continents.contains(name)) {
+                if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
                     return countries;
                 } else {
@@ -147,7 +228,7 @@ public class ReportGenerator {
                                 "Population sorted, largest to smallest: \n"
                         , name
                 );
-                if (!regions.contains(name)) {
+                if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
                     return countries;
                 } else {
@@ -221,7 +302,7 @@ public class ReportGenerator {
                         n,
                         name
                 );
-                if (!continents.contains(name)) {
+                if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
                     return countries;
                 } else {
@@ -234,7 +315,7 @@ public class ReportGenerator {
                         n,
                         name
                 );
-                if (!regions.contains(name)) {
+                if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
                     return countries;
                 } else {
