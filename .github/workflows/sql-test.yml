@@ -30,4 +30,4 @@ jobs:
 
       - name: Run SQL scripts
         run: |
-          mysql -h 127.0.0.1 -u root -ppassword < ./scripts/your_sql_file.sql
+          mysql -h 127.0.0.1 -u root -ppassword < db/world.sql
