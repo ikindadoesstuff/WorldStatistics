@@ -11,7 +11,7 @@ import static com.napier.group21.ReportGenerator.printReport;
  * @author Alyssa Bowman
  * @author Dexter Joseph
  */
-public class Main {
+public class App {
     /**
      * Entry point
      * @param args command line args
