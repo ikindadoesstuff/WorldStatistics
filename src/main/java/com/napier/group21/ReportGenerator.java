@@ -354,4 +354,133 @@ public class ReportGenerator {
         }
         return countries;
     }
+
+    // ISSUE 3
+    /**
+     * Get all cities in the world ordered in descending population order.
+     * No scope specified defaults to world.
+     */
+    public ArrayList<City> generateSortedCityReport() {
+        return generateSortedCityReport(Scope.WORLD, "", null);
+    }
+
+    /**
+     * Get all cities in the world ordered in descending population order.
+     * @param scope should be used pass CONTINENT, REGION, or COUNTRY scopes.
+     */
+    public ArrayList<City> generateSortedCityReport(Scope scope, String name) {
+        return generateSortedCityReport(scope, name, null);
+    }
+
+    /**
+     * Get all cities in the specified scope name ordered in descending population order.
+     *
+     * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
+     * @param name The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
+     *                    several countries.
+     */
+    public ArrayList<City> generateSortedCityReport(Scope scope, String name, String countryName) {
+        ArrayList<City> cities = new ArrayList<>();
+
+        name = name.toUpperCase();
+        String condition = "";
+        switch (scope) {
+            case WORLD:
+                System.out.println(
+                        "Displaying all cities in the world. " +
+                                "Population sorted, largest to smallest: "
+                );
+                break;
+            case CONTINENT:
+                System.out.printf(
+                        "Displaying all cities in continent - %s. " +
+                                "Population sorted, largest to smallest: \n"
+                        , name
+                );
+                if (!dbContinents.contains(name)) {
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
+                    return cities;
+                } else {
+                    condition = String.format("WHERE Continent = '%s'", name);
+                    break;
+                }
+            case REGION:
+                System.out.printf(
+                        "Displaying all cities in region - %s. " +
+                                "Population sorted, largest to smallest: \n"
+                        , name
+                );
+                if (!dbRegions.contains(name)) {
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
+                    return cities;
+                } else {
+                    condition = String.format("WHERE Region = '%s'", name);
+                    break;
+                }
+            case COUNTRY:
+                System.out.printf(
+                        "Displaying all cities in country - %s. " +
+                                "Population sorted, largest to smallest: \n"
+                        , name
+                );
+                if (!dbCountries.contains(name)) {
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n", name);
+                    return cities;
+                } else {
+                    condition = String.format("WHERE country.Name = '%s'", name);
+                    break;
+                }
+            case DISTRICT:
+                // Ensure country is specified
+                if (countryName == null || countryName.isEmpty()) {
+                    System.out.println("District scope requires country be specified. Report can not be generated.");
+                    return cities;
+                }
+                countryName = countryName.toUpperCase();
+                System.out.printf(
+                        "Displaying all cities in district - %s, %s. " +
+                                "Population sorted, largest to smallest: \n",
+                        name,
+                        countryName
+                );
+                if (!dbDistricts.contains(name)) {
+                    System.out.printf("District '%s' not found. Report can not be generated.\n", name);
+                    return cities;
+                } else if (!dbCountries.contains(countryName)) {
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n", countryName);
+                    return cities;
+                } else {
+                    condition = String.format("WHERE District = '%s' AND country.Name = '%s'", name, countryName);
+                    break;
+                }
+        }
+
+        String query = """
+                SELECT city.Name, country.Name, city.District, city.Population
+                FROM city
+                LEFT JOIN country on city.CountryCode = country.Code
+                %s
+                ORDER BY city.Population DESC
+                """.formatted(condition);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                City city = new City(
+                        resultSet.getString("city.Name"),
+                        resultSet.getString("country.Name"),
+                        resultSet.getString("city.District"),
+                        resultSet.getLong("city.Population")
+                );
+                cities.add(city);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + sqle.getMessage());
+        }
+        return cities;
+    }
 }

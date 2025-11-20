@@ -8,12 +8,12 @@ package com.napier.group21;
 public record City(String name, String country, String district, long population) implements DatabaseObject {
     @Override
     public String toString() {
-        return "> %-45s │ %-34s │ %-30s │ %,13d "
+        return "> %-35s │ %-45s │ %-25s │ %,13d "
                 .formatted(name, country, district, population);
     }
 
     public String getColumnString() {
-        String columns = "\n%-47s │ %-34s │ %-30s │ %s  \n"
+        String columns = "\n%-37s │ %-45s │ %-25s │ %s  \n"
                 .formatted("City", "Country", "District", "Population");
         String separator = "━".repeat(columns.length() + 10);
         return separator + columns + separator;
