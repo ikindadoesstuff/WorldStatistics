@@ -30,14 +30,21 @@ public class Main {
 
         // REPORT FUNCTIONS HERE
         // 1 All the countries in the world/continent/region in descending population order
-        printReport(reportGenerator.generateSortedCountryReport()); // No Scope == World
-        printReport(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "Africa"));
-        printReport(reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean"));
+//        printReport(reportGenerator.generateSortedCountryReport()); // No Scope == World
+//        printReport(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "Africa"));
+//        printReport(reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean"));
 
         // 2 Top N Countries in the World/Continent/Region
-        printReport(reportGenerator.generateTopNCountryReport(10));
-        printReport(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5));
-        printReport(reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3));
+//        printReport(reportGenerator.generateTopNCountryReport(10));
+//        printReport(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5));
+//        printReport(reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3));
+
+        // 3 All the cities in the world/continent/region/country/district in descending population order
+        printReport(reportGenerator.generateSortedCityReport());
+        printReport(reportGenerator.generateSortedCityReport(Scope.CONTINENT, "Europe"));
+        printReport(reportGenerator.generateSortedCityReport(Scope.REGION, "Southern Europe"));
+        printReport(reportGenerator.generateSortedCityReport(Scope.COUNTRY, "Saint Lucia"));
+        printReport(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "Texas", "United States"));
 
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
