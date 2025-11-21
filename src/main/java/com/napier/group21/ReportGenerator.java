@@ -9,31 +9,31 @@ import java.util.ArrayList;
 public class ReportGenerator {
     /**
      * List of continents to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned
+     * This is final, as the ArrayList itself remains mutable but cannot be reassigned
      */
     private final ArrayList<String> dbContinents = new ArrayList<>();
 
     /**
      * List of regions to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
     private final ArrayList<String> dbRegions = new ArrayList<>();
 
     /**
      * List of countries to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
     private final ArrayList<String> dbCountries = new ArrayList<>();
 
     /**
      * List of districts to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
     private final ArrayList<String> dbDistricts = new ArrayList<>();
 
     /**
      * List of cities to verify that the user's choice exists.
-     * This is final, as the ArrayList itself remains mutable, but cannot be reassigned.
+     * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
     private final ArrayList<String> dbCities = new ArrayList<>();
 
@@ -217,7 +217,7 @@ public class ReportGenerator {
                 );
                 if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return countries;
+                    return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -230,7 +230,7 @@ public class ReportGenerator {
                 );
                 if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return countries;
+                    return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -264,6 +264,7 @@ public class ReportGenerator {
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
+            return null;
         }
         return countries;
     }
@@ -304,7 +305,7 @@ public class ReportGenerator {
                 );
                 if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return countries;
+                    return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -317,7 +318,7 @@ public class ReportGenerator {
                 );
                 if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return countries;
+                    return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -351,6 +352,7 @@ public class ReportGenerator {
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
+            return null;
         }
         return countries;
     }
@@ -400,7 +402,7 @@ public class ReportGenerator {
                 );
                 if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -413,7 +415,7 @@ public class ReportGenerator {
                 );
                 if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -426,7 +428,7 @@ public class ReportGenerator {
                 );
                 if (!dbCountries.contains(name)) {
                     System.out.printf("Country '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE country.Name = '%s'", name);
                     break;
@@ -435,7 +437,7 @@ public class ReportGenerator {
                 // Ensure country is specified
                 if (countryName == null || countryName.isEmpty()) {
                     System.out.println("District scope requires country be specified. Report can not be generated.");
-                    return cities;
+                    return null;
                 }
                 countryName = countryName.toUpperCase();
                 System.out.printf(
@@ -446,10 +448,10 @@ public class ReportGenerator {
                 );
                 if (!dbDistricts.contains(name)) {
                     System.out.printf("District '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else if (!dbCountries.contains(countryName)) {
                     System.out.printf("Country '%s' not found. Report can not be generated.\n", countryName);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", name, countryName);
                     break;
@@ -480,6 +482,7 @@ public class ReportGenerator {
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
+            return null;
         }
         return cities;
     }
@@ -523,7 +526,7 @@ public class ReportGenerator {
                 System.out.printf("Displaying top %d cities in continent - %s: \n", n, name);
                 if (!dbContinents.contains(name)) {
                     System.out.printf("Continent '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", name);
                     break;
@@ -532,7 +535,7 @@ public class ReportGenerator {
                 System.out.printf("Displaying top %d cities in region - %s: \n", n, name);
                 if (!dbRegions.contains(name)) {
                     System.out.printf("Region '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", name);
                     break;
@@ -541,7 +544,7 @@ public class ReportGenerator {
                 System.out.printf("Displaying top %d cities in country - %s: \n", n, name);
                 if (!dbCountries.contains(name)) {
                     System.out.printf("Country '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE country.Name = '%s'", name);
                     break;
@@ -550,16 +553,16 @@ public class ReportGenerator {
                 // Ensure country is specified
                 if (countryName == null || countryName.isEmpty()) {
                     System.out.println("District scope requires country be specified. Report can not be generated.");
-                    return cities;
+                    return null;
                 }
                 countryName = countryName.toUpperCase();
                 System.out.printf("Displaying top %d cities in district - %s, %s: \n", n, name, countryName);
                 if (!dbDistricts.contains(name)) {
                     System.out.printf("District '%s' not found. Report can not be generated.\n", name);
-                    return cities;
+                    return null;
                 } else if (!dbCountries.contains(countryName)) {
                     System.out.printf("Country '%s' not found. Report can not be generated.\n", countryName);
-                    return cities;
+                    return null;
                 } else {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", name, countryName);
                     break;
@@ -590,6 +593,7 @@ public class ReportGenerator {
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
+            return null;
         }
         return cities;
     }
