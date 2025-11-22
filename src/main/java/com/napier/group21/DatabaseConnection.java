@@ -41,6 +41,15 @@ public class DatabaseConnection {
     }
 
     /**
+     * Default constructor, for when no args are passed.
+     * Connects to the local port forwarded from the docker container.
+     */
+    DatabaseConnection() {
+        // Default host
+        this(new String[]{"localhost:33060"});
+    }
+
+    /**
      * Establish connection to the MySQL database.
      * Allows up to 30 attempts with a 10s wait time between each.
      * Gets MySQL JDBC driver and exits program if not found.
