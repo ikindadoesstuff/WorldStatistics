@@ -63,7 +63,7 @@ public class DatabaseConnection {
             System.exit(1);
         }
 
-        int retries = 30;
+        int retries = 5;
         int retryWaitTime = 10000;
         for (int i = 0; i < retries; i++) {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
