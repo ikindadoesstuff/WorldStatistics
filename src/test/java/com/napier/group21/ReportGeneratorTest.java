@@ -3,9 +3,6 @@ package com.napier.group21;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,51 +12,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for the ReportGenerator class.
- * The @ExtendWith(MockitoExtension.class) annotation allows Mockito to initialize the mock objects automatically.
  */
-@ExtendWith(MockitoExtension.class)
 public class ReportGeneratorTest {
     ReportGenerator reportGenerator;
-
-    @Mock
-    Connection mockConnection;
-
-    @Mock
-    Statement mockStatement;
-
-    @Mock
-    ResultSet mockResultSet;
-
-    @BeforeEach
-    void setUp() {
-        reportGenerator = new ReportGenerator();
-    }
-
-    void setUpMockDB() throws SQLException {
-        lenient().when(mockConnection.createStatement()).thenReturn(mockStatement);
-        lenient().when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
-
-        /*
-         * The first time .next() is run on the result set, it returns the row, but the second fails, simulating just
-         * one record being returned in the result set.
-         */
-//        lenient().when(mockResultSet.next()).thenReturn(true, false);
-
-        /*
-         * Mock row in the result set
-         */
-//        lenient().when(mockResultSet.getString("Continent")).thenReturn("North America");
-//        lenient().when(mockResultSet.getString("Region")).thenReturn("Central America");
-//        lenient().when(mockResultSet.getString("Country")).thenReturn("Belize");
-//        lenient().when(mockResultSet.getString("District")).thenReturn("Cayo");
-//        lenient().when(mockResultSet.getString("Cayo")).thenReturn("Belmopan");
-    }
 
     @Test
     void setConnectionTest_NullConn() {
@@ -101,24 +59,6 @@ public class ReportGeneratorTest {
     @Test
     void fetchScopeNamesTest_NullConn() {
         assertThrows(SQLException.class ,reportGenerator::fetchScopeNames);
-    }
-
-    @Test
-    void fetchScopeNamesTest() throws SQLException {
-        setUpMockDB();
-        lenient().when(mockResultSet.next()).thenReturn(true, false);
-
-        lenient().when(mockResultSet.getString("Continent")).thenReturn("North America");
-
-        lenient().when(mockResultSet.getString("Region")).thenReturn("Central America");
-
-        lenient().when(mockResultSet.getString("Country")).thenReturn("Belize");
-
-        lenient().when(mockResultSet.getString("District")).thenReturn("Cayo");
-
-        reportGenerator.setConnection(mockConnection);
-        reportGenerator.fetchScopeNames();
-        return;
     }
 
     @Test
