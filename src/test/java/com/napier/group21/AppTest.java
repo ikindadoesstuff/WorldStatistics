@@ -1,22 +1,12 @@
 package com.napier.group21;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
-import static com.napier.group21.ReportGenerator.printReport;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AppTest {
-    static App app;
-
-    @BeforeAll
-    static void init() {
-        app = new App();
-    }
-
     @Test
-    void testPrintReportNull() {
-        printReport(null);
+    void main_unsuccessfulConnection() {
+        App.main(new String[]{"hostNameWhichDoesNotExist:12345"});
     }
 }

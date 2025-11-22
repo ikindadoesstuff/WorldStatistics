@@ -86,6 +86,11 @@ public class ReportGenerator {
      *             implementing the same interface the best way to allow for this.
      */
     public static void printReport(ArrayList<? extends DatabaseObject> rows) {
+        if (rows == null || rows.isEmpty()) {
+            System.out.println("No records found");
+            return;
+        }
+
         // Delay between report title and table
         try {
             Thread.sleep(3000);
@@ -93,14 +98,11 @@ public class ReportGenerator {
             System.out.println(ie.getMessage());
         }
 
-        if (rows.isEmpty()) {
-            System.out.println("No records found");
-        } else {
-            System.out.println(rows.get(0).getColumnString());
-            for (DatabaseObject row : rows) {
-                System.out.println(row.toString());
-            }
+        System.out.println(rows.get(0).getColumnString());
+        for (DatabaseObject row : rows) {
+            System.out.println(row.toString());
         }
+
         // Spacer for next report.
         System.out.println("\n");
     }
@@ -121,7 +123,7 @@ public class ReportGenerator {
                 dbContinents.add(continent.toUpperCase());
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query + sqle.getMessage());
         }
     }
 
