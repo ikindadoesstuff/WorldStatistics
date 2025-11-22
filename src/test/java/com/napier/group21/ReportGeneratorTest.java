@@ -19,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ReportGeneratorTest {
     ReportGenerator reportGenerator;
 
+    @BeforeEach
+    void setUp() {
+        reportGenerator = new ReportGenerator();
+    }
+
     @Test
     void setConnectionTest_NullConn() {
         reportGenerator.setConnection(null);
