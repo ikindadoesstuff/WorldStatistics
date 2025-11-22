@@ -40,19 +40,42 @@ public class ReportGenerator {
     /**
      * Connection object which is retrieved from the DatabaseConnection object.
      */
-    private final Connection conn;
+    private Connection conn;
 
     /**
      * Initializes database connection and fetches scope names with which to validate against the user's specific scope
      * name.
      */
-    public ReportGenerator(Connection connection) {
+    public ReportGenerator() {
+    }
+
+    /**
+     * Set connection before running database queries.
+     * @param connection connection object returned from DatabaseConnection instance.
+     */
+    public void setConnection(Connection connection) {
+        if (connection == null) {
+            System.out.println("Cannot set null connection");
+            return;
+        }
         this.conn = connection;
+    }
+
+    /**
+     * Get scope names with which to validate against the user's specific scope name.
+     */
+    public void fetchScopeNames() throws SQLException {
+        if (conn == null || conn.isClosed()) {
+            throw new SQLException("Cannot fetch scope names without open connection");
+        }
+
         fetchContinents();
         fetchRegions();
         fetchCountries();
         fetchDistricts();
         fetchCities();
+
+        return;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.napier.group21;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import static com.napier.group21.ReportGenerator.printReport;
 
@@ -26,7 +27,13 @@ public class App {
             return;
         }
 
-        ReportGenerator reportGenerator = new ReportGenerator(connection);
+        ReportGenerator reportGenerator = new ReportGenerator();
+        reportGenerator.setConnection(connection);
+        try {
+            reportGenerator.fetchScopeNames();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         // REPORT FUNCTIONS HERE
 //        // 1 All the countries in the world/continent/region in descending population order
