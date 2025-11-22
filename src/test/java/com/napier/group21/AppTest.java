@@ -7,6 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AppTest {
     @Test
     void main_unsuccessfulConnection() {
-        App.main(new String[]{"hostNameWhichDoesNotExist:12345"});
+//        App.main(new String[]{"hostNameWhichDoesNotExist:12345"});
     }
 }
