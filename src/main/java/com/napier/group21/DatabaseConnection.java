@@ -72,7 +72,7 @@ public class DatabaseConnection {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
             try {
                 conn = DriverManager.getConnection(url, user, password);
-                System.out.println("Connected to database successfully\n==================================\n\n");
+                System.out.println("Connected to database successfully\n==================================\n");
                 break;
 
             } catch (SQLException sqle) {
@@ -82,7 +82,7 @@ public class DatabaseConnection {
                 } catch (InterruptedException ie) {
                     System.out.println(ie.getMessage());
                 }
-                System.out.println("Failed to connect to database: " + sqle.getMessage());
+                System.out.println("Failed to connect to database: " + sqle.getMessage() + "\n");
             }
         }
     }
