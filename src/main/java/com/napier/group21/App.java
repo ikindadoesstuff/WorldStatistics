@@ -43,7 +43,7 @@ public class App {
 
         // 2 Top N Countries in the World/Continent/Region
         printReport(reportGenerator.generateTopNCountryReport(10));
-        printReport(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", -5));
+        printReport(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", 5));
         printReport(reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia", 3));
 
         // 3 All the cities in the world/continent/region/country/district in descending population order
