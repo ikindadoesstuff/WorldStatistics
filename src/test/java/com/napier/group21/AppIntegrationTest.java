@@ -33,6 +33,14 @@ public class AppIntegrationTest {
         }
     }
 
+    @Test
+    void testMain() {
+        String[] args = new String[]{"localhost:33060"};
+        assertDoesNotThrow(()-> App.main(args),
+                "Normal, successful application flow should now throw an exception"
+        );
+    }
+
     // Sorted Country Reports
     @Test
     void testGenerateSortedCountryReport_GlobalScope() {
