@@ -44,10 +44,10 @@ jobs:
         run: |
           mvn -Dtest=com.napier.group21.AppIntegrationTest test --no-transfer-progress
 
-      - name: Destroy Docker Image
+      - name: Destroy Database Image
         run: |
-          docker stop employees
-          docker rm employees
+          docker stop db
+          docker rm db
           docker image rm database        
 
   build:
