@@ -74,7 +74,6 @@ public class ReportGenerator {
         fetchCountries();
         fetchDistricts();
         fetchCities();
-
         return;
     }
 
@@ -128,6 +127,10 @@ public class ReportGenerator {
                 String continent = resultSet.getString("Continent");
                 dbContinents.add(continent.toUpperCase());
             }
+
+            if (dbContinents.isEmpty()) {
+                System.out.println("No continents found");
+            }
         } catch (SQLException sqle) {
             throw new RuntimeException("Failed to execute statement: " + query + sqle.getMessage());
         }
@@ -147,6 +150,10 @@ public class ReportGenerator {
             while (resultSet.next()) {
                 String region = resultSet.getString("Region");
                 dbRegions.add(region.toUpperCase());
+            }
+
+            if (dbContinents.isEmpty()) {
+                System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + query + sqle.getMessage());
@@ -168,6 +175,10 @@ public class ReportGenerator {
                 String region = resultSet.getString("Country");
                 dbCountries.add(region.toUpperCase());
             }
+
+            if (dbContinents.isEmpty()) {
+                System.out.println("No continents found");
+            }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + query + sqle.getMessage());
         }
@@ -188,6 +199,10 @@ public class ReportGenerator {
                 String region = resultSet.getString("District");
                 dbDistricts.add(region.toUpperCase());
             }
+
+            if (dbContinents.isEmpty()) {
+                System.out.println("No continents found");
+            }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + query + sqle.getMessage());
         }
@@ -207,6 +222,10 @@ public class ReportGenerator {
             while (resultSet.next()) {
                 String region = resultSet.getString("City");
                 dbCities.add(region.toUpperCase());
+            }
+
+            if (dbContinents.isEmpty()) {
+                System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
             System.out.println("Failed to execute statement: " + sqle.getMessage());
