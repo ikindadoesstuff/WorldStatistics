@@ -1,14 +1,12 @@
 package com.napier.group21;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Connection;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for the DatabaseConnection class.
@@ -24,23 +22,27 @@ public class DatabaseConnectionTest {
     @Test
     void testDatabaseConnection_NoArgs() {
         DatabaseConnection conn = new DatabaseConnection();
+        assertNotNull(conn);
     }
 
     @Test
     void testDatabaseConnection_Args() {
         String[] args = new String[]{"localhost:33060"};
         DatabaseConnection conn = new DatabaseConnection(args);
+        assertNotNull(conn);
     }
 
     @Test
     void testDatabaseConnection_NullArgs() {
         DatabaseConnection conn = new DatabaseConnection(null);
+        assertNotNull(conn);
     }
 
     @Test
     void testDatabaseConnection_NullArgsElement() {
         String[] args = {null};
         DatabaseConnection conn = new DatabaseConnection(args);
+        assertNotNull(conn);
     }
 
     @Test
@@ -59,7 +61,8 @@ public class DatabaseConnectionTest {
     }
 
     @Test
-    void getConnection() {
-        databaseConnection.getConnection();
+    void getConnection_NullConn() {
+        Connection conn = databaseConnection.getConnection();
+        assertNull(conn);
     }
 }
