@@ -12,6 +12,7 @@ public record City(String name, String country, String district, long population
                 .formatted(name, country, district, population);
     }
 
+    @Override
     public String getColumnString() {
         String columns = "\n%-37s │ %-45s │ %-25s │ %s  \n"
                 .formatted("City", "Country", "District", "Population");
