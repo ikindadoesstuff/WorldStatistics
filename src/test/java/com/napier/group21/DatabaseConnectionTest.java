@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the DatabaseConnection class.
@@ -46,18 +45,28 @@ class DatabaseConnectionTest {
     }
 
     @Test
-    void testConnect() {
+    void testConnect_ConnectionFail() {
         databaseConnection.connect(1);
+        assertNull(
+                databaseConnection.getConnection(),
+                "Database connection should be null when connection fails"
+        );
     }
 
     @Test
     void testConnect_InvalidRetries() {
         databaseConnection.connect(-5);
+        assertNull(
+                databaseConnection.getConnection(),
+                "Database connection should be null when connection fails"
+        );
     }
 
     @Test
     void testDisconnect_NullConn() {
-        databaseConnection.disconnect();
+        assertDoesNotThrow(databaseConnection::disconnect,
+                "Calling disconnect without an active connection should not throw an exception"
+                );
     }
 
     @Test
