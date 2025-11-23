@@ -1,5 +1,6 @@
 package com.napier.group21;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,28 +14,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Test class for the DatabaseConnection class.
  */
 public class DatabaseConnectionTest {
-    DatabaseConnection databaseConnection;
+    static DatabaseConnection databaseConnection;
+
+    @BeforeAll
+    static void setUp() {
+        databaseConnection = new DatabaseConnection();
+    }
 
     @Test
     void testDatabaseConnection_NoArgs() {
-        databaseConnection = new DatabaseConnection();
+        DatabaseConnection conn = new DatabaseConnection();
     }
 
     @Test
     void testDatabaseConnection_Args() {
         String[] args = new String[]{"localhost:33060"};
-        databaseConnection = new DatabaseConnection(args);
+        DatabaseConnection conn = new DatabaseConnection(args);
     }
 
     @Test
     void testDatabaseConnection_NullArgs() {
-        databaseConnection = new DatabaseConnection(null);
+        DatabaseConnection conn = new DatabaseConnection(null);
     }
 
     @Test
     void testDatabaseConnection_NullArgsElement() {
         String[] args = {null};
-        databaseConnection = new DatabaseConnection(args);
+        DatabaseConnection conn = new DatabaseConnection(args);
     }
 
     @Test
