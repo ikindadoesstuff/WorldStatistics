@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Test class for the ReportGenerator class.
  */
-public class ReportGeneratorTest {
+class ReportGeneratorTest {
     ReportGenerator reportGenerator;
 
     @BeforeEach

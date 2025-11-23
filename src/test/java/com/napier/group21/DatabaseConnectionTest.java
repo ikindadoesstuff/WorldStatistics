@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Test class for the DatabaseConnection class.
  */
-public class DatabaseConnectionTest {
+class DatabaseConnectionTest {
     static DatabaseConnection databaseConnection;
 
     @BeforeAll
