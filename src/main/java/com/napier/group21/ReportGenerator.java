@@ -336,6 +336,11 @@ public class ReportGenerator {
      * @param n The number of countries to display
      */
     public ArrayList<Country> generateTopNCountryReport(Scope scope, String name, int n) {
+        if (n <= 0) {
+            System.out.println("N must be greater than 0. Report can not be generated.");
+            return null;
+        }
+
         ArrayList<Country> countries = new ArrayList<>();
 
         name = name.toUpperCase();
@@ -564,6 +569,11 @@ public class ReportGenerator {
      *                    several countries.
      */
     public ArrayList<City> generateTopNCityReport(Scope scope, String name, int n, String countryName) {
+        if (n <= 0) {
+            System.out.println("N must be greater than 0. Report can not be generated.");
+            return null;
+        }
+
         ArrayList<City> cities = new ArrayList<>();
 
         name = name.toUpperCase();
