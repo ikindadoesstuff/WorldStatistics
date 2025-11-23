@@ -45,7 +45,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-          mvn -Dtest=com.napier.devops.AppIntegrationTest test
+          mvn -Dtest=com.napier.group21.AppIntegrationTest test --no-transfer-progress
 
       - name: Destroy Docker Image
         run: |
