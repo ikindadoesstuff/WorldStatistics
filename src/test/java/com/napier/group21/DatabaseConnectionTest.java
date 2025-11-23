@@ -3,8 +3,6 @@ package com.napier.group21;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
