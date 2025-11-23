@@ -23,28 +23,28 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void setConnectionTest_NullConn() {
+    void testSetConnection_NullConn() {
         assertDoesNotThrow(() -> reportGenerator.setConnection(null),
                 "Setting a null connection should not throw an exception"
         );
     }
 
     @Test
-    void PrintReportTest_Null() {
+    void testPrintReport_Null() {
         assertDoesNotThrow(() -> ReportGenerator.printReport(null),
                 "Calling printReport with null list should not throw an exception"
         );
     }
 
     @Test
-    void printReportTest_Empty() {
+    void testPrintReport_Empty() {
         assertDoesNotThrow(() -> ReportGenerator.printReport(new ArrayList<>()),
                 "Calling printReport with an empty list should not throw an exception"
         );
     }
 
     @Test
-    void printReportTest_ContainingNull() {
+    void testPrintReport_ContainingNull() {
         List<DatabaseObject> databaseObjects = new ArrayList<>();
         databaseObjects.add(null);
         assertDoesNotThrow(() -> ReportGenerator.printReport(databaseObjects),
@@ -53,7 +53,7 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void printReportTest_Country() {
+    void testPrintReport_Country() {
         List<Country> countries = new ArrayList<>();
         Country country = new Country(
                 "BLZ",
@@ -70,7 +70,7 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void printReportTest_City() {
+    void testPrintReport_City() {
         List<City> cities = new ArrayList<>();
         City city = new City(
                 "Belmopan",
@@ -88,42 +88,42 @@ class ReportGeneratorTest {
      * SCOPE NAME FETCHES
      */
     @Test
-    void fetchScopeNamesTest_NullConn() {
-        assertThrows(SQLException.class ,reportGenerator::fetchScopeNames,
+    void testFetchScopeNames_NullConn() {
+        assertThrows(SQLException.class, reportGenerator::fetchScopeNames,
                 "Should throw SQLException when connection is null for fetchScopeNames"
         );
     }
 
     @Test
-    void fetchContinentNamesTest_NullConn() {
+    void testFetchContinentNames_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchContinents,
                 "Should throw RuntimeException when connection is null for fetchContinents"
         );
     }
 
     @Test
-    void fetchRegionNamesTest_NullConn() {
+    void testFetchRegionNames_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchRegions,
                 "Should throw RuntimeException when connection is null for fetchRegions"
         );
     }
 
     @Test
-    void fetchCountryNamesTest_NullConn() {
+    void testFetchCountryNames_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchCountries,
                 "Should throw RuntimeException when connection is null for fetchCountries"
         );
     }
 
     @Test
-    void fetchDistrictNamesTest_NullConn() {
+    void testFetchDistrictNames_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchDistricts,
                 "Should throw RuntimeException when connection is null for fetchDistricts"
         );
     }
 
     @Test
-    void fetchCityNamesTest_NullConn() {
+    void testFetchCityNames_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchCities,
                 "Should throw RuntimeException when connection is null for fetchCities"
         );
@@ -135,44 +135,44 @@ class ReportGeneratorTest {
 
     // COUNTRY REPORTS
     @Test
-    void generateSortedCountryReportTest_NullScope() {
+    void testGenerateSortedCountryReport_NullScope() {
         assertThrows(NullPointerException.class,
-                ()->reportGenerator.generateSortedCountryReport(null, ""),
+                () -> reportGenerator.generateSortedCountryReport(null, ""),
                 "Should throw NullPointerException when Scope is null"
         );
     }
 
     @Test
-    void generateSortedCountryReportTest_NullConn_WorldScope() {
+    void testGenerateSortedCountryReport_NullConn_WorldScope() {
         assertThrows(NullPointerException.class, reportGenerator::generateSortedCountryReport,
                 "Should throw NullPointerException when connection is null for World Scope"
         );
     }
 
     @Test
-    void generateSortedCountryReportTest_NullConn_InvalidContinent() {
+    void testGenerateSortedCountryReport_NullConn_InvalidContinent() {
         assertNull(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Continent scope"
         ); // random name
     }
 
     @Test
-    void generateSortedCountryReportTest_NullConn_InvalidRegion() {
+    void testGenerateSortedCountryReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateSortedCountryReport(Scope.REGION, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Region scope"
         ); // random name
     }
 
     @Test
-    void generateTopNCountryReportTest_NullScope() {
+    void testGenerateTopNCountryReport_NullScope() {
         assertThrows(NullPointerException.class,
-                ()->reportGenerator.generateTopNCountryReport(null, "", 1),
+                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
                 "Should throw NullPointerException when Scope is null"
         );
     }
 
     @Test
-    void generateTopNCountryReportTest_NullConn_WorldScope() {
+    void testGenerateTopNCountryReport_NullConn_WorldScope() {
         assertThrows(NullPointerException.class,
                 () -> reportGenerator.generateTopNCountryReport(5),
                 "Should throw NullPointerException when connection is null for World Scope"
@@ -180,21 +180,21 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void generateTopNCountryReportTest_NullConn_WorldScope_InvalidN() {
+    void testGenerateTopNCountryReport_NullConn_WorldScope_InvalidN() {
         assertNull(reportGenerator.generateTopNCountryReport(-5),
                 "Should return null for invalid N value"
         );
     }
 
     @Test
-    void generateTopNCountryReportTest_NullConn_InvalidContinent() {
+    void testGenerateTopNCountryReport_NullConn_InvalidContinent() {
         assertNull(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Continent scope"
         ); // random name
     }
 
     @Test
-    void generateTopNCountryReportTest_NullConn_InvalidRegion() {
+    void testGenerateTopNCountryReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateTopNCountryReport(Scope.REGION, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Region scope"
         ); // random name
@@ -202,65 +202,65 @@ class ReportGeneratorTest {
 
     // CITY REPORTS
     @Test
-    void generateSortedCityReportTest_NullScope() {
+    void testGenerateSortedCityReport_NullScope() {
         assertThrows(NullPointerException.class,
-                ()->reportGenerator.generateSortedCityReport(null, ""),
+                () -> reportGenerator.generateSortedCityReport(null, ""),
                 "Should throw NullPointerException when Scope is null"
         );
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_WorldScope() {
+    void testGenerateSortedCityReport_NullConn_WorldScope() {
         assertThrows(NullPointerException.class, reportGenerator::generateSortedCityReport,
                 "Should throw NullPointerException when connection is null for World Scope"
         );
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_InvalidContinent() {
+    void testGenerateSortedCityReport_NullConn_InvalidContinent() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.CONTINENT, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Continent scope"
         ); // random name
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_InvalidRegion() {
+    void testGenerateSortedCityReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.REGION, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Region scope"
         ); // random name
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_InvalidCountry() {
+    void testGenerateSortedCityReport_NullConn_InvalidCountry() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.COUNTRY, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Country scope"
         );
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_InvalidDistrict() {
+    void testGenerateSortedCityReport_NullConn_InvalidDistrict() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#", "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope with country"
         );
     }
 
     @Test
-    void generateSortedCityReportTest_NullConn_InvalidDistrict_NoCountryName() {
+    void testGenerateSortedCityReport_NullConn_InvalidDistrict_NoCountryName() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope without country"
         );
     }
 
     @Test
-    void generateTopNCityReportTest_NullScope() {
+    void testGenerateTopNCityReport_NullScope() {
         assertThrows(NullPointerException.class,
-                ()->reportGenerator.generateTopNCountryReport(null, "", 1),
+                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
                 "Should throw NullPointerException when Scope is null"
         );
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_WorldScope() {
+    void testGenerateTopNCityReport_NullConn_WorldScope() {
         assertThrows(NullPointerException.class,
                 () -> reportGenerator.generateTopNCityReport(5),
                 "Should throw NullPointerException when connection is null for World Scope"
@@ -268,42 +268,42 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_WorldScope_InvalidN() {
+    void testGenerateTopNCityReport_NullConn_WorldScope_InvalidN() {
         assertNull(reportGenerator.generateTopNCityReport(-5),
                 "Should return null for invalid N value"
         );
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_InvalidContinent() {
+    void testGenerateTopNCityReport_NullConn_InvalidContinent() {
         assertNull(reportGenerator.generateTopNCityReport(Scope.CONTINENT, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Continent scope"
         ); // random name
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_InvalidRegion() {
+    void testGenerateTopNCityReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateTopNCityReport(Scope.REGION, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Region scope"
         ); // random name
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_InvalidCountry() {
+    void testGenerateTopNCityReport_NullConn_InvalidCountry() {
         assertNull(reportGenerator.generateTopNCityReport(Scope.COUNTRY, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Country scope"
         ); // random name
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_InvalidDistrict() {
-        assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5,"!@#"),
+    void testGenerateTopNCityReport_NullConn_InvalidDistrict() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5, "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope with country"
         ); // random name
     }
 
     @Test
-    void generateTopNCityReportTest_NullConn_InvalidDistrict_NoCountryName() {
+    void testGenerateTopNCityReport_NullConn_InvalidDistrict_NoCountryName() {
         assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for District scope without country"
         ); // random name
