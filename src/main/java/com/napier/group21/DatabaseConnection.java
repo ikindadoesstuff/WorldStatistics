@@ -72,7 +72,7 @@ public class DatabaseConnection {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
             try {
                 conn = DriverManager.getConnection(url, user, password);
-                System.out.println("Connected to database successfully");
+                System.out.println("Connected to database successfully\n==================================\n\n");
                 break;
 
             } catch (SQLException sqle) {
