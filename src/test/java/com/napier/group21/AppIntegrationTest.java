@@ -18,9 +18,14 @@ public class AppIntegrationTest {
 
     @BeforeAll
     static void init() {
-        databaseConnection = new DatabaseConnection(new String[]{"db:3306"});
+        // Establish Database Connection
+        databaseConnection = new DatabaseConnection();
+        databaseConnection.connect(10);
         connection = databaseConnection.getConnection();
+
+        // Setup ReportGenerator
         reportGenerator = new ReportGenerator();
+        reportGenerator.setConnection(connection);
         try {
             reportGenerator.fetchScopeNames();
         } catch (SQLException e) {
