@@ -52,4 +52,14 @@ public class DatabaseConnectionTest {
     void testConnect_InvalidRetries() {
         databaseConnection.connect(-5);
     }
+
+    @Test
+    void testDisconnect_NullConn() {
+        databaseConnection.disconnect();
+    }
+
+    @Test
+    void getConnection() {
+        databaseConnection.getConnection();
+    }
 }
