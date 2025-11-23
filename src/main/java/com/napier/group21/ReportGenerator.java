@@ -83,7 +83,7 @@ public class ReportGenerator {
         }
 
         try {
-            System.out.println(rows.size() + " records found\n");
+            System.out.println(rows.size() + " records found");
             System.out.println(rows.get(0).getColumnString());
             for (DatabaseObject row : rows) {
                 System.out.println(row.toString());
