@@ -2,6 +2,7 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,21 +64,6 @@ public class ReportGenerator {
     }
 
     /**
-     * Get scope names with which to validate against the user's specific scope name.
-     */
-    public void fetchScopeNames() throws SQLException {
-        if (conn == null || conn.isClosed()) {
-            throw new SQLException("Cannot fetch scope names without open connection");
-        }
-
-        fetchContinents();
-        fetchRegions();
-        fetchCountries();
-        fetchDistricts();
-        fetchCities();
-    }
-
-    /**
      * Print all the rows in the report
      *
      * @param rows {@literal <? extends DatabaseObjects>} allows any object which implements DatabaseObject to be passed
@@ -113,6 +99,21 @@ public class ReportGenerator {
     }
 
     /**
+     * Get scope names with which to validate against the user's specific scope name.
+     */
+    public void fetchScopeNames() throws SQLException {
+        if (conn == null || conn.isClosed()) {
+            throw new SQLException("Cannot fetch scope names without open connection");
+        }
+
+        fetchContinents();
+        fetchRegions();
+        fetchCountries();
+        fetchDistricts();
+        fetchCities();
+    }
+
+    /**
      * Fetch all continents for verification.
      */
     public void fetchContinents() {
@@ -132,7 +133,7 @@ public class ReportGenerator {
                 System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query, sqle);
         }
     }
 
@@ -156,12 +157,12 @@ public class ReportGenerator {
                 System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query, sqle);
         }
     }
 
     /**
-     * Fetch all regions for verification.
+     * Fetch all countries for verification.
      */
     public void fetchCountries() {
         String query = "SELECT DISTINCT Name as Country FROM country";
@@ -180,12 +181,12 @@ public class ReportGenerator {
                 System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query, sqle);
         }
     }
 
     /**
-     * Fetch all regions for verification.
+     * Fetch all districts for verification.
      */
     public void fetchDistricts() {
         String query = "SELECT DISTINCT District FROM city";
@@ -204,12 +205,12 @@ public class ReportGenerator {
                 System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + query + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query, sqle);
         }
     }
 
     /**
-     * Fetch all regions for verification.
+     * Fetch all cities for verification.
      */
     public void fetchCities() {
         String query = "SELECT DISTINCT name as City FROM city";
@@ -228,7 +229,7 @@ public class ReportGenerator {
                 System.out.println("No continents found");
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            throw new RuntimeException("Failed to execute statement: " + query, sqle);
         }
     }
 
