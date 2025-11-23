@@ -285,6 +285,10 @@ public class ReportGenerator {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
                     break;
                 }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.");
+                return null;
+
         }
 
         String query = """
@@ -378,6 +382,9 @@ public class ReportGenerator {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
                     break;
                 }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.");
+                return null;
         }
 
         String query = """
@@ -513,6 +520,9 @@ public class ReportGenerator {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
                     break;
                 }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.");
+                return null;
         }
 
         String query = """
@@ -635,6 +645,9 @@ public class ReportGenerator {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
                     break;
                 }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.");
+                return null;
         }
 
         String query = """

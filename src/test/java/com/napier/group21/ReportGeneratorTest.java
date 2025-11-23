@@ -44,7 +44,7 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void printReportTest() {
+    void printReportTest_Country() {
         List<Country> countries = new ArrayList<>();
         Country country = new Country(
                 "BLZ",
@@ -97,6 +97,13 @@ class ReportGeneratorTest {
 
     // COUNTRY REPORTS
     @Test
+    void generateSortedCountryReportTest_NullScope() {
+        assertThrows(NullPointerException.class,
+                ()->reportGenerator.generateSortedCountryReport(null, "")
+        );
+    }
+
+    @Test
     void generateSortedCountryReportTest_NullConn_WorldScope() {
         assertThrows(NullPointerException.class, reportGenerator::generateSortedCountryReport);
     }
@@ -109,6 +116,13 @@ class ReportGeneratorTest {
     @Test
     void generateSortedCountryReportTest_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateSortedCountryReport(Scope.REGION, "!@#")); // random name
+    }
+
+    @Test
+    void generateTopNCountryReportTest_NullScope() {
+        assertThrows(NullPointerException.class,
+                ()->reportGenerator.generateTopNCountryReport(null, "", 1)
+        );
     }
 
     @Test
@@ -134,6 +148,13 @@ class ReportGeneratorTest {
     }
 
     // CITY REPORTS
+    @Test
+    void generateSortedCityReportTest_NullScope() {
+        assertThrows(NullPointerException.class,
+                ()->reportGenerator.generateSortedCityReport(null, "")
+        );
+    }
+
     @Test
     void generateSortedCityReportTest_NullConn_WorldScope() {
         assertThrows(NullPointerException.class, reportGenerator::generateSortedCityReport);
@@ -162,6 +183,13 @@ class ReportGeneratorTest {
     @Test
     void generateSortedCityReportTest_NullConn_InvalidDistrict_NoCountryName() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#"));
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullScope() {
+        assertThrows(NullPointerException.class,
+                ()->reportGenerator.generateTopNCountryReport(null, "", 1)
+        );
     }
 
     @Test
