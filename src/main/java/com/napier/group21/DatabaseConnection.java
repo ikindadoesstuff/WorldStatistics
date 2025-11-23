@@ -33,7 +33,7 @@ public class DatabaseConnection {
     DatabaseConnection(String[] args) {
         // Default host
         String host = "localhost:33060";
-        if (args.length > 0) {
+        if (args != null && args.length > 0 && args[0] != null) {
             // Host specified by docker or command line
             host = args[0];
         }

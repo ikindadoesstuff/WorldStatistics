@@ -19,7 +19,7 @@ public class App {
      */
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = new DatabaseConnection(args);
-        databaseConnection.connect();
+        databaseConnection.connect(5);
         Connection connection = databaseConnection.getConnection();
 
         if (connection == null) {
