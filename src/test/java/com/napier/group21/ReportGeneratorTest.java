@@ -58,6 +58,19 @@ class ReportGeneratorTest {
         ReportGenerator.printReport(countries);
     }
 
+    @Test
+    void printReportTest_City() {
+        List<City> cities = new ArrayList<>();
+        City city = new City(
+                "Belmopan",
+                "Belize",
+                "Cayo",
+                7105
+        );
+        cities.add(city);
+        ReportGenerator.printReport(cities);
+    }
+
     /*
      * SCOPE NAME FETCHES
      */
