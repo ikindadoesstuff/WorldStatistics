@@ -36,7 +36,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Package with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests --no-transfer-progress
 
       - name: Run Docker Compose
         run: docker compose up --abort-on-container-exit
