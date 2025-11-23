@@ -22,27 +22,27 @@ class DatabaseConnectionTest {
     @Test
     void testDatabaseConnection_NoArgs() {
         DatabaseConnection conn = new DatabaseConnection();
-        assertNotNull(conn);
+        assertNotNull(conn, "DatabaseConnection constructor with no arguments should not return null");
     }
 
     @Test
     void testDatabaseConnection_Args() {
         String[] args = new String[]{"localhost:33060"};
         DatabaseConnection conn = new DatabaseConnection(args);
-        assertNotNull(conn);
+        assertNotNull(conn, "DatabaseConnection constructor with valid arguments should not return null");
     }
 
     @Test
     void testDatabaseConnection_NullArgs() {
         DatabaseConnection conn = new DatabaseConnection(null);
-        assertNotNull(conn);
+        assertNotNull(conn, "DatabaseConnection constructor with null arguments should not return null");
     }
 
     @Test
     void testDatabaseConnection_NullArgsElement() {
         String[] args = {null};
         DatabaseConnection conn = new DatabaseConnection(args);
-        assertNotNull(conn);
+        assertNotNull(conn, "DatabaseConnection constructor with null argument element should not return null");
     }
 
     @Test
@@ -63,6 +63,6 @@ class DatabaseConnectionTest {
     @Test
     void getConnection_NullConn() {
         Connection conn = databaseConnection.getConnection();
-        assertNull(conn);
+        assertNull(conn, "Connection should be null when not connected to database");
     }
 }
