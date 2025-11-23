@@ -34,7 +34,7 @@ public class DatabaseConnectionTest {
     @Test
     void testDatabaseConnection_NullArgsElement() {
         String[] args = {null};
-        databaseConnection = new DatabaseConnection();
+        databaseConnection = new DatabaseConnection(args);
     }
 
     @Test
