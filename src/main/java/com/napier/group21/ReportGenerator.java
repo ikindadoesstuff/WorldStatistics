@@ -44,8 +44,7 @@ public class ReportGenerator {
     private Connection conn;
 
     /**
-     * Initializes database connection and fetches scope names with which to validate against the user's specific scope
-     * name.
+     * Initializes database connection
      */
     public ReportGenerator() {
     }
