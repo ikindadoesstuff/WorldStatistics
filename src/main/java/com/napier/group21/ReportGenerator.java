@@ -98,9 +98,15 @@ public class ReportGenerator {
             System.out.println(ie.getMessage());
         }
 
-        System.out.println(rows.get(0).getColumnString());
-        for (DatabaseObject row : rows) {
-            System.out.println(row.toString());
+        try {
+            System.out.println(rows.get(0).getColumnString());
+            for (DatabaseObject row : rows) {
+                System.out.println(row.toString());
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("Null element in ArrayList passed to printReport. Cannot print report: "
+                    + npe.getMessage());
+            return;
         }
 
         // Spacer for next report.
