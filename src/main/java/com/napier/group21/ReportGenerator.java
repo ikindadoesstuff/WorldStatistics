@@ -74,7 +74,6 @@ public class ReportGenerator {
         fetchCountries();
         fetchDistricts();
         fetchCities();
-        return;
     }
 
     /**
