@@ -21,6 +21,11 @@ jobs:
           mvn -Dtest=com.napier.group21.DatabaseConnectionTest test --no-transfer-progress
           mvn -Dtest=com.napier.group21.ReportGeneratorTest test --no-transfer-progress
 
+      - name: CodeCov
+        uses: codecov/codecov-action@v5
+        with:
+          directory: ./target/site/jacoco
+
   IntegrationTests:
     name: Integration Tests
     runs-on: ubuntu-latest
@@ -54,7 +59,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           directory: ./target/site/jacoco
-          flags: Integration Tests # optional
+#          flags: Integration Tests # optional
 
   build:
     name: Build JAR with Maven
