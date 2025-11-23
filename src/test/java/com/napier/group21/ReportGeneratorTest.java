@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,14 +38,14 @@ class ReportGeneratorTest {
 
     @Test
     void printReportTest_ContainingNull() {
-        ArrayList<DatabaseObject> databaseObjects = new ArrayList<>();
+        List<DatabaseObject> databaseObjects = new ArrayList<>();
         databaseObjects.add(null);
         ReportGenerator.printReport(databaseObjects);
     }
 
     @Test
     void printReportTest() {
-        ArrayList<Country> countries = new ArrayList<>();
+        List<Country> countries = new ArrayList<>();
         Country country = new Country(
                 "BLZ",
                 "Belize",

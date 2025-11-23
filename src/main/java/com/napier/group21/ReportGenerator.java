@@ -2,6 +2,7 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides methods to generate different types of reports.
@@ -11,31 +12,31 @@ public class ReportGenerator {
      * List of continents to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable but cannot be reassigned
      */
-    private final ArrayList<String> dbContinents = new ArrayList<>();
+    private final List<String> dbContinents = new ArrayList<>();
 
     /**
      * List of regions to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
-    private final ArrayList<String> dbRegions = new ArrayList<>();
+    private final List<String> dbRegions = new ArrayList<>();
 
     /**
      * List of countries to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
-    private final ArrayList<String> dbCountries = new ArrayList<>();
+    private final List<String> dbCountries = new ArrayList<>();
 
     /**
      * List of districts to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
-    private final ArrayList<String> dbDistricts = new ArrayList<>();
+    private final List<String> dbDistricts = new ArrayList<>();
 
     /**
      * List of cities to verify that the user's choice exists.
      * This is final, as the ArrayList itself remains mutable but cannot be reassigned.
      */
-    private final ArrayList<String> dbCities = new ArrayList<>();
+    private final List<String> dbCities = new ArrayList<>();
 
     /**
      * Connection object which is retrieved from the DatabaseConnection object.
@@ -83,7 +84,7 @@ public class ReportGenerator {
      *             to this method. All our DTOs are Java records, meaning they can't share a common parent. This makes
      *             implementing the same interface the best way to allow for this.
      */
-    public static void printReport(ArrayList<? extends DatabaseObject> rows) {
+    public static void printReport(List<? extends DatabaseObject> rows) {
         if (rows == null || rows.isEmpty()) {
             System.out.println("No records found");
             return;
@@ -236,7 +237,7 @@ public class ReportGenerator {
      * Get all countries in the world ordered in descending population order.
      * No scope specified defaults to world.
      */
-    public ArrayList<Country> generateSortedCountryReport() {
+    public List<Country> generateSortedCountryReport() {
         return generateSortedCountryReport(Scope.WORLD, "");
     }
 
@@ -246,8 +247,8 @@ public class ReportGenerator {
      * @param scope The scope level being specified (WORLD, CONTINENT, REGION).
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      */
-    public ArrayList<Country> generateSortedCountryReport(Scope scope, String scopeName) {
-        ArrayList<Country> countries = new ArrayList<>();
+    public List<Country> generateSortedCountryReport(Scope scope, String scopeName) {
+        List<Country> countries = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
@@ -323,7 +324,7 @@ public class ReportGenerator {
      * Get top N countries in the world.
      * No scope specified defaults to world.
      */
-    public ArrayList<Country> generateTopNCountryReport(int n) {
+    public List<Country> generateTopNCountryReport(int n) {
         return generateTopNCountryReport(Scope.WORLD, "", n);
     }
 
@@ -334,13 +335,13 @@ public class ReportGenerator {
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      * @param n The number of countries to display
      */
-    public ArrayList<Country> generateTopNCountryReport(Scope scope, String scopeName, int n) {
+    public List<Country> generateTopNCountryReport(Scope scope, String scopeName, int n) {
         if (n <= 0) {
             System.out.println("N must be greater than 0. Report can not be generated.");
             return null;
         }
 
-        ArrayList<Country> countries = new ArrayList<>();
+        List<Country> countries = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
@@ -416,7 +417,7 @@ public class ReportGenerator {
      * Get all cities in the world ordered in descending population order.
      * No scope specified defaults to world.
      */
-    public ArrayList<City> generateSortedCityReport() {
+    public List<City> generateSortedCityReport() {
         return generateSortedCityReport(Scope.WORLD, "", null);
     }
 
@@ -424,7 +425,7 @@ public class ReportGenerator {
      * Get all cities in the world ordered in descending population order.
      * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
      */
-    public ArrayList<City> generateSortedCityReport(Scope scope, String name) {
+    public List<City> generateSortedCityReport(Scope scope, String name) {
         return generateSortedCityReport(scope, name, null);
     }
 
@@ -436,8 +437,8 @@ public class ReportGenerator {
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
-    public ArrayList<City> generateSortedCityReport(Scope scope, String scopeName, String countryName) {
-        ArrayList<City> cities = new ArrayList<>();
+    public List<City> generateSortedCityReport(Scope scope, String scopeName, String countryName) {
+        List<City> cities = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
@@ -548,7 +549,7 @@ public class ReportGenerator {
      * Get top N cities in the world.
      * No scope specified defaults to world.
      */
-    public ArrayList<City> generateTopNCityReport(int n) {
+    public List<City> generateTopNCityReport(int n) {
         return generateTopNCityReport(Scope.WORLD, "", n, null);
     }
 
@@ -556,7 +557,7 @@ public class ReportGenerator {
      * Get top N cities in the world.
      * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
      */
-    public ArrayList<City> generateTopNCityReport(Scope scope, String name, int n) {
+    public List<City> generateTopNCityReport(Scope scope, String name, int n) {
         return generateTopNCityReport(scope, name, n, null);
     }
 
@@ -569,13 +570,13 @@ public class ReportGenerator {
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
-    public ArrayList<City> generateTopNCityReport(Scope scope, String scopeName, int n, String countryName) {
+    public List<City> generateTopNCityReport(Scope scope, String scopeName, int n, String countryName) {
         if (n <= 0) {
             System.out.println("N must be greater than 0. Report can not be generated.");
             return null;
         }
 
-        ArrayList<City> cities = new ArrayList<>();
+        List<City> cities = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
