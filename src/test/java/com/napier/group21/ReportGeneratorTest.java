@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -61,6 +62,9 @@ public class ReportGeneratorTest {
         ReportGenerator.printReport(countries);
     }
 
+    /*
+     * SCOPE NAME FETCHES
+     */
     @Test
     void fetchScopeNamesTest_NullConn() {
         assertThrows(SQLException.class ,reportGenerator::fetchScopeNames);
@@ -89,5 +93,115 @@ public class ReportGeneratorTest {
     @Test
     void fetchCityNamesTest_NullConn() {
         assertThrows(RuntimeException.class, reportGenerator::fetchCities);
+    }
+
+    /*
+     * REPORT GENERATORS
+     */
+
+    // COUNTRY REPORTS
+    @Test
+    void generateSortedCountryReportTest_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class, reportGenerator::generateSortedCountryReport);
+    }
+
+    @Test
+    void generateSortedCountryReportTest_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "!@#")); // random name
+    }
+
+    @Test
+    void generateSortedCountryReportTest_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateSortedCountryReport(Scope.REGION, "!@#")); // random name
+    }
+
+    @Test
+    void generateTopNCountryReportTest_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class,
+                () -> reportGenerator.generateTopNCountryReport(5)
+        );
+    }
+
+    @Test
+    void generateTopNCountryReportTest_NullConn_WorldScope_InvalidN() {
+        assertNull(reportGenerator.generateTopNCountryReport(-5));
+    }
+
+    @Test
+    void generateTopNCountryReportTest_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "!@#", 5)); // random name
+    }
+
+    @Test
+    void generateTopNCountryReportTest_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateTopNCountryReport(Scope.REGION, "!@#", 5)); // random name
+    }
+
+    // CITY REPORTS
+    @Test
+    void generateSortedCityReportTest_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class, reportGenerator::generateSortedCityReport);
+    }
+
+    @Test
+    void generateSortedCityReportTest_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateSortedCityReport(Scope.CONTINENT, "!@#")); // random name
+    }
+
+    @Test
+    void generateSortedCityReportTest_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateSortedCityReport(Scope.REGION, "!@#")); // random name
+    }
+
+    @Test
+    void generateSortedCityReportTest_NullConn_InvalidCountry() {
+        assertNull(reportGenerator.generateSortedCityReport(Scope.COUNTRY, "!@#"));
+    }
+
+    @Test
+    void generateSortedCityReportTest_NullConn_InvalidDistrict() {
+        assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#", "!@#"));
+    }
+
+    @Test
+    void generateSortedCityReportTest_NullConn_InvalidDistrict_NoCountryName() {
+        assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#"));
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class,
+                () -> reportGenerator.generateTopNCityReport(5)
+        );
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_WorldScope_InvalidN() {
+        assertNull(reportGenerator.generateTopNCityReport(-5));
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.CONTINENT, "!@#", 5)); // random name
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.REGION, "!@#", 5)); // random name
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_InvalidCountry() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.CONTINENT, "!@#", 5)); // random name
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_InvalidDistrict() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5,"!@#")); // random name
+    }
+
+    @Test
+    void generateTopNCityReportTest_NullConn_InvalidDistrict_NoCountryName() {
+        assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5)); // random name
     }
 }
