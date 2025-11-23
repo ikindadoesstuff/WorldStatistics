@@ -66,7 +66,7 @@ class DatabaseConnectionTest {
     }
 
     @Test
-    void getConnection_NullConn() {
+    void testGetConnection_NullConn() {
         assertDoesNotThrow(databaseConnection::getConnection,
                 "Getting the connection without an active connection should not throw an exception"
         );
