@@ -54,7 +54,12 @@ public class DatabaseConnection {
      * Allows up to 30 attempts with a 10s wait time between each.
      * Gets MySQL JDBC driver and exits program if not found.
      */
-    public void connect() {
+    public void connect(int retries) {
+        if (retries <= 0) {
+            System.out.println("Failed to connect to database. `Retries` value must be greater than 0.");
+            return;
+        }
+
         try {
             // Get MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -63,7 +68,6 @@ public class DatabaseConnection {
             System.exit(1);
         }
 
-        int retries = 5;
         int retryWaitTime = 10000;
         for (int i = 0; i < retries; i++) {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
