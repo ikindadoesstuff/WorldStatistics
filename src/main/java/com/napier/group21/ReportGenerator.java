@@ -52,11 +52,12 @@ public class ReportGenerator {
 
     /**
      * Set connection before running database queries.
+     *
      * @param connection connection object returned from DatabaseConnection instance.
      */
     public void setConnection(Connection connection) {
         if (connection == null) {
-            System.out.println("Cannot set null connection");
+            System.out.println("Cannot set null connection\n");
             return;
         }
         this.conn = connection;
@@ -71,7 +72,7 @@ public class ReportGenerator {
      */
     public static void printReport(List<? extends DatabaseObject> rows) {
         if (rows == null || rows.isEmpty()) {
-            System.out.println("No records found");
+            System.out.println("No records found\n");
             return;
         }
 
@@ -79,7 +80,7 @@ public class ReportGenerator {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException ie) {
-            System.out.println(ie.getMessage());
+            System.out.println(ie.getMessage() + "\n");
         }
 
         try {
@@ -89,7 +90,7 @@ public class ReportGenerator {
             }
         } catch (NullPointerException npe) {
             System.out.println("Null element in ArrayList passed to printReport. Cannot print report: "
-                    + npe.getMessage());
+                    + npe.getMessage() + "\n");
             return;
         }
 
@@ -102,7 +103,7 @@ public class ReportGenerator {
      */
     public void fetchScopeNames() throws SQLException {
         if (conn == null || conn.isClosed()) {
-            throw new SQLException("Cannot fetch scope names without open connection");
+            throw new SQLException("Cannot fetch scope names without open connection\n");
         }
 
         fetchContinents();
@@ -121,7 +122,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 String continent = resultSet.getString("Continent");
@@ -129,10 +130,10 @@ public class ReportGenerator {
             }
 
             if (dbContinents.isEmpty()) {
-                System.out.println("No continents found");
+                System.out.println("No continents found\n");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query, sqle);
+            throw new RuntimeException("Failed to execute statement: " + query + "\n", sqle);
         }
     }
 
@@ -145,7 +146,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("Region");
@@ -153,10 +154,10 @@ public class ReportGenerator {
             }
 
             if (dbContinents.isEmpty()) {
-                System.out.println("No continents found");
+                System.out.println("No continents found\n");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query, sqle);
+            throw new RuntimeException("Failed to execute statement: " + query + "\n", sqle);
         }
     }
 
@@ -169,7 +170,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("Country");
@@ -177,10 +178,10 @@ public class ReportGenerator {
             }
 
             if (dbContinents.isEmpty()) {
-                System.out.println("No continents found");
+                System.out.println("No continents found\n");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query, sqle);
+            throw new RuntimeException("Failed to execute statement: " + query + "\n", sqle);
         }
     }
 
@@ -193,7 +194,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("District");
@@ -201,10 +202,10 @@ public class ReportGenerator {
             }
 
             if (dbContinents.isEmpty()) {
-                System.out.println("No continents found");
+                System.out.println("No continents found\n");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query, sqle);
+            throw new RuntimeException("Failed to execute statement: " + query + "\n", sqle);
         }
     }
 
@@ -217,7 +218,7 @@ public class ReportGenerator {
          * Try-with-resources ensures statement and resultSet are closed when done.
          */
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)){
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 String region = resultSet.getString("City");
@@ -225,14 +226,15 @@ public class ReportGenerator {
             }
 
             if (dbContinents.isEmpty()) {
-                System.out.println("No continents found");
+                System.out.println("No continents found\n");
             }
         } catch (SQLException sqle) {
-            throw new RuntimeException("Failed to execute statement: " + query, sqle);
+            throw new RuntimeException("Failed to execute statement: " + query + "\n", sqle);
         }
     }
 
     // ISSUE 1
+
     /**
      * Get all countries in the world ordered in descending population order.
      * No scope specified defaults to world.
@@ -244,7 +246,7 @@ public class ReportGenerator {
     /**
      * Get all countries in the specified scope name ordered in descending population order.
      *
-     * @param scope The scope level being specified (WORLD, CONTINENT, REGION).
+     * @param scope     The scope level being specified (WORLD, CONTINENT, REGION).
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      */
     public List<Country> generateSortedCountryReport(Scope scope, String scopeName) {
@@ -266,7 +268,7 @@ public class ReportGenerator {
                         , scopeNameUpperCase
                 );
                 if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
@@ -279,14 +281,14 @@ public class ReportGenerator {
                         , scopeNameUpperCase
                 );
                 if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
                     break;
                 }
             default:
-                System.out.println("Invalid scope. Report can not be generated.");
+                System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
 
         }
@@ -317,13 +319,14 @@ public class ReportGenerator {
                 countries.add(country);
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
             return null;
         }
         return countries;
     }
 
     // ISSUE 2
+
     /**
      * Get top N countries in the world.
      * No scope specified defaults to world.
@@ -335,13 +338,13 @@ public class ReportGenerator {
     /**
      * Get top N countries in the specified scope name.
      *
-     * @param scope The scope level being specified (WORLD, CONTINENT, REGION).
+     * @param scope     The scope level being specified (WORLD, CONTINENT, REGION).
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
-     * @param n The number of countries to display
+     * @param n         The number of countries to display
      */
     public List<Country> generateTopNCountryReport(Scope scope, String scopeName, int n) {
         if (n <= 0) {
-            System.out.println("N must be greater than 0. Report can not be generated.");
+            System.out.println("N must be greater than 0. Report can not be generated.\n");
             return null;
         }
 
@@ -363,7 +366,7 @@ public class ReportGenerator {
                         scopeNameUpperCase
                 );
                 if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
@@ -376,14 +379,14 @@ public class ReportGenerator {
                         scopeNameUpperCase
                 );
                 if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
                     break;
                 }
             default:
-                System.out.println("Invalid scope. Report can not be generated.");
+                System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
         }
 
@@ -413,13 +416,14 @@ public class ReportGenerator {
                 countries.add(country);
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
             return null;
         }
         return countries;
     }
 
     // ISSUE 3
+
     /**
      * Get all cities in the world ordered in descending population order.
      * No scope specified defaults to world.
@@ -430,6 +434,7 @@ public class ReportGenerator {
 
     /**
      * Get all cities in the world ordered in descending population order.
+     *
      * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
      */
     public List<City> generateSortedCityReport(Scope scope, String name) {
@@ -439,8 +444,8 @@ public class ReportGenerator {
     /**
      * Get all cities in the specified scope name ordered in descending population order.
      *
-     * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
+     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
@@ -463,7 +468,7 @@ public class ReportGenerator {
                         , scopeNameUpperCase
                 );
                 if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
@@ -476,7 +481,7 @@ public class ReportGenerator {
                         , scopeNameUpperCase
                 );
                 if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
@@ -489,7 +494,7 @@ public class ReportGenerator {
                         , scopeNameUpperCase
                 );
                 if (!dbCountries.contains(scopeNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE country.Name = '%s'", scopeNameUpperCase);
@@ -498,30 +503,30 @@ public class ReportGenerator {
             case DISTRICT:
                 // Ensure country is specified
                 if (countryName == null || countryName.isEmpty()) {
-                    System.out.println("District scope requires country be specified. Report can not be generated.");
+                    System.out.println("District scope requires country be specified. Report can not be generated.\n");
                     return null;
                 }
 
                 String countryNameUpperCase = countryName.toUpperCase();
                 System.out.printf(
                         "Displaying all cities in district - %s, %s. " +
-                        "Population sorted, largest to smallest: \n",
+                                "Population sorted, largest to smallest: \n",
                         scopeNameUpperCase,
                         countryNameUpperCase
                 );
 
                 if (!dbDistricts.contains(scopeNameUpperCase)) {
-                    System.out.printf("District '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("District '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else if (!dbCountries.contains(countryNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n", countryNameUpperCase);
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", countryNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
                     break;
                 }
             default:
-                System.out.println("Invalid scope. Report can not be generated.");
+                System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
         }
 
@@ -548,13 +553,14 @@ public class ReportGenerator {
                 cities.add(city);
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
             return null;
         }
         return cities;
     }
 
     // ISSUE 4
+
     /**
      * Get top N cities in the world.
      * No scope specified defaults to world.
@@ -565,6 +571,7 @@ public class ReportGenerator {
 
     /**
      * Get top N cities in the world.
+     *
      * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
      */
     public List<City> generateTopNCityReport(Scope scope, String name, int n) {
@@ -574,15 +581,15 @@ public class ReportGenerator {
     /**
      * Get top N cities in the specified scope name ordered in descending population order.
      *
-     * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
-     * @param n The number of cities to display.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
+     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param n           The number of cities to display.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
     public List<City> generateTopNCityReport(Scope scope, String scopeName, int n, String countryName) {
         if (n <= 0) {
-            System.out.println("N must be greater than 0. Report can not be generated.");
+            System.out.println("N must be greater than 0. Report can not be generated.\n");
             return null;
         }
 
@@ -597,7 +604,7 @@ public class ReportGenerator {
             case CONTINENT:
                 System.out.printf("Displaying top %d cities in continent - %s: \n", n, scopeNameUpperCase);
                 if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
@@ -606,7 +613,7 @@ public class ReportGenerator {
             case REGION:
                 System.out.printf("Displaying top %d cities in region - %s: \n", n, scopeNameUpperCase);
                 if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
@@ -615,7 +622,7 @@ public class ReportGenerator {
             case COUNTRY:
                 System.out.printf("Displaying top %d cities in country - %s: \n", n, scopeNameUpperCase);
                 if (!dbCountries.contains(scopeNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE country.Name = '%s'", scopeNameUpperCase);
@@ -624,7 +631,7 @@ public class ReportGenerator {
             case DISTRICT:
                 // Ensure country is specified
                 if (countryName == null || countryName.isEmpty()) {
-                    System.out.println("District scope requires country be specified. Report can not be generated.");
+                    System.out.println("District scope requires country be specified. Report can not be generated.\n");
                     return null;
                 }
 
@@ -636,17 +643,17 @@ public class ReportGenerator {
                         countryNameUpperCase);
 
                 if (!dbDistricts.contains(scopeNameUpperCase)) {
-                    System.out.printf("District '%s' not found. Report can not be generated.\n", scopeNameUpperCase);
+                    System.out.printf("District '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
                     return null;
                 } else if (!dbCountries.contains(countryNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n", countryNameUpperCase);
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", countryNameUpperCase);
                     return null;
                 } else {
                     condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
                     break;
                 }
             default:
-                System.out.println("Invalid scope. Report can not be generated.");
+                System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
         }
 
@@ -673,7 +680,7 @@ public class ReportGenerator {
                 cities.add(city);
             }
         } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage());
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
             return null;
         }
         return cities;
