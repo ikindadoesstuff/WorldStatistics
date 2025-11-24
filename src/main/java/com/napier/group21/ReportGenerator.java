@@ -764,7 +764,7 @@ public class ReportGenerator {
             while (resultSet.next()) {
                 Capital capital = new Capital(
                         resultSet.getString("city.Name"),
-                        resultSet.getString("country.Region"),
+                        resultSet.getString("country.Name"),
                         resultSet.getLong("city.Population")
                 );
                 capitals.add(capital);
