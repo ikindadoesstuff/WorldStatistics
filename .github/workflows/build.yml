@@ -80,8 +80,12 @@ jobs:
       - name: Run with Docker Compose
         run: docker compose up --abort-on-container-exit
 
+      # Get the version and assign it version variables which is added to the output of this step
       - name: "Get Project Version"
-        run: VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+        run: | 
+          VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+          echo "version::$VERSION" >> $GITHUB_OUTPUT
+        id: project-version
 
       - name: "Deploy Release"
         if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
@@ -89,7 +93,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
-          automatic_release_tag: ${{ env.VERSION }}
+          automatic_release_tag: ${{ steps.project-version.outputs.version }}
           files: |
             ./target/*.jar
           
