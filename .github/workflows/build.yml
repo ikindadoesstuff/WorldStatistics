@@ -91,11 +91,11 @@ jobs:
         id: project-version
 
       - name: "Deploy Release"
-        if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
+        if: success() && github.ref == 'refs/heads/release' # Only Deploy if push is to Release Branch
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
-          automatic_release_tag: ${{ steps.project-version.outputs.version }}
+          automatic_release_tag: ${{ steps.project-version.outputs.version }} # project-version output is accessed here
           files: |
             ./target/*.jar
