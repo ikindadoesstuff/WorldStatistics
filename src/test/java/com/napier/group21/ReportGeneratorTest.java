@@ -311,4 +311,34 @@ class ReportGeneratorTest {
                 "Should return null when connection is null and scope value is invalid for District scope without country"
         ); // random name
     }
+
+    // CAPITAL REPORTS
+    @Test
+    void testGenerateSortedCapitalReport_NullScope() {
+        assertThrows(NullPointerException.class,
+                () -> reportGenerator.generateSortedCapitalReport(null, ""),
+                "Should throw NullPointerException when Scope is null"
+        );
+    }
+
+    @Test
+    void testGenerateSortedCapitalReport_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class, reportGenerator::generateSortedCapitalReport,
+                "Should throw NullPointerException when connection is null for World Scope"
+        );
+    }
+
+    @Test
+    void testGenerateSortedCapitalReport_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateSortedCapitalReport(Scope.CONTINENT, "!@#"),
+                "Should return null when connection is null and scope value is invalid for Continent scope"
+        ); // random name
+    }
+
+    @Test
+    void testGenerateSortedCapitalReport_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateSortedCapitalReport(Scope.REGION, "!@#"),
+                "Should return null when connection is null and scope value is invalid for Region scope"
+        ); // random name
+    }
 }
