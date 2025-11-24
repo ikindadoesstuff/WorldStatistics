@@ -21,12 +21,12 @@ public class DatabaseConnection {
     /**
      * MySQL username.
      */
-    final String user = "root";
+    private final String user = "root";
 
     /**
      * MySQL password.
      */
-    final String password = "group21";
+    private final String password = "group21";
 
     /**
      * Constructor specifies database url.
