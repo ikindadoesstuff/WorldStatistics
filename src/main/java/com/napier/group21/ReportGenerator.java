@@ -885,7 +885,7 @@ public class ReportGenerator {
         List<Urbanization> capitals = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
-        String query = "";
+        String query;
         switch (scope) {
             case CONTINENT:
                 System.out.printf(
