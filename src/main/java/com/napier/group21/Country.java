@@ -12,6 +12,7 @@ public record Country (String code, String name, String continent, String region
                 .formatted(name, code, (continent + ", " + region), population, capital);
     }
 
+    @Override
     public String getColumnString() {
         String columns = "\n%-47s %s │ %-34s │ %-13s │ %s \n"
                 .formatted("Country (Code)", "   ", "Continent, Region", "Population", "Capital");

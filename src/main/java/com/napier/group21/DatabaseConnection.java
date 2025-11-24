@@ -1,10 +1,12 @@
 package com.napier.group21;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Manages connection to the database and subsequent disconnection
+ */
 public class DatabaseConnection {
     /**
      * Connection object
@@ -17,23 +19,13 @@ public class DatabaseConnection {
     private final String url;
 
     /**
-     * MySQL username.
-     */
-    final String user = "root";
-
-    /**
-     * MySQL password.
-     */
-    final String password = "group21";
-
-    /**
      * Constructor specifies database url.
      * @param args command line arguments
      */
     DatabaseConnection(String[] args) {
         // Default host
         String host = "localhost:33060";
-        if (args.length > 0) {
+        if (args != null && args.length > 0 && args[0] != null) {
             // Host specified by docker or command line
             host = args[0];
         }
@@ -41,11 +33,25 @@ public class DatabaseConnection {
     }
 
     /**
+     * Default constructor, for when no args are passed.
+     * Connects to the local port forwarded from the docker container.
+     */
+    DatabaseConnection() {
+        // Default host
+        this(new String[]{"localhost:33060"});
+    }
+
+    /**
      * Establish connection to the MySQL database.
      * Allows up to 30 attempts with a 10s wait time between each.
      * Gets MySQL JDBC driver and exits program if not found.
      */
-    public void connect() {
+    public void connect(int retries) {
+        if (retries <= 0) {
+            System.out.println("Failed to connect to database. `Retries` value must be greater than 0.");
+            return;
+        }
+
         try {
             // Get MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -54,13 +60,14 @@ public class DatabaseConnection {
             System.exit(1);
         }
 
-        int retries = 30;
         int retryWaitTime = 10000;
         for (int i = 0; i < retries; i++) {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
             try {
+                String user = "root";
+                String password = "group21";
                 conn = DriverManager.getConnection(url, user, password);
-                System.out.println("Connected to database successfully");
+                System.out.println("Connected to database successfully\n==================================\n");
                 break;
 
             } catch (SQLException sqle) {
@@ -70,7 +77,7 @@ public class DatabaseConnection {
                 } catch (InterruptedException ie) {
                     System.out.println(ie.getMessage());
                 }
-                System.out.println("Failed to connect to database: " + sqle.getMessage());
+                System.out.println("Failed to connect to database: " + sqle.getMessage() + "\n");
             }
         }
     }
