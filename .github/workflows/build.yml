@@ -80,15 +80,15 @@ jobs:
       - name: Run with Docker Compose
         run: docker compose up --abort-on-container-exit
 
+      - name: View Logs
+        run: docker logs worldstatistics-app-1
+
       # Get the version and assign it version variables which is added to the output of this step
       - name: "Get Project Version"
         run: | 
           VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
           echo "version=$VERSION" >> $GITHUB_OUTPUT
         id: project-version
-
-      - name: View Logs
-        run: docker logs worldstatistics-app-1
 
       - name: "Deploy Release"
         if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
