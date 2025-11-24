@@ -66,7 +66,7 @@ class AppIntegrationTest {
         );
     }
     /**
-     * Test generateSortedCountryReport() with its accepted scopes
+     * Test {@code generateSortedCountryReport()} with its accepted scopes
      *
      * @param scope Current scope being tested
      * @param scopeName Specific name of being tested
@@ -112,7 +112,7 @@ class AppIntegrationTest {
         );
     }
     /**
-     * Test generateTopNCountryReport() with its accepted scopes
+     * Test {@code generateTopNCountryReport()} with its accepted scopes
      *
      * @param scope Current scope being tested
      * @param scopeName Specific name of being tested
@@ -153,7 +153,7 @@ class AppIntegrationTest {
         );
     }
     /**
-     * Test generateSortedCityReport() with its accepted scopes
+     * Test {@code generateSortedCityReport()} with its accepted scopes
      *
      * @param scope Current scope being tested
      * @param scopeName Specific name of being tested
@@ -201,7 +201,7 @@ class AppIntegrationTest {
         );
     }
     /**
-     * Test generateTopNCityReport() with its accepted scopes
+     * Test {@code generateTopNCityReport()} with its accepted scopes
      *
      * @param scope Current scope being tested
      * @param scopeName Specific name of being tested
@@ -240,7 +240,7 @@ class AppIntegrationTest {
         );
     }
     /**
-     * Test generateSortedCapitalReport() with its accepted scopes
+     * Test {@code generateSortedCapitalReport()} with its accepted scopes
      *
      * @param scope Current scope being tested
      * @param scopeName Specific name of being tested
