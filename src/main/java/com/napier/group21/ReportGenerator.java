@@ -879,24 +879,15 @@ public class ReportGenerator {
      * region, or country.
      *
      * @param scope     The scope level being specified (CONTINENT, REGION, COUNTRY).
-     * @param scopeName The specific name of the continent, region, or country. Use empty string if using WORLD scope.
      */
-    public List<Urbanization> generateUrbanizationReport(Scope scope, String scopeName) {
+    public List<Urbanization> generateUrbanizationReport(Scope scope) {
         List<Urbanization> capitals = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String query;
         switch (scope) {
             case CONTINENT:
-                System.out.printf(
-                        "Displaying urbanization in continent - %s. "
-                        , scopeNameUpperCase
-                );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    query = """
+                System.out.print("Displaying urbanization in continents. ");
+                query = """
                         SELECT country.Continent as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
                                SUM(city.Population) AS CityPopulation,
@@ -906,18 +897,10 @@ public class ReportGenerator {
 
                         GROUP BY country.Continent;
                         """;
-                    break;
-                }
+                break;
             case REGION:
-                System.out.printf(
-                        "Displaying urbanization in region - %s. "
-                        , scopeNameUpperCase
-                );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    query = """
+                System.out.print("Displaying urbanization in regions. ");
+                query = """
                         SELECT country.Region as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
                                SUM(city.Population) AS CityPopulation,
@@ -926,18 +909,10 @@ public class ReportGenerator {
                                  LEFT JOIN city on city.CountryCode = country.Code
                         GROUP BY country.Region;
                         """;
-                    break;
-                }
+                break;
             case COUNTRY:
-                System.out.printf(
-                        "Displaying urbanization in country - %s. "
-                        , scopeNameUpperCase
-                );
-                if (!dbCountries.contains(scopeNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    query = """
+                System.out.print("Displaying urbanization in countries. ");
+                query = """
                         SELECT country.Name as Name,
                                country.Population AS TotalPopulation,
                                SUM(city.Population) AS CityPopulation,
@@ -946,8 +921,7 @@ public class ReportGenerator {
                                  LEFT JOIN city on city.CountryCode = country.Code
                         GROUP BY country.Code;
                         """;
-                    break;
-                }
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
