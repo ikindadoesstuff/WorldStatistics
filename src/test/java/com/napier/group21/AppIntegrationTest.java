@@ -267,4 +267,43 @@ class AppIntegrationTest {
                     "Report should be sorted in descending population order");
         }
     }
+
+    // Top N Capital Reports
+
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateTopNCapitalReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, N
+                Arguments.of(Scope.WORLD, "", 10),
+                Arguments.of(Scope.CONTINENT, "North America", 5),
+                Arguments.of(Scope.REGION, "Micronesia", 3)
+        );
+    }
+    /**
+     * Test {@code generateTopNCapitalReport()} with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param N Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateTopNCapitalReportArgsProvider")
+    void testGenerateTopNCapitalReport(Scope scope, String scopeName, int N) {
+        List<Capital> capitals;
+        capitals = reportGenerator.generateTopNCapitalReport(scope, scopeName, N);
+
+        // Test Report Success
+        assertNotNull(capitals,
+                "Report ArrayList should not be null unless an error occurred");
+
+        // Test Report Size Against Known Result
+        assertEquals(N, capitals.size(),
+                "There should be %d countries in the report".formatted(N));
+    }
 }
