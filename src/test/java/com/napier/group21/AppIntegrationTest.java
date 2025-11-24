@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test the app with a running database container to connect to
  */
-public class AppIntegrationTest {
+class AppIntegrationTest {
     /**
      * ReportGenerator object to be shared by all test methods
      * Static because it is set up in BeforeAll
