@@ -15,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * Test class for the ReportGenerator class.
  */
 class ReportGeneratorTest {
+    /**
+     * ReportGenerator object to be shared by all test methods
+     */
     private ReportGenerator reportGenerator;
 
     @BeforeEach

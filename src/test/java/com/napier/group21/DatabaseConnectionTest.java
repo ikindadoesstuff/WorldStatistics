@@ -9,6 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the DatabaseConnection class.
  */
 class DatabaseConnectionTest {
+    /**
+     * DatabaseConnection object to be shared by all test methods
+     * Static because it is set up in BeforeAll
+     */
     static DatabaseConnection databaseConnection;
 
     @BeforeAll
