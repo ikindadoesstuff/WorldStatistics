@@ -1,9 +1,18 @@
 package com.napier.group21;
 
-/** 
+/**
+ * Stores a row from a capital city report.
+ * Columns are: <br>
+ * City | Country | Population
+ * <p>
  * Using a record rather than a class is more semantically correct, as the records we get from the database should
  * be final. It also removes the need to declare a constructor method.
- * @param population Population is of type long because the maximum value of int is only +2,147,483,647
+ * <p>
+ * Population is of type long because the maximum value of int is only +2,147,483,647
+ *
+ * @param name          Name of the city
+ * @param country       Country in which city is situated
+ * @param population    Population of the city
  */
 public record Capital(String name, String country, long population) implements DatabaseObject {
     @Override
