@@ -281,8 +281,8 @@ class AppIntegrationTest {
         return Stream.of(
                 //           Scope, Name, N
                 Arguments.of(Scope.WORLD, "", 10),
-                Arguments.of(Scope.CONTINENT, "North America", 5),
-                Arguments.of(Scope.REGION, "Micronesia", 3)
+                Arguments.of(Scope.CONTINENT, "South America", 5),
+                Arguments.of(Scope.REGION, "Middle East", 3)
         );
     }
     /**
