@@ -690,7 +690,7 @@ public class ReportGenerator {
     // ISSUE 5
 
     /**
-     * Get all countries in the world ordered in descending population order.
+     * Get all capital cities in the world ordered in descending population order.
      * No scope specified defaults to world.
      */
     public List<Capital> generateSortedCapitalsReport() {
@@ -698,7 +698,7 @@ public class ReportGenerator {
     }
 
     /**
-     * Get all countries in the specified scope name ordered in descending population order.
+     * Get all capital cities in the specified scope name ordered in descending population order.
      *
      * @param scope     The scope level being specified (WORLD, CONTINENT, REGION).
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
