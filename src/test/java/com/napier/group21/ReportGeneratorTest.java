@@ -332,13 +332,50 @@ class ReportGeneratorTest {
     void testGenerateSortedCapitalReport_NullConn_InvalidContinent() {
         assertNull(reportGenerator.generateSortedCapitalReport(Scope.CONTINENT, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Continent scope"
-        ); // random name
+        );
     }
 
     @Test
     void testGenerateSortedCapitalReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateSortedCapitalReport(Scope.REGION, "!@#"),
                 "Should return null when connection is null and scope value is invalid for Region scope"
-        ); // random name
+        );
+    }
+
+    @Test
+    void testGenerateTopNCapitalReport_NullScope() {
+        assertThrows(NullPointerException.class,
+                () -> reportGenerator.generateTopNCapitalReport(null, "", 1),
+                "Should throw NullPointerException when Scope is null"
+        );
+    }
+
+    @Test
+    void testGenerateTopNCapitalReport_NullConn_WorldScope() {
+        assertThrows(NullPointerException.class,
+                () -> reportGenerator.generateTopNCapitalReport(5),
+                "Should throw NullPointerException when connection is null for World Scope"
+        );
+    }
+
+    @Test
+    void testGenerateTopNCapitalReport_NullConn_WorldScope_InvalidN() {
+        assertNull(reportGenerator.generateTopNCapitalReport(-5),
+                "Should return null for invalid N value"
+        );
+    }
+
+    @Test
+    void testGenerateTopNCapitalReport_NullConn_InvalidContinent() {
+        assertNull(reportGenerator.generateTopNCapitalReport(Scope.CONTINENT, "!@#", 5),
+                "Should return null when connection is null and scope value is invalid for Continent scope"
+        );
+    }
+
+    @Test
+    void testGenerateTopNCapitalReport_NullConn_InvalidRegion() {
+        assertNull(reportGenerator.generateTopNCapitalReport(Scope.REGION, "!@#", 5),
+                "Should return null when connection is null and scope value is invalid for Region scope"
+        );
     }
 }
