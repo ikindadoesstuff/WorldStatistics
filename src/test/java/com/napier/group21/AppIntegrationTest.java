@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test the app with a running database container to connect to
  */
-public class AppIntegrationTest {
+class AppIntegrationTest {
     /**
      * ReportGenerator object to be shared by all test methods
      * Static because it is set up in BeforeAll
@@ -133,7 +133,7 @@ public class AppIntegrationTest {
                 "There should be %d countries in the report".formatted(N));
     }
 
-    // Top N Country Reports
+    // Sorted City Reports
 
     /**
      * This method provides different arguments for the associated {@code  ParameterizedTest}.
@@ -181,7 +181,7 @@ public class AppIntegrationTest {
         }
     }
 
-    // Top N Country Reports
+    // Top N City Reports
 
     /**
      * This method provides different arguments for the associated {@code  ParameterizedTest}.
@@ -220,5 +220,51 @@ public class AppIntegrationTest {
         // Test Report Size Against Known Result
         assertEquals(N, cities.size(),
                 "There should be %d cities in the report".formatted(N));
+    }
+
+    // Sorted Capital Reports
+
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateSortedCapitalReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, Expected Rows
+                Arguments.of(Scope.WORLD, "", 232),
+                Arguments.of(Scope.CONTINENT, "Asia", 51),
+                Arguments.of(Scope.REGION, "Central America", 8)
+        );
+    }
+    /**
+     * Test generateSortedCapitalReport() with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param expectedRows Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateSortedCapitalReportArgsProvider")
+    void testGenerateSortedCapitalReport(Scope scope, String scopeName, int expectedRows) {
+        List<Capital> capitals;
+        capitals = reportGenerator.generateSortedCapitalReport(scope, scopeName);
+
+        // Test Report Success
+        assertNotNull(capitals,
+                "Report ArrayList should not be null unless an error occurred");
+
+        // Test Report Size Against Known Result
+        assertEquals(expectedRows, capitals.size(),
+                "There should be %d capitals in the report".formatted(expectedRows));
+
+        // Test Sorting
+        for (int i = 0; i < capitals.size(); i++) {
+            if (i + 1 == capitals.size()) break;
+            assertTrue(capitals.get(i).population() >= capitals.get(i+1).population(),
+                    "Report should be sorted in descending population order");
+        }
     }
 }

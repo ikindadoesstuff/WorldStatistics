@@ -686,4 +686,93 @@ public class ReportGenerator {
         }
         return cities;
     }
+
+    // ISSUE 5
+
+    /**
+     * Get all capital cities in the world ordered in descending population order.
+     * No scope specified defaults to world.
+     */
+    public List<Capital> generateSortedCapitalReport() {
+        return generateSortedCapitalReport(Scope.WORLD, "");
+    }
+
+    /**
+     * Get all capital cities in the specified scope name ordered in descending population order.
+     *
+     * @param scope     The scope level being specified (WORLD, CONTINENT, REGION).
+     * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
+     */
+    public List<Capital> generateSortedCapitalReport(Scope scope, String scopeName) {
+        List<Capital> capitals = new ArrayList<>();
+
+        String scopeNameUpperCase = scopeName.toUpperCase();
+        String condition = "";
+        switch (scope) {
+            case WORLD:
+                System.out.println(
+                        "Displaying all capital cities in the world. " +
+                                "Population sorted, largest to smallest: "
+                );
+                break;
+            case CONTINENT:
+                System.out.printf(
+                        "Displaying all capital cities in continent - %s. " +
+                                "Population sorted, largest to smallest: \n"
+                        , scopeNameUpperCase
+                );
+                if (!dbContinents.contains(scopeNameUpperCase)) {
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
+                    return null;
+                } else {
+                    condition = String.format("AND Continent = '%s'", scopeNameUpperCase);
+                    break;
+                }
+            case REGION:
+                System.out.printf(
+                        "Displaying all capital cities in region - %s. " +
+                                "Population sorted, largest to smallest: \n"
+                        , scopeNameUpperCase
+                );
+                if (!dbRegions.contains(scopeNameUpperCase)) {
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
+                    return null;
+                } else {
+                    condition = String.format("AND Region = '%s'", scopeNameUpperCase);
+                    break;
+                }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.\n");
+                return null;
+
+        }
+
+        String query = """
+                SELECT city.Name, country.Name, city.Population
+                FROM city
+                LEFT JOIN country on city.CountryCode = country.Code
+                WHERE city.ID = country.Capital
+                %s
+                ORDER BY city.Population DESC
+                """.formatted(condition);
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Capital capital = new Capital(
+                        resultSet.getString("city.Name"),
+                        resultSet.getString("country.Name"),
+                        resultSet.getLong("city.Population")
+                );
+                capitals.add(capital);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+            return null;
+        }
+        return capitals;
+    }
 }

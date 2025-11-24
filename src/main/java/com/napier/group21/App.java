@@ -60,6 +60,11 @@ public class App {
         printReport(reportGenerator.generateTopNCityReport(Scope.COUNTRY, "France", 3));
         printReport(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "England", 5, "United Kingdom"));
 
+        // 5 All the capitals in the world/continent/region in descending population order
+        printReport(reportGenerator.generateSortedCapitalReport());
+        printReport(reportGenerator.generateSortedCapitalReport(Scope.CONTINENT, "Asia"));
+        printReport(reportGenerator.generateSortedCapitalReport(Scope.REGION, "Central America"));
+
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
          * all the reports have been run.
