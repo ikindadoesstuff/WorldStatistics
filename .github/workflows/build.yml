@@ -64,6 +64,10 @@ jobs:
     name: Build JAR with Maven and Deploy Release
     runs-on: ubuntu-latest
 
+    # Necessary to allow action to create release, for some reason
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -94,7 +98,7 @@ jobs:
         if: success() && github.ref == 'refs/heads/release' # Only Deploy if push is to Release Branch
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
           automatic_release_tag: ${{ steps.project-version.outputs.version }} # project-version output is accessed here
           files: |
