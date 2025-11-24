@@ -59,10 +59,9 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           directory: ./target/site/jacoco
-#          flags: Integration Tests # optional
 
   build:
-    name: Build JAR with Maven
+    name: Build JAR with Maven and Deploy Release
     runs-on: ubuntu-latest
 
     steps:
@@ -78,8 +77,20 @@ jobs:
       - name: Package with Maven
         run: mvn clean package -DskipTests --no-transfer-progress
 
-      - name: Run Docker Compose
+      - name: Run with Docker Compose
         run: docker compose up --abort-on-container-exit
+
+      - name: "Deploy Release"
+        if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          automatic_release_tag: ""
+          files: |
+            ./target/*.jar
+          
 
       - name: View Logs
         run: docker logs worldstatistics-app-1
+
