@@ -436,7 +436,7 @@ public class ReportGenerator {
     /**
      * Get all cities in the world ordered in descending population order.
      *
-     * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
      */
     public List<City> generateSortedCityReport(Scope scope, String name) {
         return generateSortedCityReport(scope, name, null);
@@ -446,7 +446,8 @@ public class ReportGenerator {
      * Get all cities in the specified scope name ordered in descending population order.
      *
      * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param scopeName   The specific name of the continent, region, country, or district.
+     *                    Use empty string if using WORLD scope.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
@@ -573,7 +574,7 @@ public class ReportGenerator {
     /**
      * Get top N cities in the world.
      *
-     * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
      */
     public List<City> generateTopNCityReport(Scope scope, String name, int n) {
         return generateTopNCityReport(scope, name, n, null);
@@ -583,7 +584,8 @@ public class ReportGenerator {
      * Get top N cities in the specified scope name ordered in descending population order.
      *
      * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param scopeName   The specific name of the continent, region, country, or district.
+     *                    Use empty string if using WORLD scope.
      * @param n           The number of cities to display.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
