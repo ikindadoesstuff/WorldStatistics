@@ -84,8 +84,11 @@ jobs:
       - name: "Get Project Version"
         run: | 
           VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
-          echo "version::$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
         id: project-version
+
+      - name: View Logs
+        run: docker logs worldstatistics-app-1
 
       - name: "Deploy Release"
         if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
@@ -96,8 +99,3 @@ jobs:
           automatic_release_tag: ${{ steps.project-version.outputs.version }}
           files: |
             ./target/*.jar
-          
-
-      - name: View Logs
-        run: docker logs worldstatistics-app-1
-
