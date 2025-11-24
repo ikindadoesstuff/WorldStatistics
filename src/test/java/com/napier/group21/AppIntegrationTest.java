@@ -18,16 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AppIntegrationTest {
 
-    private static DatabaseConnection databaseConnection;
-    private static Connection connection;
     private static ReportGenerator reportGenerator;
 
     @BeforeAll
     static void init() {
         // Establish Database Connection
-        databaseConnection = new DatabaseConnection();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
         databaseConnection.connect(10);
-        connection = databaseConnection.getConnection();
+        Connection connection = databaseConnection.getConnection();
 
         // Setup ReportGenerator
         reportGenerator = new ReportGenerator();

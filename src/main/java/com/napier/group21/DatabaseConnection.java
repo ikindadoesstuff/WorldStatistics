@@ -19,16 +19,6 @@ public class DatabaseConnection {
     private final String url;
 
     /**
-     * MySQL username.
-     */
-    private final String user = "root";
-
-    /**
-     * MySQL password.
-     */
-    private final String password = "group21";
-
-    /**
      * Constructor specifies database url.
      * @param args command line arguments
      */
@@ -74,6 +64,8 @@ public class DatabaseConnection {
         for (int i = 0; i < retries; i++) {
             System.out.println("Connecting to database... (Attempt #" + (i + 1) + "/" + retries + ")");
             try {
+                String user = "root";
+                String password = "group21";
                 conn = DriverManager.getConnection(url, user, password);
                 System.out.println("Connected to database successfully\n==================================\n");
                 break;
