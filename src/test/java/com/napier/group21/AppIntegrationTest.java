@@ -2,11 +2,14 @@ package com.napier.group21;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,55 +45,34 @@ public class AppIntegrationTest {
     }
 
     // Sorted Country Reports
-    @Test
-    void testGenerateSortedCountryReport_GlobalScope() {
-        int expectedRows = 239;
-        List<Country> countries;
-        countries = reportGenerator.generateSortedCountryReport();
 
-        // Test Report Success
-        assertNotNull(countries,
-                "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, countries.size(),
-                "There should be %d countries in the report".formatted(expectedRows));
-
-        // Test Sorting
-        for (int i = 0; i < countries.size(); i++) {
-            if (i + 1 == countries.size()) break;
-            assertTrue(countries.get(i).population() >= countries.get(i+1).population(),
-                    "Report should be sorted in descending population order");
-        }
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateSortedCountryReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, Expected Rows
+                Arguments.of(Scope.WORLD, "", 239),
+                Arguments.of(Scope.CONTINENT, "Africa", 58),
+                Arguments.of(Scope.REGION, "Caribbean", 24)
+        );
     }
-
-    @Test
-    void testGenerateSortedCountryReport_ContinentScope() {
-        int expectedRows = 58;
+    /**
+     * Test generateSortedCountryReport() with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param expectedRows Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateSortedCountryReportArgsProvider")
+    void testGenerateSortedCountryReport(Scope scope, String scopeName, int expectedRows) {
         List<Country> countries;
-        countries = reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "Africa");
-
-        // Test Report Success
-        assertNotNull(countries,
-                "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, countries.size(),
-                "There should be %d countries in the report".formatted(expectedRows));
-
-        // Test Sorting
-        for (int i = 0; i < countries.size(); i++) {
-            if (i + 1 == countries.size()) break;
-            assertTrue(countries.get(i).population() >= countries.get(i+1).population(),
-                    "Report should be sorted in descending population order");
-        }
-    }
-
-    @Test
-    void testGenerateSortedCountryReport_RegionScope() {
-        int expectedRows = 24;
-        List<Country> countries;
-        countries = reportGenerator.generateSortedCountryReport(Scope.REGION, "Caribbean");
+        countries = reportGenerator.generateSortedCountryReport(scope, scopeName);
 
         // Test Report Success
         assertNotNull(countries,
@@ -109,120 +91,75 @@ public class AppIntegrationTest {
     }
 
     // Top N Country Reports
-    @Test
-    void testGenerateTopNCountryReport_GlobalScope() {
-        int expectedRows = 10;
-        List<Country> countries;
-        countries = reportGenerator.generateTopNCountryReport(expectedRows);
 
-        // Test Report Success
-        assertNotNull(countries, "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, countries.size(),
-                "There should be %d countries in the report".formatted(expectedRows));
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateTopNCountryReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, N
+                Arguments.of(Scope.WORLD, "", 10),
+                Arguments.of(Scope.CONTINENT, "North America", 5),
+                Arguments.of(Scope.REGION, "Micronesia", 3)
+        );
     }
-
-    @Test
-    void testGenerateTopNCountryReport_ContinentScope() {
-        int expectedRows = 5;
+    /**
+     * Test generateTopNCountryReport() with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param N Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateTopNCountryReportArgsProvider")
+    void testGenerateTopNCountryReport(Scope scope, String scopeName, int N) {
         List<Country> countries;
-        countries = reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "North America", expectedRows);
+        countries = reportGenerator.generateTopNCountryReport(scope, scopeName, N);
 
         // Test Report Success
-        assertNotNull(countries, "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, countries.size(),
-                "There should be %d countries in the report".formatted(expectedRows));
-    }
-
-    @Test
-    void testGenerateTopNCountryReport_RegionScope() {
-        int expectedRows = 3;
-        List<Country> countries;
-        countries = reportGenerator.generateTopNCountryReport(Scope.REGION, "Micronesia",  expectedRows);
-
-        // Test Report Success
-        assertNotNull(countries, "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, countries.size(),
-                "There should be %d countries in the report".formatted(expectedRows));
-    }
-
-    // Sorted Country Reports
-    @Test
-    void testGenerateSortedCityReport_GlobalScope() {
-        int expectedRows = 4079;
-        List<City> cities;
-        cities = reportGenerator.generateSortedCityReport();
-
-        // Test Report Success
-        assertNotNull(cities,
+        assertNotNull(countries,
                 "Report ArrayList should not be null unless an error occurred");
 
         // Test Report Size Against Known Result
-        assertEquals(expectedRows, cities.size(),
-                "There should be %d cities in the report".formatted(expectedRows));
-
-        // Test Sorting
-        for (int i = 0; i < cities.size(); i++) {
-            if (i + 1 == cities.size()) break;
-            assertTrue(cities.get(i).population() >= cities.get(i+1).population(),
-                    "Report should be sorted in descending population order");
-        }
+        assertEquals(N, countries.size(),
+                "There should be %d countries in the report".formatted(N));
     }
 
-    @Test
-    void testGenerateSortedCityReport_ContinentScope() {
-        int expectedRows = 841;
-        List<City> cities;
-        cities = reportGenerator.generateSortedCityReport(Scope.CONTINENT, "Europe");
+    // Top N Country Reports
 
-        // Test Report Success
-        assertNotNull(cities,
-                "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, cities.size(),
-                "There should be %d cities in the report".formatted(expectedRows));
-
-        // Test Sorting
-        for (int i = 0; i < cities.size(); i++) {
-            if (i + 1 == cities.size()) break;
-            assertTrue(cities.get(i).population() >= cities.get(i+1).population(),
-                    "Report should be sorted in descending population order");
-        }
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateSortedCityReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, Expected Rows, Country Name
+                Arguments.of(Scope.WORLD, "", 4079),
+                Arguments.of(Scope.CONTINENT, "Europe", 841),
+                Arguments.of(Scope.REGION, "Southern Europe", 156),
+                Arguments.of(Scope.COUNTRY, "Saint Lucia", 1),
+                Arguments.of(Scope.DISTRICT, "Texas", 26, "United States")
+        );
     }
-
-    @Test
-    void testGenerateSortedCityReport_RegionScope() {
-        int expectedRows = 156;
+    /**
+     * Test generateSortedCityReport() with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param expectedRows Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateSortedCityReportArgsProvider")
+    void testGenerateSortedCityReport(Scope scope, String scopeName, int expectedRows, String countryName) {
         List<City> cities;
-        cities = reportGenerator.generateSortedCityReport(Scope.REGION, "Southern Europe");
-
-        // Test Report Success
-        assertNotNull(cities,
-                "Report ArrayList should not be null unless an error occurred");
-
-        // Test Report Size Against Known Result
-        assertEquals(expectedRows, cities.size(),
-                "There should be %d cities in the report".formatted(expectedRows));
-
-        // Test Sorting
-        for (int i = 0; i < cities.size(); i++) {
-            if (i + 1 == cities.size()) break;
-            assertTrue(cities.get(i).population() >= cities.get(i+1).population(),
-                    "Report should be sorted in descending population order");
-        }
-    }
-
-    @Test
-    void testGenerateSortedCityReport_CountryScope() {
-        int expectedRows = 1;
-        List<City> cities;
-        cities = reportGenerator.generateSortedCityReport(Scope.COUNTRY, "Saint Lucia");
+        cities = reportGenerator.generateSortedCityReport(scope, scopeName, countryName);
 
         // Test Report Success
         assertNotNull(cities,
@@ -241,17 +178,43 @@ public class AppIntegrationTest {
     }
 
     // Top N Country Reports
-    @Test
-    void testGenerateTopNCityReport_GlobalScope() {
-        int expectedRows = 10;
+
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGenerateTopNCityReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, N , Country Name
+                Arguments.of(Scope.WORLD, "", 5),
+                Arguments.of(Scope.CONTINENT, "Oceania", 10),
+                Arguments.of(Scope.REGION, "Eastern Europe", 5),
+                Arguments.of(Scope.COUNTRY, "France", 3),
+                Arguments.of(Scope.DISTRICT, "England", 5, "United Kingdom")
+        );
+    }
+    /**
+     * Test generateTopNCityReport() with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     * @param scopeName Specific name of being tested
+     * @param N Number of rows expected given the current arguments
+     */
+    @ParameterizedTest
+    @MethodSource("testGenerateTopNCityReportArgsProvider")
+    void testGenerateTopNCityReport(Scope scope, String scopeName, int N) {
         List<City> cities;
-        cities = reportGenerator.generateTopNCityReport(expectedRows);
+        cities = reportGenerator.generateTopNCityReport(scope, scopeName, N);
 
         // Test Report Success
-        assertNotNull(cities, "Report ArrayList should not be null unless an error occurred");
+        assertNotNull(cities,
+                "Report ArrayList should not be null unless an error occurred");
 
         // Test Report Size Against Known Result
-        assertEquals(expectedRows, cities.size(),
-                "There should be %d cities in the report".formatted(expectedRows));
+        assertEquals(N, cities.size(),
+                "There should be %d cities in the report".formatted(N));
     }
 }
