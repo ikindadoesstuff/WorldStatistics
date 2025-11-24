@@ -693,8 +693,8 @@ public class ReportGenerator {
      * Get all capital cities in the world ordered in descending population order.
      * No scope specified defaults to world.
      */
-    public List<Capital> generateSortedCapitalsReport() {
-        return generateSortedCapitalsReport(Scope.WORLD, "");
+    public List<Capital> generateSortedCapitalReport() {
+        return generateSortedCapitalReport(Scope.WORLD, "");
     }
 
     /**
@@ -703,7 +703,7 @@ public class ReportGenerator {
      * @param scope     The scope level being specified (WORLD, CONTINENT, REGION).
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      */
-    public List<Capital> generateSortedCapitalsReport(Scope scope, String scopeName) {
+    public List<Capital> generateSortedCapitalReport(Scope scope, String scopeName) {
         List<Capital> capitals = new ArrayList<>();
 
         String scopeNameUpperCase = scopeName.toUpperCase();
