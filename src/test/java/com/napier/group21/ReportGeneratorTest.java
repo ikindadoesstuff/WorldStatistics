@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * Test class for the ReportGenerator class.
  */
 class ReportGeneratorTest {
-    ReportGenerator reportGenerator;
+    private ReportGenerator reportGenerator;
 
     @BeforeEach
     void setUp() {
