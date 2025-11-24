@@ -47,6 +47,7 @@ public class ReportGenerator {
      * Initializes database connection
      */
     public ReportGenerator() {
+        // We want nothing to occur here, as we will set the connection and fetch scope names manually
     }
 
     /**

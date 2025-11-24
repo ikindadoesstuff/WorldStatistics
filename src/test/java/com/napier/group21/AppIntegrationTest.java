@@ -13,7 +13,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test the app with a running database container to connect to
+ */
 public class AppIntegrationTest {
+
 
     static DatabaseConnection databaseConnection;
     static Connection connection;
