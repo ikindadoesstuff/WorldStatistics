@@ -80,13 +80,16 @@ jobs:
       - name: Run with Docker Compose
         run: docker compose up --abort-on-container-exit
 
+      - name: "Get Project Version"
+        run: VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+
       - name: "Deploy Release"
         if: success() && github.ref == 'refs/heads/release' # Only Deploy is push is to Release Branch
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
-          automatic_release_tag: ""
+          automatic_release_tag: ${{ env.VERSION }}
           files: |
             ./target/*.jar
           
