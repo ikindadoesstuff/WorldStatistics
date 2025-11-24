@@ -871,4 +871,108 @@ public class ReportGenerator {
         }
         return capitals;
     }
+
+    // ISSUE 7
+
+    /**
+     * Get the total population, population living in cities, and population not living in cities for each continent,
+     * region, or country.
+     *
+     * @param scope     The scope level being specified (CONTINENT, REGION, COUNTRY).
+     * @param scopeName The specific name of the continent, region, or country. Use empty string if using WORLD scope.
+     */
+    public List<Urbanization> generateUrbanizationReport(Scope scope, String scopeName) {
+        List<Urbanization> capitals = new ArrayList<>();
+
+        String scopeNameUpperCase = scopeName.toUpperCase();
+        String query = "";
+        switch (scope) {
+            case CONTINENT:
+                System.out.printf(
+                        "Displaying urbanization in continent - %s. "
+                        , scopeNameUpperCase
+                );
+                if (!dbContinents.contains(scopeNameUpperCase)) {
+                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
+                    return null;
+                } else {
+                    query = """
+                        SELECT country.Continent as Name,
+                               SUM(DISTINCT country.Population) AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (SUM(DISTINCT country.Population) - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+
+                        GROUP BY country.Continent;
+                        """;
+                    break;
+                }
+            case REGION:
+                System.out.printf(
+                        "Displaying urbanization in region - %s. "
+                        , scopeNameUpperCase
+                );
+                if (!dbRegions.contains(scopeNameUpperCase)) {
+                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
+                    return null;
+                } else {
+                    query = """
+                        SELECT country.Region as Name,
+                               SUM(DISTINCT country.Population) AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (SUM(DISTINCT country.Population) - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+                        GROUP BY country.Region;
+                        """;
+                    break;
+                }
+            case COUNTRY:
+                System.out.printf(
+                        "Displaying urbanization in country - %s. "
+                        , scopeNameUpperCase
+                );
+                if (!dbCountries.contains(scopeNameUpperCase)) {
+                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
+                    return null;
+                } else {
+                    query = """
+                        SELECT country.Name as Name,
+                               country.Population AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (country.Population - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+                        GROUP BY country.Code;
+                        """;
+                    break;
+                }
+            default:
+                System.out.println("Invalid scope. Report can not be generated.\n");
+                return null;
+
+        }
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Urbanization urbanization = new Urbanization(
+                        resultSet.getString("Name"),
+                        resultSet.getLong("TotalPopulation"),
+                        resultSet.getLong("CityPopulation"),
+                        resultSet.getLong("NonCityPopulation")
+                );
+                capitals.add(urbanization);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+            return null;
+        }
+        return capitals;
+    }
 }
