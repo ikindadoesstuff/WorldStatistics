@@ -18,14 +18,25 @@ package com.napier.group21;
 public record Urbanization(String name, long totalPopulation, long urbanPopulation, long nonUrbanPopulation) implements DatabaseObject {
     @Override
     public String toString() {
-        return "> %-45s │ %,13d │ %,13d │ %,13d "
-                .formatted(name, totalPopulation, urbanPopulation, nonUrbanPopulation);
+        // Calculate population percentages
+        float urbanPopulationPercentage = (float) urbanPopulation / (float) totalPopulation * 100;
+        float nonUrbanPopulationPercentage = (float) nonUrbanPopulation / (float) totalPopulation * 100;
+
+        return "> %-45s │ %,13d │ %,13d (%6.2f%%) │ %,13d (%6.2f%%) "
+                .formatted(
+                        name,
+                        totalPopulation,
+                        urbanPopulation,
+                        urbanPopulationPercentage,
+                        nonUrbanPopulation,
+                        nonUrbanPopulationPercentage
+                );
     }
 
     @Override
     public String getColumnString() {
-        String columns = "\n%-47s │ %,13d │ %,13d │ %,13d \n"
-                .formatted("City", "Country", "District", "Population");
+        String columns = "\n%-47s │ %,13d │ %,21d │ %,21d \n"
+                .formatted("City", totalPopulation, urbanPopulation, nonUrbanPopulation);
         String separator = "━".repeat(columns.length() + 10);
         return separator + columns + separator;
     }
