@@ -141,10 +141,10 @@ public class AppIntegrationTest {
     private static Stream<Arguments> testGenerateSortedCityReportArgsProvider() {
         return Stream.of(
                 //           Scope, Name, Expected Rows, Country Name
-                Arguments.of(Scope.WORLD, "", 4079),
-                Arguments.of(Scope.CONTINENT, "Europe", 841),
-                Arguments.of(Scope.REGION, "Southern Europe", 156),
-                Arguments.of(Scope.COUNTRY, "Saint Lucia", 1),
+                Arguments.of(Scope.WORLD, "", 4079, ""),
+                Arguments.of(Scope.CONTINENT, "Europe", 841, ""),
+                Arguments.of(Scope.REGION, "Southern Europe", 156, ""),
+                Arguments.of(Scope.COUNTRY, "Saint Lucia", 1, ""),
                 Arguments.of(Scope.DISTRICT, "Texas", 26, "United States")
         );
     }
@@ -189,10 +189,10 @@ public class AppIntegrationTest {
     private static Stream<Arguments> testGenerateTopNCityReportArgsProvider() {
         return Stream.of(
                 //           Scope, Name, N , Country Name
-                Arguments.of(Scope.WORLD, "", 5),
-                Arguments.of(Scope.CONTINENT, "Oceania", 10),
-                Arguments.of(Scope.REGION, "Eastern Europe", 5),
-                Arguments.of(Scope.COUNTRY, "France", 3),
+                Arguments.of(Scope.WORLD, "", 5, ""),
+                Arguments.of(Scope.CONTINENT, "Oceania", 10, ""),
+                Arguments.of(Scope.REGION, "Eastern Europe", 5, ""),
+                Arguments.of(Scope.COUNTRY, "France", 3, ""),
                 Arguments.of(Scope.DISTRICT, "England", 5, "United Kingdom")
         );
     }
@@ -205,9 +205,9 @@ public class AppIntegrationTest {
      */
     @ParameterizedTest
     @MethodSource("testGenerateTopNCityReportArgsProvider")
-    void testGenerateTopNCityReport(Scope scope, String scopeName, int N) {
+    void testGenerateTopNCityReport(Scope scope, String scopeName, int N,  String countryName) {
         List<City> cities;
-        cities = reportGenerator.generateTopNCityReport(scope, scopeName, N);
+        cities = reportGenerator.generateTopNCityReport(scope, scopeName, N, countryName);
 
         // Test Report Success
         assertNotNull(cities,
