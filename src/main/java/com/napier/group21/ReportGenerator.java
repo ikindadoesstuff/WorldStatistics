@@ -286,13 +286,13 @@ public class ReportGenerator {
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all countries in the world. " +
+                        "Displaying all countries in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all countries in continent - %s. " +
+                        "Displaying all countries in continent - %s: " +
                                 "Population sorted, largest to smallest: \n"
                         , scopeName
                 );
@@ -300,7 +300,7 @@ public class ReportGenerator {
                 break;
             case REGION:
                 System.out.printf(
-                        "Displaying all countries in region - %s. " +
+                        "Displaying all countries in region - %s: " +
                                 "Population sorted, largest to smallest: \n"
                         , scopeName
                 );
@@ -483,13 +483,13 @@ public class ReportGenerator {
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all cities in the world. " +
+                        "Displaying all cities in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all cities in %s - %s. " +
+                        "Displaying all cities in %s - %s: " +
                                 "Population sorted, largest to smallest: \n",
                         scope,
                         scopeName
@@ -498,7 +498,7 @@ public class ReportGenerator {
                 break;
             case REGION:
                 System.out.printf(
-                        "Displaying all cities in %s - %s. " +
+                        "Displaying all cities in %s - %s: " +
                                 "Population sorted, largest to smallest: \n",
                         scope,
                         scopeName
@@ -507,7 +507,7 @@ public class ReportGenerator {
                 break;
             case COUNTRY:
                 System.out.printf(
-                        "Displaying all cities in %s - %s. " +
+                        "Displaying all cities in %s - %s: " +
                                 "Population sorted, largest to smallest: \n",
                         scope,
                         scopeName
@@ -516,7 +516,7 @@ public class ReportGenerator {
                 break;
             case DISTRICT:
                 System.out.printf(
-                        "Displaying all cities in %s - %s, %s. " +
+                        "Displaying all cities in %s - %s, %s: " +
                                 "Population sorted, largest to smallest: \n",
                         scope,
                         scopeName,
@@ -696,13 +696,13 @@ public class ReportGenerator {
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all capital cities in the world. " +
+                        "Displaying all capital cities in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all capital cities in continent - %s. " +
+                        "Displaying all capital cities in continent - %s: " +
                                 "Population sorted, largest to smallest: \n"
                         , scopeName
                 );
@@ -710,7 +710,7 @@ public class ReportGenerator {
                 break;
             case REGION:
                 System.out.printf(
-                        "Displaying all capital cities in region - %s. " +
+                        "Displaying all capital cities in region - %s: " +
                                 "Population sorted, largest to smallest: \n"
                         , scopeName
                 );
@@ -853,7 +853,7 @@ public class ReportGenerator {
         String query;
         switch (scope) {
             case CONTINENT:
-                System.out.print("Displaying urbanization in continents. ");
+                System.out.print("Displaying urbanization in continents: ");
                 query = """
                         SELECT country.Continent as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
@@ -866,7 +866,7 @@ public class ReportGenerator {
                         """;
                 break;
             case REGION:
-                System.out.print("Displaying urbanization in regions. ");
+                System.out.print("Displaying urbanization in regions: ");
                 query = """
                         SELECT country.Region as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
@@ -878,7 +878,7 @@ public class ReportGenerator {
                         """;
                 break;
             case COUNTRY:
-                System.out.print("Displaying urbanization in countries. ");
+                System.out.print("Displaying urbanization in countries: ");
                 query = """
                         SELECT country.Name as Name,
                                country.Population AS TotalPopulation,
@@ -961,14 +961,14 @@ public class ReportGenerator {
         String query;
         switch (scope) {
             case WORLD :
-                System.out.print("Displaying World Population. ");
+                System.out.print("Displaying World Population: ");
                 query = """
                         SELECT 'World' as Name, SUM(country.population) AS Population
                         FROM country;
                         """;
                 break;
             case CONTINENT:
-                System.out.printf("Displaying Population of Continent - %s \n", scopeName);
+                System.out.printf("Displaying Population of Continent - %s: \n", scopeName);
                 query = """
                         SELECT country.Continent as Name, SUM(DISTINCT country.population) as Population
                         FROM city
@@ -977,7 +977,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case REGION:
-                System.out.printf("Displaying Population of Region - %s \n", scopeName);
+                System.out.printf("Displaying Population of Region - %s: \n", scopeName);
                 query = """
                         SELECT country.Region as Name, SUM(DISTINCT country.population) as Population
                         FROM country
@@ -985,7 +985,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case COUNTRY:
-                System.out.printf("Displaying Population of Country - %s \n", scopeName);
+                System.out.printf("Displaying Population of Country - %s: \n", scopeName);
                 query = """
                         SELECT country.Name as Name, SUM(DISTINCT country.population) as Population
                         FROM country
@@ -993,7 +993,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case DISTRICT:
-                System.out.printf("Displaying Population of District - %s \n", scopeName);
+                System.out.printf("Displaying Population of District - %s: \n", scopeName);
                 query = """
                         SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
                         FROM city
@@ -1001,7 +1001,7 @@ public class ReportGenerator {
                         """.formatted(scopeName, countryName);
                 break;
             case CITY:
-                System.out.printf("Displaying Population of City - %s\n", scopeName);
+                System.out.printf("Displaying Population of City - %s: \n", scopeName);
                 query = """
                         SELECT city.Name as Name, city.population as Population
                         FROM city
