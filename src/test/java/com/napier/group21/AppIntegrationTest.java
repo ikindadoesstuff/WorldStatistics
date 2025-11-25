@@ -329,7 +329,7 @@ class AppIntegrationTest {
             // Just cuts down on repetitive code
             long totalPopulation = urbanizationReport.totalPopulation();
             long urbanPopulation = urbanizationReport.urbanPopulation();
-            long nonUrbanPopulation = urbanizationReport.urbanPopulation();
+            long nonUrbanPopulation = urbanizationReport.nonUrbanPopulation();
 
             assertFalse(totalPopulation < urbanPopulation,
                     "Urban Population should not be more than Total Population\n" +
