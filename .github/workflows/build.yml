@@ -100,6 +100,6 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
-          automatic_release_tag: ${{ steps.project-version.outputs.version }} # project-version output is accessed here
+          automatic_release_tag: v${{ steps.project-version.outputs.version }} # project-version output is accessed here
           files: |
             ./target/*.jar

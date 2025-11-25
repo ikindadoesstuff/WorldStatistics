@@ -1,7 +1,7 @@
 package com.napier.group21;
 
 /**
- * Share by all different report object types that can retrieved from the database.
+ * Shared by all different report object types that can retrieved from the database.
  * Allows ArrayList of DatabaseObject to use any record which implements DatabaseObject.
  */
 public interface DatabaseObject {
@@ -13,4 +13,3 @@ public interface DatabaseObject {
      */
     String getColumnString();
 }
-

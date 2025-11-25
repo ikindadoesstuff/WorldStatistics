@@ -77,11 +77,11 @@ public class ReportGenerator {
         }
 
         // Delay between report title and table
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ie) {
-            System.out.println(ie.getMessage() + "\n");
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException ie) {
+//            System.out.println(ie.getMessage() + "\n");
+//        }
 
         try {
             System.out.println(rows.size() + " records found");
@@ -319,8 +319,8 @@ public class ReportGenerator {
                 );
                 countries.add(country);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return countries;
@@ -416,8 +416,8 @@ public class ReportGenerator {
                 );
                 countries.add(country);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return countries;
@@ -436,7 +436,7 @@ public class ReportGenerator {
     /**
      * Get all cities in the world ordered in descending population order.
      *
-     * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
      */
     public List<City> generateSortedCityReport(Scope scope, String name) {
         return generateSortedCityReport(scope, name, null);
@@ -446,7 +446,8 @@ public class ReportGenerator {
      * Get all cities in the specified scope name ordered in descending population order.
      *
      * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param scopeName   The specific name of the continent, region, country, or district.
+     *                    Use empty string if using WORLD scope.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
      */
@@ -553,8 +554,8 @@ public class ReportGenerator {
                 );
                 cities.add(city);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return cities;
@@ -573,7 +574,7 @@ public class ReportGenerator {
     /**
      * Get top N cities in the world.
      *
-     * @param scope should be used with CONTINENT, REGION, or COUNTRY scopes.
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
      */
     public List<City> generateTopNCityReport(Scope scope, String name, int n) {
         return generateTopNCityReport(scope, name, n, null);
@@ -583,7 +584,8 @@ public class ReportGenerator {
      * Get top N cities in the specified scope name ordered in descending population order.
      *
      * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
-     * @param scopeName   The specific name of the continent or region. Use empty string if using WORLD scope.
+     * @param scopeName   The specific name of the continent, region, country, or district.
+     *                    Use empty string if using WORLD scope.
      * @param n           The number of cities to display.
      * @param countryName When using DISTRICT scope, the country must be specified, as many districts names exist in
      *                    several countries.
@@ -680,8 +682,8 @@ public class ReportGenerator {
                 );
                 cities.add(city);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return cities;
@@ -769,8 +771,8 @@ public class ReportGenerator {
                 );
                 capitals.add(capital);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return capitals;
@@ -863,8 +865,86 @@ public class ReportGenerator {
                 );
                 capitals.add(capital);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
+            return null;
+        }
+        return capitals;
+    }
+
+    // ISSUE 7
+
+    /**
+     * Get the total population, population living in cities, and population not living in cities for each continent,
+     * region, or country.
+     *
+     * @param scope     The scope level being specified (CONTINENT, REGION, COUNTRY).
+     */
+    public List<Urbanization> generateUrbanizationReport(Scope scope) {
+        List<Urbanization> capitals = new ArrayList<>();
+
+        String query;
+        switch (scope) {
+            case CONTINENT:
+                System.out.print("Displaying urbanization in continents. ");
+                query = """
+                        SELECT country.Continent as Name,
+                               SUM(DISTINCT country.Population) AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (SUM(DISTINCT country.Population) - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+
+                        GROUP BY country.Continent;
+                        """;
+                break;
+            case REGION:
+                System.out.print("Displaying urbanization in regions. ");
+                query = """
+                        SELECT country.Region as Name,
+                               SUM(DISTINCT country.Population) AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (SUM(DISTINCT country.Population) - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+                        GROUP BY country.Region;
+                        """;
+                break;
+            case COUNTRY:
+                System.out.print("Displaying urbanization in countries. ");
+                query = """
+                        SELECT country.Name as Name,
+                               country.Population AS TotalPopulation,
+                               SUM(city.Population) AS CityPopulation,
+                               (country.Population - SUM(city.Population)) as NonCityPopulation
+                        FROM country
+                                 LEFT JOIN city on city.CountryCode = country.Code
+                        GROUP BY country.Code;
+                        """;
+                break;
+            default:
+                System.out.println("Invalid scope. Report can not be generated.\n");
+                return null;
+
+        }
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Urbanization urbanization = new Urbanization(
+                        resultSet.getString("Name"),
+                        resultSet.getLong("TotalPopulation"),
+                        resultSet.getLong("CityPopulation"),
+                        resultSet.getLong("NonCityPopulation")
+                );
+                capitals.add(urbanization);
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return capitals;

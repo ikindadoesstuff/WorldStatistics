@@ -70,6 +70,11 @@ public class App {
         printReport(reportGenerator.generateTopNCapitalReport(Scope.CONTINENT, "South America", 5));
         printReport(reportGenerator.generateTopNCapitalReport(Scope.REGION, "Middle East", 3));
 
+        // 7 Generate Urbanization report for each Continent/Region/Country
+        printReport(reportGenerator.generateUrbanizationReport(Scope.CONTINENT));
+        printReport(reportGenerator.generateUrbanizationReport(Scope.REGION));
+        printReport(reportGenerator.generateUrbanizationReport(Scope.COUNTRY));
+
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
          * all the reports have been run.
