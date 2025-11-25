@@ -236,6 +236,38 @@ public class ReportGenerator {
         }
     }
 
+    /**
+     * Simple method to verify whether or not the specified scope name actually exists in the database
+     *
+     * @param scope     Level of scope being tested
+     * @param scopeName Name of scope being tested
+     * @return          Scope name validity
+     */
+    boolean verifyScopeName(Scope scope, String scopeName) {
+        boolean validity;
+        switch(scope) {
+            case WORLD:
+                validity = true;
+                break;
+            case CONTINENT:
+                validity = dbContinents.contains(scopeName.toUpperCase());
+                break;
+            case REGION:
+                validity = dbRegions.contains(scopeName.toUpperCase());
+                break;
+            case COUNTRY:
+                validity = dbCountries.contains(scopeName.toUpperCase());
+                break;
+            case DISTRICT:
+                validity = dbDistricts.contains(scopeName.toUpperCase());
+                break;
+            case CITY:
+                validity = dbCities.contains(scopeName.toUpperCase());
+                break;
+        }
+        return validity;
+    }
+
     // ISSUE 1
 
     /**
