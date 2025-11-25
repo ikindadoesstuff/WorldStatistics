@@ -154,18 +154,12 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCountryReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateSortedCountryReport(Scope.CONTINENT, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateSortedCountryReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateSortedCountryReport(Scope.REGION, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Region scope"
-        ); // random name
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateSortedCountryReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateSortedCountryReport(scope, "!@#"),
+                "Should return null when connection is null"
+        );
     }
 
     @Test
@@ -190,18 +184,12 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateTopNCountryReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateTopNCountryReport(Scope.CONTINENT, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateTopNCountryReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateTopNCountryReport(Scope.REGION, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Region scope"
-        ); // random name
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateTopNCountryReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateTopNCountryReport(scope, "!@#", 5),
+                "Should return null when connection is null"
+        );
     }
 
     // CITY REPORTS
@@ -220,24 +208,11 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCityReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateSortedCityReport(Scope.CONTINENT, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateSortedCityReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateSortedCityReport(Scope.REGION, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Region scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateSortedCityReport_NullConn_InvalidCountry() {
-        assertNull(reportGenerator.generateSortedCityReport(Scope.COUNTRY, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Country scope"
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateSortedCityReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateSortedCityReport(scope, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -245,13 +220,6 @@ class ReportGeneratorTest {
     void testGenerateSortedCityReport_NullConn_InvalidDistrict() {
         assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#", "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope with country"
-        );
-    }
-
-    @Test
-    void testGenerateSortedCityReport_NullConn_InvalidDistrict_NoCountryName() {
-        assertNull(reportGenerator.generateSortedCityReport(Scope.DISTRICT, "!@#"),
-                "Should return null when connection is null and scope value is invalid for District scope without country"
         );
     }
 
@@ -277,39 +245,19 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateTopNCityReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateTopNCityReport(Scope.CONTINENT, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateTopNCityReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateTopNCityReport(Scope.REGION, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Region scope"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateTopNCityReport_NullConn_InvalidCountry() {
-        assertNull(reportGenerator.generateTopNCityReport(Scope.COUNTRY, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Country scope"
-        ); // random name
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateTopNCityReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5),
+                "Should return null when connection is null"
+        );
     }
 
     @Test
     void testGenerateTopNCityReport_NullConn_InvalidDistrict() {
         assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5, "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope with country"
-        ); // random name
-    }
-
-    @Test
-    void testGenerateTopNCityReport_NullConn_InvalidDistrict_NoCountryName() {
-        assertNull(reportGenerator.generateTopNCityReport(Scope.DISTRICT, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for District scope without country"
-        ); // random name
+        );
     }
 
     // CAPITAL REPORTS
@@ -328,17 +276,11 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCapitalReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateSortedCapitalReport(Scope.CONTINENT, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        );
-    }
-
-    @Test
-    void testGenerateSortedCapitalReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateSortedCapitalReport(Scope.REGION, "!@#"),
-                "Should return null when connection is null and scope value is invalid for Region scope"
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateSortedCapitalReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateSortedCapitalReport(scope, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -364,17 +306,11 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateTopNCapitalReport_NullConn_InvalidContinent() {
-        assertNull(reportGenerator.generateTopNCapitalReport(Scope.CONTINENT, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Continent scope"
-        );
-    }
-
-    @Test
-    void testGenerateTopNCapitalReport_NullConn_InvalidRegion() {
-        assertNull(reportGenerator.generateTopNCapitalReport(Scope.REGION, "!@#", 5),
-                "Should return null when connection is null and scope value is invalid for Region scope"
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateTopNCapitalReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateTopNCapitalReport(scope, "!@#", 5),
+                "Should return null when connection is null"
         );
     }
 
