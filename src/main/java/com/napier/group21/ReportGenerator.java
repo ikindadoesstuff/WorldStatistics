@@ -244,28 +244,16 @@ public class ReportGenerator {
      * @return          Scope name validity
      */
     boolean verifyScopeName(Scope scope, String scopeName) {
-        boolean validity;
-        switch(scope) {
-            case WORLD:
-                validity = true;
-                break;
-            case CONTINENT:
-                validity = dbContinents.contains(scopeName.toUpperCase());
-                break;
-            case REGION:
-                validity = dbRegions.contains(scopeName.toUpperCase());
-                break;
-            case COUNTRY:
-                validity = dbCountries.contains(scopeName.toUpperCase());
-                break;
-            case DISTRICT:
-                validity = dbDistricts.contains(scopeName.toUpperCase());
-                break;
-            case CITY:
-                validity = dbCities.contains(scopeName.toUpperCase());
-                break;
-        }
-        return validity;
+        scopeName = scopeName.toUpperCase();
+        return switch (scope) {
+            // WORLD case is not required as it should always be true, and vailidity is already true by default
+            case CONTINENT -> dbContinents.contains(scopeName.toUpperCase());
+            case REGION -> dbRegions.contains(scopeName.toUpperCase());
+            case COUNTRY -> dbCountries.contains(scopeName.toUpperCase());
+            case DISTRICT -> dbDistricts.contains(scopeName.toUpperCase());
+            case CITY -> dbCities.contains(scopeName.toUpperCase());
+            default -> true;
+        };
     }
 
     // ISSUE 1
