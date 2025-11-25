@@ -1044,7 +1044,7 @@ public class ReportGenerator {
     public List<Language> generateTop5LanguageReport() {
         List<Language> languages = new ArrayList<>();
 
-        System.out.print("Displaying Top 5 Languages in the World: ");
+        System.out.println("Displaying Top 5 Languages in the World: ");
         String query = """
                 SELECT countrylanguage.Language as Language,
                        ROUND(SUM(countrylanguage.Percentage * country.Population / 100)) as TotalSpeakers,
