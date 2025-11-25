@@ -20,7 +20,10 @@ public record Urbanization(String name, long totalPopulation, long urbanPopulati
     public String toString() {
         // Calculate population percentages
         float urbanPopulationPercentage = (float) urbanPopulation / (float) totalPopulation * 100;
+        urbanPopulationPercentage = Float.isNaN(urbanPopulationPercentage) ? 0 : urbanPopulationPercentage;
+
         float nonUrbanPopulationPercentage = (float) nonUrbanPopulation / (float) totalPopulation * 100;
+        nonUrbanPopulationPercentage = Float.isNaN(nonUrbanPopulationPercentage) ? 0 : nonUrbanPopulationPercentage;
 
         return "> %-45s │ %,13d │ %,13d (%6.2f%%) │ %,13d (%6.2f%%) "
                 .formatted(
@@ -35,8 +38,8 @@ public record Urbanization(String name, long totalPopulation, long urbanPopulati
 
     @Override
     public String getColumnString() {
-        String columns = "\n%-47s │ %,13d │ %,21d │ %,21d \n"
-                .formatted("City", totalPopulation, urbanPopulation, nonUrbanPopulation);
+        String columns = "\n%-47s │ %-13s │ %-13s │ %-13s \n"
+                .formatted("City", "Total Population", "Urban Pop.", "Non-Urban Pop.");
         String separator = "━".repeat(columns.length() + 10);
         return separator + columns + separator;
     }
