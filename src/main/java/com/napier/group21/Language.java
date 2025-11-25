@@ -17,13 +17,13 @@ package com.napier.group21;
 public record Language(String name, long totalSpeakers, float worldPercentage) implements DatabaseObject {
     @Override
     public String toString() {
-        return "> %-45s │ %,14d | %6.2f%%"
+        return "> %-7s │ %,14d | %6.2f%%"
                 .formatted(name, totalSpeakers, worldPercentage);
     }
 
     @Override
     public String getColumnString() {
-        String columns = "\n%-47s │ %-14s | %7s \n"
+        String columns = "\n%-9s │ %-14s | %7s \n"
                 .formatted("Name", "Total Speakers", "World %" );
         String separator = "━".repeat(columns.length() + 10);
         return separator + columns + separator;
