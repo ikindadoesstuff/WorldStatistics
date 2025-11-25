@@ -175,7 +175,7 @@ WHERE city.Name = 'Tokyo' and country.Name = 'Japan';
 SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
 FROM city
 LEFT JOIN country on city.CountryCode = country.Code
-WHERE city.District = 'Georgia' AND country.Code = 'USA';
+WHERE city.District = 'Georgia' AND country.Name = 'United Staes';
 
 # - REGION
 SELECT country.Region as Name, SUM(DISTINCT country.population) as Population

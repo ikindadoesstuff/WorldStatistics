@@ -995,9 +995,10 @@ public class ReportGenerator {
             case DISTRICT:
                 System.out.printf("Displaying Population of District - %s: \n", scopeName);
                 query = """
-                        SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
+                        SELECT city.District as Name, SUM(city.population) as Population
                         FROM city
-                        WHERE city.District = '%s' AND city.CountryCode = '%s';
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE city.District = '%s' AND country.Name = '%s';
                         """.formatted(scopeName, countryName);
                 break;
             case CITY:
@@ -1005,8 +1006,9 @@ public class ReportGenerator {
                 query = """
                         SELECT city.Name as Name, city.population as Population
                         FROM city
-                        WHERE city.Name = '%s';
-                        """.formatted(scopeName);
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE city.Name = '%s' AND country.Name = '%s';
+                        """.formatted(scopeName, countryName);
                 break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
