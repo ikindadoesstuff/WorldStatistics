@@ -968,7 +968,7 @@ public class ReportGenerator {
                         """;
                 break;
             case CONTINENT:
-                System.out.printf("Displaying Population of Continent - %s . %n \n", scopeName);
+                System.out.printf("Displaying Population of Continent - %s \n", scopeName);
                 query = """
                         SELECT country.Continent as Name, SUM(DISTINCT country.population) as Population
                         FROM city
@@ -977,7 +977,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case REGION:
-                System.out.printf("Displaying Population of Region - %s . %n \n", scopeName);
+                System.out.printf("Displaying Population of Region - %s \n", scopeName);
                 query = """
                         SELECT country.Region as Name, SUM(DISTINCT country.population) as Population
                         FROM country
@@ -985,7 +985,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case COUNTRY:
-                System.out.printf("Displaying Population of Country - %s . %n \n", scopeName);
+                System.out.printf("Displaying Population of Country - %s \n", scopeName);
                 query = """
                         SELECT country.Name as Name, SUM(DISTINCT country.population) as Population
                         FROM country
@@ -993,7 +993,7 @@ public class ReportGenerator {
                         """.formatted(scopeName);
                 break;
             case DISTRICT:
-                System.out.printf("Displaying Population of District - %s . %n \n", scopeName);
+                System.out.printf("Displaying Population of District - %s \n", scopeName);
                 query = """
                         SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
                         FROM city
@@ -1001,7 +1001,7 @@ public class ReportGenerator {
                         """.formatted(scopeName, countryName);
                 break;
             case CITY:
-                System.out.printf("Displaying Population of City - %s . %n \n", scopeName);
+                System.out.printf("Displaying Population of City - %s\n", scopeName);
                 query = """
                         SELECT city.Name as Name, city.population as Population
                         FROM city
