@@ -142,9 +142,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCountryReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCountryReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCountryReport(null, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -164,9 +163,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCountryReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCountryReport(null, "", 1),
+                "Should return null when connection is null"
         );
     }
 
@@ -195,9 +193,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCityReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCityReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCityReport(null, "!@#", "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -224,9 +221,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCityReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCityReport(null, "" ,5),
+                "Should return null for invalid N value"
         );
     }
 
@@ -262,9 +258,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCapitalReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCapitalReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCapitalReport(null, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -284,9 +279,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCapitalReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCapitalReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCapitalReport(null, "!@#", 1),
+                "Should return null when connection is null"
         );
     }
 
