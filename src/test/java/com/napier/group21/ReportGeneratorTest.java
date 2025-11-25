@@ -148,19 +148,18 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCountryReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateSortedCountryReport(),
-                "Should return null when connection is null for World scope"
-        );
-    }
-
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateSortedCountryReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateSortedCountryReport(scope, "!@#"),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateSortedCountryReport(),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateSortedCountryReport(scope, "!@#"),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     @Test
@@ -168,13 +167,6 @@ class ReportGeneratorTest {
         assertThrows(NullPointerException.class,
                 () -> reportGenerator.generateTopNCountryReport(null, "", 1),
                 "Should throw NullPointerException when Scope is null"
-        );
-    }
-
-    @Test
-    void testGenerateTopNCountryReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateTopNCountryReport(10),
-                "Should return null when connection is null for World scope"
         );
     }
 
@@ -188,9 +180,15 @@ class ReportGeneratorTest {
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateTopNCountryReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateTopNCountryReport(scope, "!@#", 5),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateTopNCountryReport(10),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateTopNCountryReport(scope, "!@#", 5),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     // CITY REPORTS
@@ -203,19 +201,18 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCityReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateSortedCityReport(),
-                "Should return null when connection is null for World scope"
-        );
-    }
-
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateSortedCityReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateSortedCityReport(scope, "!@#"),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateSortedCityReport(),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateSortedCityReport(scope, "!@#"),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     @Test
@@ -234,13 +231,6 @@ class ReportGeneratorTest {
     }
 
     @Test
-    void testGenerateTopNCityReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateTopNCityReport(10),
-                "Should return null when connection is null for World scope"
-        );
-    }
-
-    @Test
     void testGenerateTopNCityReport_NullConn_WorldScope_InvalidN() {
         assertNull(reportGenerator.generateTopNCityReport(-5),
                 "Should return null for invalid N value"
@@ -250,9 +240,15 @@ class ReportGeneratorTest {
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateTopNCityReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateTopNCityReport(10),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     @Test
@@ -272,19 +268,18 @@ class ReportGeneratorTest {
         );
     }
 
-    @Test
-    void testGenerateSortedCapitalReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateSortedCapitalReport(),
-                "Should return null when connection is null for World scope"
-        );
-    }
-
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateSortedCapitalReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateSortedCapitalReport(scope, "!@#"),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateSortedCapitalReport(),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateSortedCapitalReport(scope, "!@#"),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     @Test
@@ -292,13 +287,6 @@ class ReportGeneratorTest {
         assertThrows(NullPointerException.class,
                 () -> reportGenerator.generateTopNCapitalReport(null, "", 1),
                 "Should throw NullPointerException when Scope is null"
-        );
-    }
-
-    @Test
-    void testGenerateTopNCapitalReport_NullConn_WorldScope() {
-        assertNull(reportGenerator.generateTopNCapitalReport(10),
-                "Should return null when connection is null for World scope"
         );
     }
 
@@ -312,9 +300,15 @@ class ReportGeneratorTest {
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateTopNCapitalReport_NullConn_AllScopes(Scope scope) {
-        assertNull(reportGenerator.generateTopNCapitalReport(scope, "!@#", 5),
-                "Should return null when connection is null"
-        );
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generateTopNCapitalReport(10),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generateTopNCapitalReport(scope, "!@#", 5),
+                    "Should return null when connection is null"
+            );
+        }
     }
 
     // URBANIZATION REPORTS
