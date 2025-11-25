@@ -54,7 +54,7 @@ public record Urbanization(String name, long totalPopulation, long urbanPopulati
 
     @Override
     public String getColumnString() {
-        String columns = "\n%-47s │ %-23s │ %-23s │ %-13s \n"
+        String columns = "\n%-47s │ %-13s │ %-23s │ %-23s \n"
                 .formatted("City", "Total Pop.", "Urban Pop.", "Non-Urban Pop.");
         String separator = "━".repeat(columns.length() + 10);
         return separator + columns + separator;
