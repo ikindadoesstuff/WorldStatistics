@@ -166,26 +166,31 @@ GROUP BY country.Continent;
 # ISSUE 8
 # Population city/district/countries/region/continent/world
 # - CITY
-SELECT city.Name, city.population
+SELECT city.Name as Name, city.population as Population
 FROM city
-WHERE city.Name = 'Belmopan';
+LEFT JOIN country on city.CountryCode = country.Code
+WHERE city.Name = 'Tokyo' and country.Name = 'Japan';
 
 # - DISTRICT
-SELECT city.District, city.CountryCode, SUM(city.population) as TotalPopulation
+SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
 FROM city
-WHERE city.District = 'Georgia' AND city.CountryCode = 'USA';
+LEFT JOIN country on city.CountryCode = country.Code
+WHERE city.District = 'Georgia' AND country.Name = 'United Staes';
 
 # - REGION
-SELECT country.Region, SUM(DISTINCT country.population) as TotalPopulation
-FROM city
-         LEFT JOIN country on city.CountryCode = country.Code
+SELECT country.Region as Name, SUM(DISTINCT country.population) as Population
+FROM country
 WHERE country.Region = 'South America';
 
+# - COUNTRY
+SELECT country.Name as Name, SUM(DISTINCT country.population) as Population
+FROM country
+WHERE country.Name = 'India';
+
 # - CONTINENT
-SELECT country.Continent, SUM(DISTINCT country.population) as TotalPopulation
-FROM city
-         LEFT JOIN country on city.CountryCode = country.Code
-WHERE country.Continent = 'Oceania';
+SELECT country.Continent as Name, SUM(DISTINCT country.population) as Population
+FROM country
+WHERE country.Continent = 'Africa';
 
 # - WORLD
 SELECT 'World', SUM(country.population) AS TotalPopulation
