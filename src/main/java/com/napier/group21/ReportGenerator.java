@@ -77,11 +77,11 @@ public class ReportGenerator {
         }
 
         // Delay between report title and table
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ie) {
-            System.out.println(ie.getMessage() + "\n");
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException ie) {
+//            System.out.println(ie.getMessage() + "\n");
+//        }
 
         try {
             System.out.println(rows.size() + " records found");
