@@ -166,27 +166,29 @@ GROUP BY country.Continent;
 # ISSUE 8
 # Population city/district/countries/region/continent/world
 # - CITY
-SELECT city.Name, city.population as Population
+SELECT city.Name as Name, city.population as Population
 FROM city
-WHERE city.Name = 'Belmopan';
+LEFT JOIN country on city.CountryCode = country.Code
+WHERE city.Name = 'Tokyo' and country.Name = 'Japan';
 
 # - DISTRICT
-SELECT city.District, city.CountryCode, SUM(city.population) as Population
+SELECT city.District as Name, city.CountryCode, SUM(city.population) as Population
 FROM city
-WHERE city.District = 'Georgia' AND city.CountryCode = 'USA';
+LEFT JOIN country on city.CountryCode = country.Code
+WHERE city.District = 'Georgia' AND country.Code = 'USA';
 
 # - REGION
-SELECT country.Region, SUM(DISTINCT country.population) as Population
+SELECT country.Region as Name, SUM(DISTINCT country.population) as Population
 FROM country
 WHERE country.Region = 'South America';
 
 # - COUNTRY
-SELECT country.Name, SUM(DISTINCT country.population) as Population
+SELECT country.Name as Name, SUM(DISTINCT country.population) as Population
 FROM country
 WHERE country.Name = 'India';
 
 # - CONTINENT
-SELECT country.Continent, SUM(DISTINCT country.population) as Population
+SELECT country.Continent as Name, SUM(DISTINCT country.population) as Population
 FROM country
 WHERE country.Continent = 'Africa';
 
