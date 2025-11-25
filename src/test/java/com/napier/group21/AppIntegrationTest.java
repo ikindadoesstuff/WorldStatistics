@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.sql.Connection;
@@ -305,5 +306,44 @@ class AppIntegrationTest {
         // Test Report Size Against Known Result
         assertEquals(N, capitals.size(),
                 "There should be %d countries in the report".formatted(N));
+    }
+
+    // Urbanization Reports
+
+    /**
+     * Test {@code generateUrbanizationReport()} with its accepted scopes
+     *
+     * @param scope Current scope being tested
+     */
+    @ParameterizedTest
+    @EnumSource(value = Scope.class, names = {"CONTINENT","REGION","COUNTRY"})
+    void testGenerateUrbanizationReport(Scope scope) {
+        List<Urbanization> urbanizationReports;
+        urbanizationReports = reportGenerator.generateUrbanizationReport(scope);
+
+        // Test Report Success
+        assertNotNull(urbanizationReports,
+                "Report ArrayList should not be null unless an error occurred");
+
+        for (Urbanization urbanizationReport : urbanizationReports) {
+            // Just cuts down on repetitive code
+            long totalPopulation = urbanizationReport.totalPopulation();
+            long urbanPopulation = urbanizationReport.urbanPopulation();
+            long nonUrbanPopulation = urbanizationReport.nonUrbanPopulation();
+
+            assertFalse(totalPopulation < urbanPopulation,
+                    "Urban Population should not be more than Total Population\n" +
+                            urbanizationReport.toString()
+
+            );
+            assertFalse(totalPopulation < nonUrbanPopulation,
+                    "Non-Urban Population should not be more than Total Population\n" +
+                            urbanizationReport.toString()
+            );
+            assertEquals(urbanPopulation + nonUrbanPopulation, totalPopulation,
+                    "Urban and Non-Urban Populations should add up to Total Population\n" +
+                            urbanizationReport.toString()
+            );
+        }
     }
 }
