@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the ReportGenerator class.
@@ -90,6 +88,100 @@ class ReportGeneratorTest {
     }
 
     /*
+     * DATABASE OBJECT TESTS
+     */
+
+    @Test
+    void testCountryRecord() {
+        Country country = new Country(
+                "ARM",
+                "Armenia",
+                "Asia",
+                "Middle East",
+                3520000,
+                "Yerevan"
+        );
+
+        // Divide by 3 because it returns 3 equal length rows
+        assertNotNull(country.getColumnString(),
+                "Country record column string value should not be null"
+        );
+        assertNotNull(country.toString(), "Country record string value should not be null");
+    }
+
+    @Test
+    void testCityRecord() {
+        City city = new City(
+                "Dublin",
+                "Ireland",
+                "Leinster",
+                481854
+        );
+
+        // Divide by 3 because it returns 3 equal length rows
+        assertNotNull(city.getColumnString(),
+                "City record column string value should not be null"
+        );
+        assertNotNull(city.toString(), "City record string value should not be null");
+    }
+
+    @Test
+    void testCapitalRecord() {
+        Capital capital = new Capital(
+                "Tokyo",
+                "Japan",
+                7980230
+        );
+
+        assertNotNull(capital.getColumnString(),
+                "Capital record column string value should not be null"
+        );
+        assertNotNull(capital.toString(), "Capital record string value should not be null");
+    }
+
+    @Test
+    void testUrbanizationRecord() {
+        Urbanization urb = new Urbanization(
+                "Europe",
+                730074600,
+                241942813,
+                488131787
+        );
+
+        assertNotNull(urb.getColumnString(),
+                "Urbanization record column string value should not be null"
+        );
+        assertNotNull(urb.toString(), "Urbanization record string value should not be null");
+    }
+
+    @Test
+    void testPopulationRecord() {
+        Population pop = new Population(
+                "Germany",
+                82164700
+        );
+
+        assertNotNull(pop.getColumnString(),
+                "Population record column string value should not be null"
+        );
+        assertNotNull(pop.toString(), "Population record string value should not be null");
+    }
+
+    @Test
+    void testLanguageRecord() {
+        Language lang = new Language(
+                "Spanish",
+                405633070,
+                6.67f
+        );
+
+        assertNotNull(lang.getColumnString(),
+                "Language record column string value should not be null"
+        );
+        assertNotNull(lang.toString(), "Language record string value should not be null");
+    }
+
+    /*
      * SCOPE NAME FETCHES
      */
     @Test
@@ -142,9 +234,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCountryReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCountryReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCountryReport(null, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -164,9 +255,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCountryReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCountryReport(null, "", 1),
+                "Should return null when connection is null"
         );
     }
 
@@ -195,9 +285,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCityReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCityReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCityReport(null, "!@#", "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -209,7 +298,7 @@ class ReportGeneratorTest {
                     "Should return null when connection is null"
             );
         } else {
-            assertNull(reportGenerator.generateSortedCityReport(scope, "!@#"),
+            assertNull(reportGenerator.generateSortedCityReport(scope, "!@#", "!@#"),
                     "Should return null when connection is null"
             );
         }
@@ -224,9 +313,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCityReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCountryReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCityReport(null, "" ,5),
+                "Should return null for invalid N value"
         );
     }
 
@@ -245,7 +333,7 @@ class ReportGeneratorTest {
                     "Should return null when connection is null"
             );
         } else {
-            assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5),
+            assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5, "!@#"),
                     "Should return null when connection is null"
             );
         }
@@ -262,9 +350,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCapitalReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateSortedCapitalReport(null, ""),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateSortedCapitalReport(null, "!@#"),
+                "Should return null when connection is null"
         );
     }
 
@@ -284,9 +371,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCapitalReport_NullScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCapitalReport(null, "", 1),
-                "Should throw NullPointerException when Scope is null"
+        assertNull(reportGenerator.generateTopNCapitalReport(null, "!@#", 1),
+                "Should return null when connection is null"
         );
     }
 
@@ -317,6 +403,43 @@ class ReportGeneratorTest {
     @EnumSource(Scope.class)
     void testGenerateUrbanizationReport_NullConn_AllScopes(Scope scope) {
         assertNull(reportGenerator.generateUrbanizationReport(scope),
+                "Should return null when connection is null"
+        );
+    }
+
+    // POPULATION REPORTS
+
+    @Test
+    void testGeneratePopulationReport_NullScope() {
+        assertNull(reportGenerator.generatePopulationReport(null, "!@#", "!@#"),
+                "Should return null when connection is null"
+        );
+    }
+
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGeneratePopulationReport_NullConn_AllScopes(Scope scope) {
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generatePopulationReport(),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generatePopulationReport(scope, "!@#", "!@#"),
+                    "Should return null when connection is null"
+            );
+        }
+    }
+
+    @Test
+    void testGeneratePopulationReport_NullConn_InvalidDistrict() {
+        assertNull(reportGenerator.generatePopulationReport(Scope.DISTRICT, "!@#", "!@#"),
+                "Should return null when connection is null and scope value is invalid for District scope with country"
+        );
+    }
+
+    @Test
+    void testGenerateTop5LanguageReport_NullConn() {
+        assertNull(reportGenerator.generateTop5LanguageReport(),
                 "Should return null when connection is null"
         );
     }

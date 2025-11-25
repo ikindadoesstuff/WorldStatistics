@@ -13,7 +13,7 @@ class DatabaseConnectionTest {
      * DatabaseConnection object to be shared by all test methods
      * Static because it is set up in BeforeAll
      */
-    static DatabaseConnection databaseConnection;
+    private static DatabaseConnection databaseConnection;
 
     @BeforeAll
     static void setUp() {

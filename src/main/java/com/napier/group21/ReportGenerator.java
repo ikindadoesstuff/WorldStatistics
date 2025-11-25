@@ -2,6 +2,7 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -234,6 +235,28 @@ public class ReportGenerator {
         }
     }
 
+    /**
+     * Simple method to verify whether or not the specified scope name actually exists in the database
+     *
+     * @param scope     Level of scope being tested
+     * @param scopeName Name of scope being tested
+     * @return          Scope name validity
+     */
+    boolean verifyScopeName(Scope scope, String scopeName) {
+        if (scope == null || scopeName == null) {
+            return false;
+        }
+        // this is a switch expression, rather than a statement.
+        return switch (scope) {
+            case WORLD -> true;
+            case CONTINENT -> dbContinents.contains(scopeName.toUpperCase());
+            case REGION -> dbRegions.contains(scopeName.toUpperCase());
+            case COUNTRY -> dbCountries.contains(scopeName.toUpperCase());
+            case DISTRICT -> dbDistricts.contains(scopeName.toUpperCase());
+            case CITY -> dbCities.contains(scopeName.toUpperCase());
+        };
+    }
+
     // ISSUE 1
 
     /**
@@ -251,43 +274,37 @@ public class ReportGenerator {
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      */
     public List<Country> generateSortedCountryReport(Scope scope, String scopeName) {
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
         List<Country> countries = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all countries in the world. " +
+                        "Displaying all countries in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all countries in continent - %s. " +
+                        "Displaying all countries in continent - %s: " +
                                 "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        , scopeName
                 );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Continent = '%s'", scopeName);
+                break;
             case REGION:
                 System.out.printf(
-                        "Displaying all countries in region - %s. " +
+                        "Displaying all countries in region - %s: " +
                                 "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        , scopeName
                 );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Region = '%s'", scopeName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -349,9 +366,13 @@ public class ReportGenerator {
             return null;
         }
 
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
         List<Country> countries = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
@@ -364,28 +385,18 @@ public class ReportGenerator {
                 System.out.printf(
                         "Displaying top %d countries in continent - %s: \n",
                         n,
-                        scopeNameUpperCase
+                        scopeName
                 );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Continent = '%s'", scopeName);
+                break;
             case REGION:
                 System.out.printf(
                         "Displaying top %d countries in region - %s: \n",
                         n,
-                        scopeNameUpperCase
+                        scopeName
                 );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Region = '%s'", scopeName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -452,81 +463,66 @@ public class ReportGenerator {
      *                    several countries.
      */
     public List<City> generateSortedCityReport(Scope scope, String scopeName, String countryName) {
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+        if (scope == Scope.DISTRICT && !verifyScopeName(Scope.COUNTRY, countryName)) {
+            if (countryName.isEmpty()) {
+                System.out.printf("%s scope requires country be specified. Report can not be generated.\n", scope);
+                return null;
+            }
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, countryName);
+            return null;
+        }
+
         List<City> cities = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all cities in the world. " +
+                        "Displaying all cities in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all cities in continent - %s. " +
-                                "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        "Displaying all cities in %s - %s: " +
+                                "Population sorted, largest to smallest: \n",
+                        scope,
+                        scopeName
                 );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Continent = '%s'", scopeName);
+                break;
             case REGION:
                 System.out.printf(
-                        "Displaying all cities in region - %s. " +
-                                "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        "Displaying all cities in %s - %s: " +
+                                "Population sorted, largest to smallest: \n",
+                        scope,
+                        scopeName
                 );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE Region = '%s'", scopeName);
+                break;
             case COUNTRY:
                 System.out.printf(
-                        "Displaying all cities in country - %s. " +
-                                "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
-                );
-                if (!dbCountries.contains(scopeNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE country.Name = '%s'", scopeNameUpperCase);
-                    break;
-                }
-            case DISTRICT:
-                // Ensure country is specified
-                if (countryName == null || countryName.isEmpty()) {
-                    System.out.println("District scope requires country be specified. Report can not be generated.\n");
-                    return null;
-                }
-
-                String countryNameUpperCase = countryName.toUpperCase();
-                System.out.printf(
-                        "Displaying all cities in district - %s, %s. " +
+                        "Displaying all cities in %s - %s: " +
                                 "Population sorted, largest to smallest: \n",
-                        scopeNameUpperCase,
-                        countryNameUpperCase
+                        scope,
+                        scopeName
                 );
-
-                if (!dbDistricts.contains(scopeNameUpperCase)) {
-                    System.out.printf("District '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else if (!dbCountries.contains(countryNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", countryNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
-                    break;
-                }
+                condition = String.format("WHERE country.Name = '%s'", scopeName);
+                break;
+            case DISTRICT:
+                System.out.printf(
+                        "Displaying all cities in %s - %s, %s: " +
+                                "Population sorted, largest to smallest: \n",
+                        scope,
+                        scopeName,
+                        countryName
+                );
+                condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeName, countryName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -596,65 +592,47 @@ public class ReportGenerator {
             return null;
         }
 
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
+        if (scope == Scope.DISTRICT && !verifyScopeName(Scope.COUNTRY, countryName)) {
+            if (countryName == null || countryName.isEmpty()) {
+                System.out.println("District scope requires country be specified. Report can not be generated.\n");
+                return null;
+            }
+            System.out.printf("%s - %s not found. Report can not be generated.\n", Scope.COUNTRY, countryName);
+            return null;
+        }
+
         List<City> cities = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
                 System.out.printf("Displaying top %d cities in the world: \n", n);
                 break;
             case CONTINENT:
-                System.out.printf("Displaying top %d cities in continent - %s: \n", n, scopeNameUpperCase);
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                System.out.printf("Displaying top %d cities in continent - %s: \n", n, scopeName);
+                condition = String.format("WHERE Continent = '%s'", scopeName);
+                break;
             case REGION:
-                System.out.printf("Displaying top %d cities in region - %s: \n", n, scopeNameUpperCase);
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                System.out.printf("Displaying top %d cities in region - %s: \n", n, scopeName);
+                condition = String.format("WHERE Region = '%s'", scopeName);
+                break;
             case COUNTRY:
-                System.out.printf("Displaying top %d cities in country - %s: \n", n, scopeNameUpperCase);
-                if (!dbCountries.contains(scopeNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE country.Name = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                System.out.printf("Displaying top %d cities in country - %s: \n", n, scopeName);
+                condition = String.format("WHERE country.Name = '%s'", scopeName);
+                break;
             case DISTRICT:
-                // Ensure country is specified
-                if (countryName == null || countryName.isEmpty()) {
-                    System.out.println("District scope requires country be specified. Report can not be generated.\n");
-                    return null;
-                }
-
-                String countryNameUpperCase = countryName.toUpperCase();
                 System.out.printf(
                         "Displaying top %d cities in district - %s, %s: \n",
                         n,
-                        scopeNameUpperCase,
-                        countryNameUpperCase);
-
-                if (!dbDistricts.contains(scopeNameUpperCase)) {
-                    System.out.printf("District '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else if (!dbCountries.contains(countryNameUpperCase)) {
-                    System.out.printf("Country '%s' not found. Report can not be generated.\n\n", countryNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeNameUpperCase, countryNameUpperCase);
-                    break;
-                }
+                        scopeName,
+                        countryName);
+                condition = String.format("WHERE District = '%s' AND country.Name = '%s'", scopeName, countryName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -706,43 +684,37 @@ public class ReportGenerator {
      * @param scopeName The specific name of the continent or region. Use empty string if using WORLD scope.
      */
     public List<Capital> generateSortedCapitalReport(Scope scope, String scopeName) {
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
         List<Capital> capitals = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
                 System.out.println(
-                        "Displaying all capital cities in the world. " +
+                        "Displaying all capital cities in the world: " +
                                 "Population sorted, largest to smallest: "
                 );
                 break;
             case CONTINENT:
                 System.out.printf(
-                        "Displaying all capital cities in continent - %s. " +
+                        "Displaying all capital cities in continent - %s: " +
                                 "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        , scopeName
                 );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("AND Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("AND Continent = '%s'", scopeName);
+                break;
             case REGION:
                 System.out.printf(
-                        "Displaying all capital cities in region - %s. " +
+                        "Displaying all capital cities in region - %s: " +
                                 "Population sorted, largest to smallest: \n"
-                        , scopeNameUpperCase
+                        , scopeName
                 );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("AND Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("AND Region = '%s'", scopeName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -801,9 +773,13 @@ public class ReportGenerator {
             return null;
         }
 
+        if (!verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
         List<Capital> capitals = new ArrayList<>();
 
-        String scopeNameUpperCase = scopeName.toUpperCase();
         String condition = "";
         switch (scope) {
             case WORLD:
@@ -816,28 +792,18 @@ public class ReportGenerator {
                 System.out.printf(
                         "Displaying top %d capital cities in continent - %s: \n",
                         n,
-                        scopeNameUpperCase
+                        scopeName
                 );
-                if (!dbContinents.contains(scopeNameUpperCase)) {
-                    System.out.printf("Continent '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("AND Continent = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("AND Continent = '%s'", scopeName);
+                break;
             case REGION:
                 System.out.printf(
                         "Displaying top %d capital cities in region - %s: \n",
                         n,
-                        scopeNameUpperCase
+                        scopeName
                 );
-                if (!dbRegions.contains(scopeNameUpperCase)) {
-                    System.out.printf("Region '%s' not found. Report can not be generated.\n\n", scopeNameUpperCase);
-                    return null;
-                } else {
-                    condition = String.format("AND Region = '%s'", scopeNameUpperCase);
-                    break;
-                }
+                condition = String.format("AND Region = '%s'", scopeName);
+                break;
             default:
                 System.out.println("Invalid scope. Report can not be generated.\n");
                 return null;
@@ -878,7 +844,7 @@ public class ReportGenerator {
      * Get the total population, population living in cities, and population not living in cities for each continent,
      * region, or country.
      *
-     * @param scope     The scope level being specified (CONTINENT, REGION, COUNTRY).
+     * @param scope The scope level being specified (CONTINENT, REGION, COUNTRY).
      */
     public List<Urbanization> generateUrbanizationReport(Scope scope) {
         List<Urbanization> capitals = new ArrayList<>();
@@ -886,7 +852,7 @@ public class ReportGenerator {
         String query;
         switch (scope) {
             case CONTINENT:
-                System.out.print("Displaying urbanization in continents. ");
+                System.out.print("Displaying urbanization in continents: ");
                 query = """
                         SELECT country.Continent as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
@@ -899,7 +865,7 @@ public class ReportGenerator {
                         """;
                 break;
             case REGION:
-                System.out.print("Displaying urbanization in regions. ");
+                System.out.print("Displaying urbanization in regions: ");
                 query = """
                         SELECT country.Region as Name,
                                SUM(DISTINCT country.Population) AS TotalPopulation,
@@ -911,7 +877,7 @@ public class ReportGenerator {
                         """;
                 break;
             case COUNTRY:
-                System.out.print("Displaying urbanization in countries. ");
+                System.out.print("Displaying urbanization in countries: ");
                 query = """
                         SELECT country.Name as Name,
                                country.Population AS TotalPopulation,
@@ -948,5 +914,168 @@ public class ReportGenerator {
             return null;
         }
         return capitals;
+    }
+
+    // ISSUE 8
+
+    /**
+     * Get the population of the World.
+     */
+    public List<Population> generatePopulationReport() {
+        return generatePopulationReport(Scope.WORLD, "");
+    }
+
+    /**
+     * Get all cities in the world ordered in descending population order.
+     *
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
+     */
+    public List<Population> generatePopulationReport(Scope scope, String name) {
+        return generatePopulationReport(scope, name, null);
+    }
+
+    /**
+     * Get the population of the World/Continent/Region/Country/District/City
+     *
+     * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT, CITY).
+     */
+    public List<Population> generatePopulationReport(Scope scope, String scopeName, String countryName) {
+        // Validate scopeName where applicable (strict pattern)
+        if (scope != Scope.WORLD && !verifyScopeName(scope, scopeName)) {
+            System.out.printf("%s - %s not found. Report can not be generated.\n", scope, scopeName);
+            return null;
+        }
+
+        if ((scope == Scope.DISTRICT || scope == Scope.CITY) && !verifyScopeName(Scope.COUNTRY, countryName)) {
+            if (countryName == null || countryName.isEmpty()) {
+                System.out.printf("%s scope requires country be specified. Report can not be generated.\n", scope);
+                return null;
+            }
+            System.out.printf("%s - %s not found. Report can not be generated.\n", Scope.COUNTRY, countryName);
+            return null;
+        }
+
+        Population population = null;
+
+        String query;
+        switch (scope) {
+            case WORLD :
+                System.out.print("Displaying World Population: ");
+                query = """
+                        SELECT 'World' as Name, SUM(country.population) AS Population
+                        FROM country;
+                        """;
+                break;
+            case CONTINENT:
+                System.out.printf("Displaying Population of Continent - %s: \n", scopeName);
+                query = """
+                        SELECT country.Continent as Name, SUM(DISTINCT country.population) as Population
+                        FROM city
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE country.Continent = '%s';
+                        """.formatted(scopeName);
+                break;
+            case REGION:
+                System.out.printf("Displaying Population of Region - %s: \n", scopeName);
+                query = """
+                        SELECT country.Region as Name, SUM(DISTINCT country.population) as Population
+                        FROM country
+                        WHERE country.Region = '%s';
+                        """.formatted(scopeName);
+                break;
+            case COUNTRY:
+                System.out.printf("Displaying Population of Country - %s: \n", scopeName);
+                query = """
+                        SELECT country.Name as Name, SUM(DISTINCT country.population) as Population
+                        FROM country
+                        WHERE country.Name = '%s';
+                        """.formatted(scopeName);
+                break;
+            case DISTRICT:
+                System.out.printf("Displaying Population of District - %s: \n", scopeName);
+                query = """
+                        SELECT city.District as Name, SUM(city.population) as Population
+                        FROM city
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE city.District = '%s' AND country.Name = '%s';
+                        """.formatted(scopeName, countryName);
+                break;
+            case CITY:
+                System.out.printf("Displaying Population of City - %s: \n", scopeName);
+                query = """
+                        SELECT city.Name as Name, city.population as Population
+                        FROM city
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE city.Name = '%s' AND country.Name = '%s';
+                        """.formatted(scopeName, countryName);
+                break;
+            default:
+                System.out.println("Invalid scope. Report can not be generated.\n");
+                return null;
+
+        }
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                population = new Population(
+                        resultSet.getString("Name"),
+                        resultSet.getLong("Population")
+                );
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
+            return null;
+        }
+        // Apparently, Collections.singletonList() is more memory-efficient than Arrays.toList() for one item
+        return new ArrayList<>(Collections.singletonList(population));
+    }
+
+    // ISSUE 9
+
+    /**
+     * Get report on speakers of Chinese, English, Hindi, Spanish, and Arabic worldwide
+     */
+    public List<Language> generateTop5LanguageReport() {
+        List<Language> languages = new ArrayList<>();
+
+        System.out.println("Displaying Top 5 Languages in the World: ");
+        String query = """
+                SELECT countrylanguage.Language as Language,
+                       ROUND(SUM(countrylanguage.Percentage * country.Population / 100)) as TotalSpeakers,
+                       SUM(countrylanguage.Percentage * country.Population / 100) / (SELECT SUM(country.Population) FROM country) * 100 WorldPercentage
+                FROM countrylanguage
+                         JOIN country on countrylanguage.CountryCode = country.Code
+                
+                WHERE countrylanguage.language IN ('Chinese', 'English', 'Hindi', 'Spanish', 'Arabic')
+                
+                GROUP BY countrylanguage.Language
+                
+                ORDER BY TotalSpeakers DESC;
+                """;
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Language language = new Language(
+                        resultSet.getString("Language"),
+                        resultSet.getLong("TotalSpeakers"),
+                        resultSet.getFloat("WorldPercentage")
+                );
+                languages.add(language);
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
+            return null;
+        }
+        return languages;
     }
 }
