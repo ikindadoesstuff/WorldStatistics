@@ -16,6 +16,22 @@ package com.napier.group21;
  * @param nonUrbanPopulation    Population not living in cities
  */
 public record Urbanization(String name, long totalPopulation, long urbanPopulation, long nonUrbanPopulation) implements DatabaseObject {
+    public Urbanization{
+        // Handle discrepancies in database values by assuming the total urban population is the accurate total
+        /*
+         * If Urban Population is greater than Total Population, assume Total Population should be equal to
+         * Urban Population
+         */
+        totalPopulation = Math.max(urbanPopulation, totalPopulation);
+        /*
+         * If Non-Urban Population has been calculated to be a negative value, default to 0.
+         * This is because if Total Population and Urban Population are equal, Total Population - Urban Population = 0
+         */
+        nonUrbanPopulation = Math.max(0, nonUrbanPopulation);
+
+
+    }
+
     @Override
     public String toString() {
         // Calculate population percentages
