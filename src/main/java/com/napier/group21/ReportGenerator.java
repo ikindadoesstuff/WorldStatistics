@@ -1042,7 +1042,7 @@ public class ReportGenerator {
      * Get report on speakers of Chinese, English, Hindi, Spanish, and Arabic worldwide
      */
     public List<Language> generateTop5LanguageReport() {
-        Language language = null;
+        List<Language> languages = new ArrayList<>();
 
         System.out.print("Displaying Top 5 Languages in the World: ");
         String query = """
@@ -1066,17 +1066,17 @@ public class ReportGenerator {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                language = new Language(
+                Language language = new Language(
                         resultSet.getString("Language"),
                         resultSet.getLong("TotalSpeakers"),
                         resultSet.getFloat("WorldPercentage")
                 );
+                languages.add(language);
             }
         } catch (SQLException | NullPointerException e) {
             System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
-        // Apparently, Collections.singletonList() is more memory-efficient than Arrays.toList() for one item
-        return new ArrayList<>(Collections.singletonList(language));
+        return languages;
     }
 }
