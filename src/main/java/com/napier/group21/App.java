@@ -81,7 +81,7 @@ public class App {
         printReport(reportGenerator.generatePopulationReport(Scope.REGION, "Nordic Countries"));
         printReport(reportGenerator.generatePopulationReport(Scope.COUNTRY, "India"));
         printReport(reportGenerator.generatePopulationReport(Scope.DISTRICT, "Georgia", "United States"));
-        printReport(reportGenerator.generatePopulationReport(Scope.DISTRICT, "Tokyo", "Japan"));
+        printReport(reportGenerator.generatePopulationReport(Scope.CITY, "Tokyo", "Japan"));
 
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
