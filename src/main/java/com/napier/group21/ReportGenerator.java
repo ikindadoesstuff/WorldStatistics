@@ -962,11 +962,20 @@ public class ReportGenerator {
     }
 
     /**
+     * Get all cities in the world ordered in descending population order.
+     *
+     * @param scope       The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT).
+     */
+    public List<Population> generatePopulationReport(Scope scope, String name) {
+        return generatePopulationReport(scope, name, null);
+    }
+
+    /**
      * Get the population of the World/Continent/Region/Country/District/City
      *
      * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT, CITY).
      */
-    public List<Population> generatePopulationReport(Scope scope, String scopeName, String) {
+    public List<Population> generatePopulationReport(Scope scope, String scopeName, String countryName) {
         Population population = null;
 
         String scopeNameUpperCase = scopeName.toUpperCase();
@@ -1009,7 +1018,7 @@ public class ReportGenerator {
                 query = """
                         SELECT city.District, city.CountryCode, SUM(city.population) as Population
                         FROM city
-                        WHERE city.District = 'Georgia' AND city.CountryCode = 'USA';
+                        WHERE city.District = '%s' AND city.CountryCode = '%s';
                         """.formatted(scopeNameUpperCase);
                 break;
             case CITY:
@@ -1017,7 +1026,7 @@ public class ReportGenerator {
                 query = """
                         SELECT city.Name, city.population as Population
                         FROM city
-                        WHERE city.Name = 'Belmopan';
+                        WHERE city.Name = '%s' AND ;
                         """.formatted(scopeNameUpperCase);
                 break;
             default:
