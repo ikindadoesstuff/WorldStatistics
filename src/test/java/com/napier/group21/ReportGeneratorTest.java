@@ -139,6 +139,7 @@ class ReportGeneratorTest {
      */
 
     // COUNTRY REPORTS
+
     @Test
     void testGenerateSortedCountryReport_NullScope() {
         assertThrows(NullPointerException.class,
@@ -193,6 +194,7 @@ class ReportGeneratorTest {
     }
 
     // CITY REPORTS
+
     @Test
     void testGenerateSortedCityReport_NullScope() {
         assertThrows(NullPointerException.class,
@@ -261,6 +263,7 @@ class ReportGeneratorTest {
     }
 
     // CAPITAL REPORTS
+
     @Test
     void testGenerateSortedCapitalReport_NullScope() {
         assertThrows(NullPointerException.class,
@@ -315,6 +318,7 @@ class ReportGeneratorTest {
     }
 
     // URBANIZATION REPORTS
+
     @ParameterizedTest
     @EnumSource(Scope.class)
     void testGenerateUrbanizationReport_NullConn_AllScopes(Scope scope) {
