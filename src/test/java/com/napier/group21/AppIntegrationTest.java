@@ -332,13 +332,18 @@ class AppIntegrationTest {
             long nonUrbanPopulation = urbanizationReport.urbanPopulation();
 
             assertFalse(totalPopulation < urbanPopulation,
-                    "Urban Population should not be more than Total Population"
+                    "Urban Population should not be more than Total Population\n" +
+                            urbanizationReport.toString()
+
             );
             assertFalse(totalPopulation < nonUrbanPopulation,
-                    "Non-Urban Population should not be more than Total Population"
+                    "Non-Urban Population should not be more than Total Population\n" +
+                            urbanizationReport.toString()
             );
             assertEquals(urbanPopulation + nonUrbanPopulation, totalPopulation,
-                    "Urban and Non-Urban Populations should add up to Total Population");
+                    "Urban and Non-Urban Populations should add up to Total Population\n" +
+                            urbanizationReport.toString()
+            );
         }
     }
 }
