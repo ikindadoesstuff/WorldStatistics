@@ -246,7 +246,6 @@ public class ReportGenerator {
         if (scope == null || scopeName == null) {
             return false;
         }
-        scopeName = scopeName.toUpperCase();
         // this is a switch expression, rather than a statement.
         return switch (scope) {
             case WORLD -> true;
