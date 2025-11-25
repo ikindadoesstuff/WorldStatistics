@@ -346,4 +346,47 @@ class AppIntegrationTest {
             );
         }
     }
+
+    // Specific Population Report
+
+    /**
+     * This method provides different arguments for the associated {@code  ParameterizedTest}.
+     * It enables running the test multiple times and passing a different set of arguments each time,
+     * removing the need to create many methods for each test.
+     *
+     * @return The arguments passed to the test
+     */
+    private static Stream<Arguments> testGeneratePopulationReportArgsProvider() {
+        return Stream.of(
+                //           Scope, Name, Expected Rows, Country Name
+                Arguments.of(Scope.WORLD, "", ""),
+                Arguments.of(Scope.CONTINENT, "Africa", ""),
+                Arguments.of(Scope.REGION, "Nordic Countries", ""),
+                Arguments.of(Scope.COUNTRY, "India", ""),
+                Arguments.of(Scope.DISTRICT, "Georgia", "United States"),
+                Arguments.of(Scope.CITY, "Tokyo", "Japan")
+        );
+    }
+    /**
+     * Test {@code generatePopulationReport()} with its accepted scopes
+     *
+     * @param scope        Current scope being tested
+     * @param scopeName    Specific name of being tested
+     * @param countryName  Name of country under which district or city exists
+     */
+    @ParameterizedTest
+    @MethodSource("testGeneratePopulationReportArgsProvider")
+    void testGeneratePopulationReport(Scope scope, String scopeName, String countryName) {
+        List<Population> populations;
+        populations = reportGenerator.generatePopulationReport(scope, scopeName, countryName);
+
+        // Test Report Success
+        assertNotNull(populations,
+                "Report ArrayList should not be null unless an error occurred");
+
+        // Test Report Size
+        assertEquals(1, populations.size(),
+                "There should be only one population record retrieved."
+        );
+    }
 }
