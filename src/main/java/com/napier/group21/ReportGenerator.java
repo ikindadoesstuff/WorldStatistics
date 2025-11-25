@@ -1031,6 +1031,6 @@ public class ReportGenerator {
             return null;
         }
         // Apparently, Collections.singletonList() is more memory-efficient than Arrays.toList() for one item
-        return new ArrayList<Population>(Collections.singletonList(population));
+        return new ArrayList<>(Collections.singletonList(population));
     }
 }
