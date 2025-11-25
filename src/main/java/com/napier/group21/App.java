@@ -75,6 +75,14 @@ public class App {
         printReport(reportGenerator.generateUrbanizationReport(Scope.REGION));
         printReport(reportGenerator.generateUrbanizationReport(Scope.COUNTRY));
 
+        // 8 Population of the World/Continent/Region/Country/District
+        printReport(reportGenerator.generatePopulationReport());
+        printReport(reportGenerator.generatePopulationReport(Scope.CONTINENT, "Africa"));
+        printReport(reportGenerator.generatePopulationReport(Scope.REGION, "Nordic Countries"));
+        printReport(reportGenerator.generatePopulationReport(Scope.COUNTRY, "India"));
+        printReport(reportGenerator.generatePopulationReport(Scope.DISTRICT, "Georgia", "United States"));
+        printReport(reportGenerator.generatePopulationReport(Scope.DISTRICT, "Tokyo", "Japan"));
+
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
          * all the reports have been run.
