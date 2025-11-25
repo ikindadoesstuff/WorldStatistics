@@ -2,6 +2,8 @@ package com.napier.group21;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -878,7 +880,7 @@ public class ReportGenerator {
      * Get the total population, population living in cities, and population not living in cities for each continent,
      * region, or country.
      *
-     * @param scope     The scope level being specified (CONTINENT, REGION, COUNTRY).
+     * @param scope The scope level being specified (CONTINENT, REGION, COUNTRY).
      */
     public List<Urbanization> generateUrbanizationReport(Scope scope) {
         List<Urbanization> capitals = new ArrayList<>();
@@ -948,5 +950,99 @@ public class ReportGenerator {
             return null;
         }
         return capitals;
+    }
+
+    // ISSUE 8
+
+    /**
+     * Get the population of the World.
+     */
+    public List<Population> generatePopulationReport() {
+        return generatePopulationReport(Scope.WORLD, "");
+    }
+
+    /**
+     * Get the population of the World/Continent/Region/Country/District/City
+     *
+     * @param scope The scope level being specified (WORLD, CONTINENT, REGION, COUNTRY, DISTRICT, CITY).
+     */
+    public List<Population> generatePopulationReport(Scope scope, String scopeName, String) {
+        Population population = null;
+
+        String scopeNameUpperCase = scopeName.toUpperCase();
+        String query;
+        switch (scope) {
+            case WORLD :
+                System.out.print("Displaying World Population. ");
+                query = """
+                        SELECT 'World', SUM(country.population) AS Population
+                        FROM country;
+                        """;
+                break;
+            case CONTINENT:
+                System.out.printf("Displaying Population of Continent - %s . %n \n", scopeNameUpperCase);
+                query = """
+                        SELECT country.Continent, SUM(DISTINCT country.population) as Population
+                        FROM city
+                        LEFT JOIN country on city.CountryCode = country.Code
+                        WHERE country.Continent = '%s';
+                        """.formatted(scopeNameUpperCase);
+                break;
+            case REGION:
+                System.out.printf("Displaying Population of Region - %s . %n \n", scopeNameUpperCase);
+                query = """
+                        SELECT country.Region, SUM(DISTINCT country.population) as Population
+                        FROM country
+                        WHERE country.Region = '%s';
+                        """.formatted(scopeNameUpperCase);
+                break;
+            case COUNTRY:
+                System.out.printf("Displaying Population of Region - %s . %n \n", scopeNameUpperCase);
+                query = """
+                        SELECT country.Name, SUM(DISTINCT country.population) as Population
+                        FROM country
+                        WHERE country.Name = '%s';
+                        """.formatted(scopeNameUpperCase);
+                break;
+            case DISTRICT:
+                System.out.printf("Displaying Population of District - %s . %n \n", scopeNameUpperCase);
+                query = """
+                        SELECT city.District, city.CountryCode, SUM(city.population) as Population
+                        FROM city
+                        WHERE city.District = 'Georgia' AND city.CountryCode = 'USA';
+                        """.formatted(scopeNameUpperCase);
+                break;
+            case CITY:
+                System.out.printf("Displaying Population of Region - %s . %n \n", scopeNameUpperCase);
+                query = """
+                        SELECT city.Name, city.population as Population
+                        FROM city
+                        WHERE city.Name = 'Belmopan';
+                        """.formatted(scopeNameUpperCase);
+                break;
+            default:
+                System.out.println("Invalid scope. Report can not be generated.\n");
+                return null;
+
+        }
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                population = new Population(
+                        resultSet.getString("Name"),
+                        resultSet.getLong("Population")
+                );
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
+            return null;
+        }
+        // Apparently, Collections.singletonList() is more memory-efficient than Arrays.toList() for one item
+        return new ArrayList<Population>(Collections.singletonList(population));
     }
 }

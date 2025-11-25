@@ -209,7 +209,7 @@ class ReportGeneratorTest {
                     "Should return null when connection is null"
             );
         } else {
-            assertNull(reportGenerator.generateSortedCityReport(scope, "!@#"),
+            assertNull(reportGenerator.generateSortedCityReport(scope, "!@#", "!@#"),
                     "Should return null when connection is null"
             );
         }
@@ -245,7 +245,7 @@ class ReportGeneratorTest {
                     "Should return null when connection is null"
             );
         } else {
-            assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5),
+            assertNull(reportGenerator.generateTopNCityReport(scope, "!@#", 5, "!@#"),
                     "Should return null when connection is null"
             );
         }
