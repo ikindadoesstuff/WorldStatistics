@@ -319,8 +319,8 @@ public class ReportGenerator {
                 );
                 countries.add(country);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return countries;
@@ -416,8 +416,8 @@ public class ReportGenerator {
                 );
                 countries.add(country);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return countries;
@@ -554,8 +554,8 @@ public class ReportGenerator {
                 );
                 cities.add(city);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return cities;
@@ -682,8 +682,8 @@ public class ReportGenerator {
                 );
                 cities.add(city);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return cities;
@@ -771,8 +771,8 @@ public class ReportGenerator {
                 );
                 capitals.add(capital);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return capitals;
@@ -865,8 +865,8 @@ public class ReportGenerator {
                 );
                 capitals.add(capital);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return capitals;
@@ -943,8 +943,8 @@ public class ReportGenerator {
                 );
                 capitals.add(urbanization);
             }
-        } catch (SQLException sqle) {
-            System.out.println("Failed to execute statement: " + sqle.getMessage() + "\n");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
             return null;
         }
         return capitals;
