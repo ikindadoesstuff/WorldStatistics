@@ -333,16 +333,16 @@ class AppIntegrationTest {
 
             assertFalse(totalPopulation < urbanPopulation,
                     "Urban Population should not be more than Total Population\n" +
-                            urbanizationReport.toString()
+                            urbanizationReport // toString implicitly called
 
             );
             assertFalse(totalPopulation < nonUrbanPopulation,
                     "Non-Urban Population should not be more than Total Population\n" +
-                            urbanizationReport.toString()
+                            urbanizationReport
             );
             assertEquals(urbanPopulation + nonUrbanPopulation, totalPopulation,
                     "Urban and Non-Urban Populations should add up to Total Population\n" +
-                            urbanizationReport.toString()
+                            urbanizationReport
             );
         }
     }
@@ -359,14 +359,15 @@ class AppIntegrationTest {
     private static Stream<Arguments> testGeneratePopulationReportArgsProvider() {
         return Stream.of(
                 //           Scope, Name, Expected Rows, Country Name
-                Arguments.of(Scope.WORLD, "", ""),
-                Arguments.of(Scope.CONTINENT, "Africa", ""),
-                Arguments.of(Scope.REGION, "Nordic Countries", ""),
-                Arguments.of(Scope.COUNTRY, "India", ""),
-                Arguments.of(Scope.DISTRICT, "Georgia", "United States"),
-                Arguments.of(Scope.CITY, "Tokyo", "Japan")
+                Arguments.of(Scope.WORLD, "", "", 6078749450L), // L used to designate long
+                Arguments.of(Scope.CONTINENT, "Africa", "", 784475000L),
+                Arguments.of(Scope.REGION, "Nordic Countries", "", 24166400L),
+                Arguments.of(Scope.COUNTRY, "India", "", 1013662000L),
+                Arguments.of(Scope.DISTRICT, "Georgia", "United States", 1148875L),
+                Arguments.of(Scope.CITY, "Tokyo", "Japan", 7980230L)
         );
     }
+
     /**
      * Test {@code generatePopulationReport()} with its accepted scopes
      *
@@ -376,7 +377,7 @@ class AppIntegrationTest {
      */
     @ParameterizedTest
     @MethodSource("testGeneratePopulationReportArgsProvider")
-    void testGeneratePopulationReport(Scope scope, String scopeName, String countryName) {
+    void testGeneratePopulationReport(Scope scope, String scopeName, String countryName, long expectedPopulation) {
         List<Population> populations;
         populations = reportGenerator.generatePopulationReport(scope, scopeName, countryName);
 
@@ -387,6 +388,11 @@ class AppIntegrationTest {
         // Test Report Size
         assertEquals(1, populations.size(),
                 "There should be only one population record retrieved."
+        );
+
+        // Test Population Value Against Known Value
+        assertEquals(expectedPopulation, populations.get(0).population(),
+                "Population of %s should be %d.".formatted(scopeName, expectedPopulation)
         );
     }
 }
