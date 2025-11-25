@@ -149,8 +149,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCountryReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class, reportGenerator::generateSortedCountryReport,
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateSortedCountryReport(),
+                "Should return null when connection is null for World scope"
         );
     }
 
@@ -178,9 +178,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCountryReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCountryReport(5),
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateTopNCountryReport(10),
+                "Should return null when connection is null for World scope"
         );
     }
 
@@ -216,8 +215,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCityReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class, reportGenerator::generateSortedCityReport,
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateSortedCityReport(),
+                "Should return null when connection is null for World scope"
         );
     }
 
@@ -266,9 +265,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCityReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCityReport(5),
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateTopNCityReport(10),
+                "Should return null when connection is null for World scope"
         );
     }
 
@@ -325,8 +323,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateSortedCapitalReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class, reportGenerator::generateSortedCapitalReport,
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateSortedCapitalReport(),
+                "Should return null when connection is null for World scope"
         );
     }
 
@@ -354,9 +352,8 @@ class ReportGeneratorTest {
 
     @Test
     void testGenerateTopNCapitalReport_NullConn_WorldScope() {
-        assertThrows(NullPointerException.class,
-                () -> reportGenerator.generateTopNCapitalReport(5),
-                "Should throw NullPointerException when connection is null for World Scope"
+        assertNull(reportGenerator.generateTopNCapitalReport(10),
+                "Should return null when connection is null for World scope"
         );
     }
 
