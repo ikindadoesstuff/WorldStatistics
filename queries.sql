@@ -201,7 +201,7 @@ FROM country;
 # ISSUE 9
 # Number of people who speak Chinese, English, Hindi, Spanish and Arabic in descending order
 # - CITY
-SELECT countrylanguage.Language,
+SELECT countrylanguage.Language as Language,
        ROUND(SUM(countrylanguage.Percentage * country.Population / 100)) as TotalSpeakers,
        SUM(countrylanguage.Percentage * country.Population / 100) / (SELECT SUM(country.Population) FROM country) * 100 WorldPercentage
 FROM countrylanguage

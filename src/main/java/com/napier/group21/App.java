@@ -83,6 +83,9 @@ public class App {
         printReport(reportGenerator.generatePopulationReport(Scope.DISTRICT, "Georgia", "United States"));
         printReport(reportGenerator.generatePopulationReport(Scope.CITY, "Tokyo", "Japan"));
 
+        // 9 Top 5 Languages in the World
+        printReport(reportGenerator.generateTop5LanguageReport());
+
         /*
          * Close connection to the database after running all reports, since the reportGenerator does not know when
          * all the reports have been run.

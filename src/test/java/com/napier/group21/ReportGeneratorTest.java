@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the ReportGenerator class.
@@ -87,6 +85,100 @@ class ReportGeneratorTest {
         assertDoesNotThrow(() -> ReportGenerator.printReport(cities),
                 "Calling printReport with a valid City list should not throw an exception"
         );
+    }
+
+    /*
+     * DATABASE OBJECT TESTS
+     */
+
+    @Test
+    void testCountryRecord() {
+        Country country = new Country(
+                "ARM",
+                "Armenia",
+                "Asia",
+                "Middle East",
+                3520000,
+                "Yerevan"
+        );
+
+        // Divide by 3 because it returns 3 equal length rows
+        assertNotNull(country.getColumnString(),
+                "Country record column string value should not be null"
+        );
+        assertNotNull(country.toString(), "Country record string value should not be null");
+    }
+
+    @Test
+    void testCityRecord() {
+        City city = new City(
+                "Dublin",
+                "Ireland",
+                "Leinster",
+                481854
+        );
+
+        // Divide by 3 because it returns 3 equal length rows
+        assertNotNull(city.getColumnString(),
+                "City record column string value should not be null"
+        );
+        assertNotNull(city.toString(), "City record string value should not be null");
+    }
+
+    @Test
+    void testCapitalRecord() {
+        Capital capital = new Capital(
+                "Tokyo",
+                "Japan",
+                7980230
+        );
+
+        assertNotNull(capital.getColumnString(),
+                "Capital record column string value should not be null"
+        );
+        assertNotNull(capital.toString(), "Capital record string value should not be null");
+    }
+
+    @Test
+    void testUrbanizationRecord() {
+        Urbanization urb = new Urbanization(
+                "Europe",
+                730074600,
+                241942813,
+                488131787
+        );
+
+        assertNotNull(urb.getColumnString(),
+                "Urbanization record column string value should not be null"
+        );
+        assertNotNull(urb.toString(), "Urbanization record string value should not be null");
+    }
+
+    @Test
+    void testPopulationRecord() {
+        Population pop = new Population(
+                "Germany",
+                82164700
+        );
+
+        assertNotNull(pop.getColumnString(),
+                "Population record column string value should not be null"
+        );
+        assertNotNull(pop.toString(), "Population record string value should not be null");
+    }
+
+    @Test
+    void testLanguageRecord() {
+        Language lang = new Language(
+                "Spanish",
+                405633070,
+                6.67f
+        );
+
+        assertNotNull(lang.getColumnString(),
+                "Language record column string value should not be null"
+        );
+        assertNotNull(lang.toString(), "Language record string value should not be null");
     }
 
     /*
@@ -342,6 +434,13 @@ class ReportGeneratorTest {
     void testGeneratePopulationReport_NullConn_InvalidDistrict() {
         assertNull(reportGenerator.generatePopulationReport(Scope.DISTRICT, "!@#", "!@#"),
                 "Should return null when connection is null and scope value is invalid for District scope with country"
+        );
+    }
+
+    @Test
+    void testGenerateTop5LanguageReport_NullConn() {
+        assertNull(reportGenerator.generateTop5LanguageReport(),
+                "Should return null when connection is null"
         );
     }
 }

@@ -246,7 +246,6 @@ public class ReportGenerator {
         if (scope == null || scopeName == null) {
             return false;
         }
-        scopeName = scopeName.toUpperCase();
         // this is a switch expression, rather than a statement.
         return switch (scope) {
             case WORLD -> true;
@@ -1034,5 +1033,49 @@ public class ReportGenerator {
         }
         // Apparently, Collections.singletonList() is more memory-efficient than Arrays.toList() for one item
         return new ArrayList<>(Collections.singletonList(population));
+    }
+
+    // ISSUE 9
+
+    /**
+     * Get report on speakers of Chinese, English, Hindi, Spanish, and Arabic worldwide
+     */
+    public List<Language> generateTop5LanguageReport() {
+        List<Language> languages = new ArrayList<>();
+
+        System.out.println("Displaying Top 5 Languages in the World: ");
+        String query = """
+                SELECT countrylanguage.Language as Language,
+                       ROUND(SUM(countrylanguage.Percentage * country.Population / 100)) as TotalSpeakers,
+                       SUM(countrylanguage.Percentage * country.Population / 100) / (SELECT SUM(country.Population) FROM country) * 100 WorldPercentage
+                FROM countrylanguage
+                         JOIN country on countrylanguage.CountryCode = country.Code
+                
+                WHERE countrylanguage.language IN ('Chinese', 'English', 'Hindi', 'Spanish', 'Arabic')
+                
+                GROUP BY countrylanguage.Language
+                
+                ORDER BY TotalSpeakers DESC;
+                """;
+
+        /*
+         * Try-with-resources ensures statement and resultSet are closed when done.
+         */
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Language language = new Language(
+                        resultSet.getString("Language"),
+                        resultSet.getLong("TotalSpeakers"),
+                        resultSet.getFloat("WorldPercentage")
+                );
+                languages.add(language);
+            }
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Failed to execute statement: " + e.getMessage() + "\n");
+            return null;
+        }
+        return languages;
     }
 }

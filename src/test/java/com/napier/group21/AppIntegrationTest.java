@@ -41,13 +41,14 @@ class AppIntegrationTest {
         }
     }
 
-    @Test
-    void testMain() {
-        String[] args = new String[]{"localhost:33060"};
-        assertDoesNotThrow(()-> App.main(args),
-                "Normal, successful application flow should now throw an exception"
-        );
-    }
+    // Meant to test main method in App class; however, it inflates coverage percentage
+//    @Test
+//    void testMain() {
+//        String[] args = new String[]{"localhost:33060"};
+//        assertDoesNotThrow(()-> App.main(args),
+//                "Normal, successful application flow should now throw an exception"
+//        );
+//    }
 
     // Sorted Country Reports
 
@@ -393,6 +394,15 @@ class AppIntegrationTest {
         // Test Population Value Against Known Value
         assertEquals(expectedPopulation, populations.get(0).population(),
                 "Population of %s should be %d.".formatted(scopeName, expectedPopulation)
+        );
+    }
+
+    // LANGUAGE REPORT
+
+    @Test
+    void testGenerateTop5LanguageReport() {
+        assertNotNull(reportGenerator.generateTop5LanguageReport(),
+                "Report ArrayList should not be null unless an error occurred"
         );
     }
 }
