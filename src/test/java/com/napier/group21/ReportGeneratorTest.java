@@ -314,4 +314,34 @@ class ReportGeneratorTest {
                 "Should return null when connection is null"
         );
     }
+
+    // POPULATION REPORTS
+
+    @Test
+    void testGeneratePopulationReport_NullScope() {
+        assertNull(reportGenerator.generatePopulationReport(null, "!@#", "!@#"),
+                "Should return null when connection is null"
+        );
+    }
+
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGeneratePopulationReport_NullConn_AllScopes(Scope scope) {
+        if (scope == Scope.WORLD) {
+            assertNull(reportGenerator.generatePopulationReport(),
+                    "Should return null when connection is null"
+            );
+        } else {
+            assertNull(reportGenerator.generatePopulationReport(scope, "!@#", "!@#"),
+                    "Should return null when connection is null"
+            );
+        }
+    }
+
+    @Test
+    void testGeneratePopulationReport_NullConn_InvalidDistrict() {
+        assertNull(reportGenerator.generatePopulationReport(Scope.DISTRICT, "!@#", "!@#"),
+                "Should return null when connection is null and scope value is invalid for District scope with country"
+        );
+    }
 }
