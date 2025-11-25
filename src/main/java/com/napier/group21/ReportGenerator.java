@@ -245,14 +245,14 @@ public class ReportGenerator {
      */
     boolean verifyScopeName(Scope scope, String scopeName) {
         scopeName = scopeName.toUpperCase();
+        // this is a switch expression, rather than a statement.
         return switch (scope) {
-            // WORLD case is not required as it should always be true, and vailidity is already true by default
+            case WORLD -> true;
             case CONTINENT -> dbContinents.contains(scopeName.toUpperCase());
             case REGION -> dbRegions.contains(scopeName.toUpperCase());
             case COUNTRY -> dbCountries.contains(scopeName.toUpperCase());
             case DISTRICT -> dbDistricts.contains(scopeName.toUpperCase());
             case CITY -> dbCities.contains(scopeName.toUpperCase());
-            default -> true;
         };
     }
 
