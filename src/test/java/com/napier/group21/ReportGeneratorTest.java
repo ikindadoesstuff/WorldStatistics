@@ -2,6 +2,8 @@ package com.napier.group21;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -376,6 +378,15 @@ class ReportGeneratorTest {
     void testGenerateTopNCapitalReport_NullConn_InvalidRegion() {
         assertNull(reportGenerator.generateTopNCapitalReport(Scope.REGION, "!@#", 5),
                 "Should return null when connection is null and scope value is invalid for Region scope"
+        );
+    }
+
+    // URBANIZATION REPORTS
+    @ParameterizedTest
+    @EnumSource(Scope.class)
+    void testGenerateUrbanizationReport_NullConn_AllScopes(Scope scope) {
+        assertNull(reportGenerator.generateUrbanizationReport(scope),
+                "Should return null when connection is null"
         );
     }
 }
