@@ -244,6 +244,9 @@ public class ReportGenerator {
      * @return          Scope name validity
      */
     boolean verifyScopeName(Scope scope, String scopeName) {
+        if (scope == null || scopeName == null) {
+            return false;
+        }
         scopeName = scopeName.toUpperCase();
         // this is a switch expression, rather than a statement.
         return switch (scope) {
